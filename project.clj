@@ -9,6 +9,7 @@
                  [ring/ring-defaults "0.1.2"]
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [org.clojure/java.jdbc "0.3.3"]
+                 [hiccup "1.0.5"]
                  [yesql "0.5.0-beta2"]
                  [org.flywaydb/flyway-core "3.0"]]
   :plugins [[lein-ring "0.8.13"]
