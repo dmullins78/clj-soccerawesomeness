@@ -1,4 +1,4 @@
-(ns cljawesome.core.models.normalizer)
+(ns cljawesome.league.models.normalizer)
 
 (defn- is_home [id game]
   (= (:home_team_id game) id))

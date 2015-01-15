@@ -1,6 +1,6 @@
-(ns cljawesome.core.models.points-calculator-test
+(ns cljawesome.league.models.points-calculator-test
   (:require [midje.sweet :refer :all]
-            [cljawesome.core.models.points-calculator :refer :all]))
+            [cljawesome.league.models.points-calculator :refer :all]))
 
 (fact "Failing test scenario"
       (def games

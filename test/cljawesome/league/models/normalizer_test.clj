@@ -1,6 +1,6 @@
-(ns cljawesome.core.models.normalizer-test
+(ns cljawesome.league.models.normalizer-test
   (:require [midje.sweet :refer :all]
-            [cljawesome.core.models.normalizer :refer :all]))
+            [cljawesome.league.models.normalizer :refer :all]))
 
 (def games
   [{:home_team_id 1, :ht_score 1, :away_team_id 2, :at_score 0}

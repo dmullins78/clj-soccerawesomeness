@@ -1,10 +1,10 @@
-(ns cljawesome.core.models.query-defs
+(ns cljawesome.league.models.query-defs
   (:require [cljawesome.core.models.database :refer [database db]]
-            [cljawesome.core.models.normalizer :refer :all ]
-            [cljawesome.core.models.points-calculator :refer :all ]
+            [cljawesome.league.models.normalizer :refer :all ]
+            [cljawesome.league.models.points-calculator :refer :all ]
             [yesql.core :refer [defqueries]]))
 
-(defqueries "cljawesome/core/models/league_queries.sql" {:connection db})
+(defqueries "cljawesome/league/models/league_queries.sql" {:connection db})
 
 (def calc-game-points (comp calculate normalize))
 

@@ -1,4 +1,4 @@
-(ns cljawesome.core.models.points-calculator)
+(ns cljawesome.league.models.points-calculator)
 
 (defn- goaldiff [g]
   (- (:us g) (:them g)))

@@ -1,10 +1,10 @@
-(ns cljawesome.core.handler-test
+(ns cljawesome.league.handler-test
   (:use midje.sweet)
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
             [cljawesome.core.models.database :refer [database db]]
             [cljawesome.database.database-helper :as dbtools]
-            [cljawesome.core.models.query-defs :as query]
+            [cljawesome.league.models.query-defs :as query]
             [cljawesome.core.handler :refer :all]))
 
 (def test-db (database :test))

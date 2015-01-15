@@ -1,8 +1,8 @@
-(ns cljawesome.core.routes.league-routes
+(ns cljawesome.league.routes.league-routes
   (:require [compojure.core :refer :all]
             [ring.util.response :refer [resource-response response]]
             [cljawesome.core.models.database :refer [db]]
-            [cljawesome.core.models.query-defs :as query]))
+            [cljawesome.league.models.query-defs :as query]))
 
 (defn league-params [request]
   [(get-in request [:params :league-name])
