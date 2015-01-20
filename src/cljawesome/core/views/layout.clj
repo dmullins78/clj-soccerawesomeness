@@ -6,10 +6,10 @@
   (html5
     [:head
      [:title "SoccerAwesomeness"]
-     (include-css "/css/soccerawesomeness.css")
+     (include-css "/assets/css/app.css")
      (include-css "http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css")]
     [:body
-     [:div#wrapper
+     [:div#wrapper.grid-frame.vertical
       [:h1#content-title "Soccer Awesomeness"]
         [:div.clear-row]]
        body]))
