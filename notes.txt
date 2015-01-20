@@ -1,17 +1,31 @@
-FIXME
-JDBC transactions
-Running things in the RPL
-Re-using the database connection
-DB Connection Pooling
-
-TODO
-Point calculations
-Admin UI
-Player statistic tracking
-player apis for most goals
-Wordpress plugin
+To Do First:
+Games API
+Set-Up League from Spreadsheet
+Assign captains to teams
+Captain login
+Captain edit scores
+Import players from spreadsheet
+track cards per player
+print rosters
 Basic authentication security
 
+Later:
+Admin can create a new season
+Associate players with multiple leagues
+Track player statistics (goals, assists, saves)
+Add player number to player info
+Show top performing players
+Social media?
+
+Way Later:
+Include pictures for the players
+Native player-card app
+
+Way Way Later
+Wordpress plugin
+
+Done:
+Point calculations
 
 Commish:
 possible to put two text boxes on the score reporting page of soccerawesomeness. One that people could write in yellow and red cards and have it displayed on the teams schedule on cicsdm.org. The other would be the referee feedback section that sends the comments to an email address
