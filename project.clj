@@ -11,6 +11,7 @@
                  [org.clojure/java.jdbc "0.3.3"]
                  [hiccup "1.0.5"]
                  [yesql "0.5.0-beta2"]
+                 [environ "1.0.0"]
                  [org.flywaydb/flyway-core "3.0"]]
   :plugins [[lein-ring "0.8.13"]
             [lein-midje "3.1.3"]]
