@@ -1,7 +1,6 @@
 (ns cljawesome.league.routes.league-routes
   (:require [compojure.core :refer :all]
             [ring.util.response :refer [resource-response response]]
-            [cljawesome.core.models.database :refer [db]]
             [cljawesome.league.models.query-defs :as query]))
 
 (defn league-params [request]
@@ -11,7 +10,7 @@
 
   (defn get-league [request]
     (let [[league year season] (league-params request)]
-      (let [league (query/select-league-season {:name league, :year year, :season season} {:connection db})]
+      (let [league (query/select-league-season {:name league :year year :season season})]
         (response (first league) ))))
 
   (defn get-teams [request]

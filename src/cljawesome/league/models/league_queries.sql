@@ -1,4 +1,5 @@
 -- name: select-league-season
+-- Selects all contacts
 SELECT
     l.name as league,
     s.year,
@@ -6,8 +7,8 @@ SELECT
  FROM leagues l
   inner join seasons s on s.league_id = l.id
   WHERE lower(l.name) = :name
-  AND s.year = year
-  AND s.season = season;
+  AND s.year = :year
+  AND s.season = :season;
 
 -- name: insert-league<!
 INSERT INTO leagues (name)

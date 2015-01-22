@@ -1,9 +1,7 @@
 (ns cljawesome.migrations.migration
   (import [org.flywaydb.core Flyway])
-  (require [clojure.java.jdbc :refer [db-do-commands]]
-    [cljawesome.core.models.database :refer :all]))
+  (require [clojure.java.jdbc :refer [db-do-commands]]))
 
-;(def test-db (cljawesome.core.models.database/db))
 
 (defn get-db-datasource []
   (doto (org.postgresql.ds.PGSimpleDataSource.)
