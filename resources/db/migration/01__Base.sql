@@ -19,8 +19,20 @@ CREATE TABLE Divisions (
 CREATE TABLE Teams (
     id        BIGSERIAL PRIMARY KEY,
     name    varchar(40) NOT NULL,
-    division_id BIGSERIAL REFERENCES Divisions,
     season_id BIGSERIAL REFERENCES Seasons
+);
+
+CREATE TABLE Teams_Leagues (
+    team_id BIGSERIAL REFERENCES Teams,
+    league_id BIGSERIAL REFERENCES Leagues,
+    PRIMARY KEY(team_id, league_id)
+);
+
+CREATE TABLE Teams_Seasons (
+    team_id BIGSERIAL REFERENCES Teams,
+    season_id BIGSERIAL REFERENCES Seasons,
+    division_id BIGSERIAL REFERENCES Divisions,
+    PRIMARY KEY(team_id, season_id)
 );
 
 CREATE TABLE Games (
