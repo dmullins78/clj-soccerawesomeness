@@ -23,8 +23,16 @@ INSERT INTO divisions (season_id, name)
     VALUES (:season_id, :name);
 
 -- name: insert-team<!
-INSERT INTO teams (division_id, season_id, name)
-    VALUES (:division_id, :season_id, :name);
+INSERT INTO teams (name)
+    VALUES (:name);
+
+-- name: insert-league-team
+INSERT INTO teams_leagues (team_id, league_id)
+    VALUES (:teamId, :leagueId );
+
+-- name: insert-season-team
+INSERT INTO teams_seasons (team_id, season_id, division_id)
+    VALUES (:teamId, :seasonId, :divisionId);
 
 -- name: insert-game<!
 INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time)
@@ -36,9 +44,9 @@ SELECT
     t.name,
     d.name as division
  FROM teams t
-  inner join divisions d on t.division_id = d.id
-  inner join seasons s on t.season_id = s.id
   inner join leagues l on s.league_id = l.id
+  inner join teams_seasons ts on ts.league_id = s.id
+  inner join divisions d on t.division_id = d.id
   WHERE lower(l.name) = :name
   AND s.year = :year
   AND s.season = :season

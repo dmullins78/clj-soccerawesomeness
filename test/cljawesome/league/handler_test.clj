@@ -11,18 +11,9 @@
        (with-state-changes [(before :facts (dbtools/resetdb! ))]
 
          (fact "Gets the specific season"
-               (defn league [leagueName]
-                 ((query/insert-league<! {:name leagueName}) :id))
-
-               (defn season [year season leagueId]
-                 ((query/insert-season<! {:year year :season season :league_id leagueId}) :id))
-
-               ;(let [leagueId ((query/insert-league<! {:name "CICS"}) :id)]
-               ;(query/insert-season<! {:year 2014 :season "fall" :league_id leagueId})
-               ;(query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}))
-               (->>
-                 (league "CICS")
-                 (season 2014 "fall3"))
+               (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)]
+                 (query/insert-season<! {:year 2014 :season "fall" :league_id leagueId})
+                 (query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}))
                (let [response (app (mock/request :get "/league/cics/2014/fall"))]
                  (:status response) => 200
                  (:body response) => "{\"season\":\"fall\",\"year\":2014,\"league\":\"CICS\"}"))
@@ -31,8 +22,12 @@
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)]
                  (let [seasonId ((query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}) :id)]
                    (let [divisionId ((query/insert-division<! {:season_id seasonId :name "Upper"}) :id)]
-                     (let [teamOneId ((query/insert-team<! {:name "Recipe" :division_id divisionId :season_id seasonId}) :id) ]
-                       (let [teamTwoId ((query/insert-team<! {:name "Red Star" :division_id divisionId :season_id seasonId}) :id) ]
+                     (let [teamOneId ((query/insert-team<! {:name "Recipe"}) :id) ]
+                         (query/insert-league-team {:leagueId leagueId :teamId teamOneId} )
+                         (query/insert-season-team {:seasonId seasonId :teamId teamOneId :divisionId divisionId} )
+                       (let [teamTwoId ((query/insert-team<! {:name "Red Star" }) :id) ]
+                         (query/insert-league-team {:leagueId leagueId :teamId teamTwoId} )
+                         (query/insert-season-team {:seasonId seasonId :teamId teamTwoId :divisionId divisionId} )
                          (query/insert-game<! {:home_team_id teamOneId :away_team_id teamTwoId :home_team_score 2 :away_team_score 1} )
                          (query/insert-game<! {:home_team_id teamTwoId :away_team_id teamOneId :home_team_score 1 :away_team_score 2} ))))))
                (let [response (app (mock/request :get "/league/cics/2014/spring/teams"))]

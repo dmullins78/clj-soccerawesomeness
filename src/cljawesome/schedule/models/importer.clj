@@ -4,6 +4,12 @@
            [cljawesome.league.models.query-defs :as league]
            [clojure.java.io :as io]))
 
+(defn add_season [leagueId season]
+  ((league/insert-season<! {:year 2014 :season season :league_id leagueId}) :id))
+
+(defn add_division [seasonId]
+  ((league/insert-division<! {:season_id seasonId :name "Upper"}) :id))
+
 (defn league_teams[league_id]
   (query/all-teams-by-league {:league_id league_id} ))
 
@@ -32,20 +38,15 @@
   (league/insert-team<! {:name team :division_id (Integer. (add_division seasonId)) :season_id (Integer. seasonId)}))
 
 (defn master_team_list [new_teams season]
-  (let [leagueTeams (league_teams seasonId)]
-  (doseq [team new_teams]
-    (if (not (some #(team_match? team %) leagueTeams))
-      (add_new_team team seasonId)))))
+  ;(let [leagueTeams (league_teams seasonId)]
+  ;(doseq [team new_teams]
+    ;(if (not (some #(team_match? team %) leagueTeams))
+      ;(add_new_team team seasonId)
+      "nope")
 
 (defn import_schedule [league_id season file]
   (let [schedule (load_things file)]
     (let [new_teams (all_teams schedule)]
       (master_team_list new_teams  (add_season league_id season))
       )))
-
-(defn add_season [leagueId season]
-  ((league/insert-season<! {:year 2014 :season season :league_id leagueId}) :id))
-
-(defn add_division [seasonId]
-  ((league/insert-division<! {:season_id seasonId :name "Upper"}) :id))
 
