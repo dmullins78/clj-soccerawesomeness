@@ -15,5 +15,6 @@
       (merge team {:points points :goal_differential goal_diff}))))
 
 (defn get-team-standings [league year season]
-  (let [teams (select-teams {:name league :year year :season season})]
-    (map calculate-team-points teams)))
+  (let [teams (select-season-teams {:name league :year year :season season})]
+    (map calculate-team-points teams)
+    ))

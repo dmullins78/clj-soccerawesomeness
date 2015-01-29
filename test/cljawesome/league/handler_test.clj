@@ -23,11 +23,11 @@
                  (let [seasonId ((query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}) :id)]
                    (let [divisionId ((query/insert-division<! {:season_id seasonId :name "Upper"}) :id)]
                      (let [teamOneId ((query/insert-team<! {:name "Recipe"}) :id) ]
-                         (query/insert-league-team {:leagueId leagueId :teamId teamOneId} )
-                         (query/insert-season-team {:seasonId seasonId :teamId teamOneId :divisionId divisionId} )
+                       (query/insert-season-team<! {:seasonId seasonId :teamId teamOneId :divisionId divisionId} )
+                       (query/insert-league-team<! {:leagueId leagueId :teamId teamOneId} )
                        (let [teamTwoId ((query/insert-team<! {:name "Red Star" }) :id) ]
-                         (query/insert-league-team {:leagueId leagueId :teamId teamTwoId} )
-                         (query/insert-season-team {:seasonId seasonId :teamId teamTwoId :divisionId divisionId} )
+                         (query/insert-league-team<! {:leagueId leagueId :teamId teamTwoId} )
+                         (query/insert-season-team<! {:seasonId seasonId :teamId teamTwoId :divisionId divisionId} )
                          (query/insert-game<! {:home_team_id teamOneId :away_team_id teamTwoId :home_team_score 2 :away_team_score 1} )
                          (query/insert-game<! {:home_team_id teamTwoId :away_team_id teamOneId :home_team_score 1 :away_team_score 2} ))))))
                (let [response (app (mock/request :get "/league/cics/2014/spring/teams"))]

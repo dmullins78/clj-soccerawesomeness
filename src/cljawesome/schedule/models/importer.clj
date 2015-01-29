@@ -11,7 +11,7 @@
   ((league/insert-division<! {:season_id seasonId :name "Upper"}) :id))
 
 (defn league_teams[league_id]
-  (query/all-teams-by-league {:league_id league_id} ))
+  (query/all-teams-by-league {:leagueId league_id} ))
 
 (defn read_file [in-file]
   (with-open [in-file (io/reader in-file) ]
@@ -34,19 +34,21 @@
 (defn team_match? [team team2]
   (= (:name team2) team))
 
-(defn add_new_team [team seasonId]
-  (league/insert-team<! {:name team :division_id (Integer. (add_division seasonId)) :season_id (Integer. seasonId)}))
+(defn add_new_league_team [team leagueId]
+  (let [team (league/insert-team<! {:name team })]
+    (league/insert-league-team<! {:leagueId leagueId :teamId (:id team)} )))
 
-(defn master_team_list [new_teams season]
-  ;(let [leagueTeams (league_teams seasonId)]
-  ;(doseq [team new_teams]
-    ;(if (not (some #(team_match? team %) leagueTeams))
-      ;(add_new_team team seasonId)
-      "nope")
+(defn master_team_list [new_teams leagueId seasonId]
+  (let [leagueTeams (league_teams leagueId)]
+    (doseq [team new_teams]
+      (if (not (some #(team_match? team %) leagueTeams))
+        (add_new_league_team team leagueId))
+      )))
 
 (defn import_schedule [league_id season file]
   (let [schedule (load_things file)]
     (let [new_teams (all_teams schedule)]
-      (master_team_list new_teams  (add_season league_id season))
-      )))
+      (let [seasonId (add_season league_id season)]
+        (master_team_list new_teams league_id seasonId)
+        ))))
 
