@@ -1,5 +1,6 @@
 (ns cljawesome.schedule.models.importer
   (require [clojure.data.csv :as csv]
+           [clojure.set :refer :all]
            [cljawesome.schedule.models.query-defs :as query]
            [cljawesome.league.models.query-defs :as league]
            [clojure.java.io :as io]))
@@ -38,17 +39,21 @@
   (let [team (league/insert-team<! {:name team })]
     (league/insert-league-team<! {:leagueId leagueId :teamId (:id team)} )))
 
-(defn master_team_list [new_teams leagueId seasonId]
-  (let [leagueTeams (league_teams leagueId)]
-    (doseq [team new_teams]
-      (if (not (some #(team_match? team %) leagueTeams))
-        (add_new_league_team team leagueId))
-      )))
+(defn my_teams [new_teams leagueId]
+  (let [matches (query/find-league-teams { :leagueId leagueId :names (seq new_teams)})]
+    (map #(:name %) matches)))
+
+(defn new_league_teams [new_teams leagueId]
+  (let [existing_teams (my_teams new_teams leagueId)]
+    (difference new_teams existing_teams )))
+
+(defn load_new_teams [schedule leagueId seasonId]
+  (let [all_new_teams (all_teams schedule)
+        new-league-teams (new_league_teams all_new_teams leagueId)]
+    (apply add_new_league_team new-league-teams leagueId)))
 
 (defn import_schedule [league_id season file]
-  (let [schedule (load_things file)]
-    (let [new_teams (all_teams schedule)]
-      (let [seasonId (add_season league_id season)]
-        (master_team_list new_teams league_id seasonId)
-        ))))
+  (let [schedule (load_things file)
+        seasonId (add_season league_id season)]
+    (load_new_teams schedule league_id seasonId)))
 
