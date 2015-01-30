@@ -50,7 +50,7 @@
 (defn load_new_teams [schedule leagueId seasonId]
   (let [all_new_teams (all_teams schedule)
         new-league-teams (new_league_teams all_new_teams leagueId)]
-    (apply add_new_league_team new-league-teams leagueId)))
+    (doseq [x new-league-teams] (add_new_league_team x leagueId))))
 
 (defn import_schedule [league_id season file]
   (let [schedule (load_things file)
