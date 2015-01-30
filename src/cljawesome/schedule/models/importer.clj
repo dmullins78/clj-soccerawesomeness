@@ -11,9 +11,6 @@
 (defn add_division [seasonId]
   ((league/insert-division<! {:season_id seasonId :name "Upper"}) :id))
 
-;(defn league_teams[league_id]
-  ;(query/all-teams-by-league {:leagueId league_id} ))
-
 (defn read_file [in-file]
   (with-open [in-file (io/reader in-file) ]
     (doall (csv/read-csv in-file))))
@@ -29,8 +26,13 @@
 (defn load_things [file]
   (-> file read_file make_objects))
 
+(defn find-first-division
+  [teamName allData]
+  (:division (first (filter #(= (:home %) teamName) allData))))
+
 (defn all_teams [schedule]
-  (set (flatten (map #(vals (select-keys % [:home :away])) schedule))))
+  (let [z (set (flatten (map #(vals (select-keys % [:home :away])) schedule)))]
+    (map #(hash-map :name % :division (find-first-division % schedule)) z)))
 
 (defn add_new_season_team [seasonId team]
   ;(league/insert-season-team<! {:seasonId seasonId :teamId (:id team)} )
@@ -59,10 +61,10 @@
   (let [all_new_teams (all_teams schedule)
         existing_teams (my_teams leagueId)]
     (doseq [x all_new_teams]
-      (if-let [y (find-first-team x existing_teams)]
+      (if-let [y (find-first-team (:name x) existing_teams)]
         (add_new_season_team seasonId y)
-        (brand-new-team x leagueId seasonId)
-      ))))
+        (brand-new-team (:name x) leagueId seasonId)
+        ))))
 
 (defn import_schedule [league_id season file]
   (let [schedule (load_things file)
