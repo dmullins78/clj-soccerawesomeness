@@ -11,8 +11,8 @@
 (defn add_division [seasonId]
   ((league/insert-division<! {:season_id seasonId :name "Upper"}) :id))
 
-(defn league_teams[league_id]
-  (query/all-teams-by-league {:leagueId league_id} ))
+;(defn league_teams[league_id]
+  ;(query/all-teams-by-league {:leagueId league_id} ))
 
 (defn read_file [in-file]
   (with-open [in-file (io/reader in-file) ]
@@ -32,16 +32,24 @@
 (defn all_teams [schedule]
   (set (flatten (map #(vals (select-keys % [:home :away])) schedule))))
 
-(defn team_match? [team team2]
-  (= (:name team2) team))
+(defn add_new_season_team [seasonId team]
+  ;(league/insert-season-team<! {:seasonId seasonId :teamId (:id team)} )
+  )
 
 (defn add_new_league_team [team leagueId]
   (let [team (league/insert-team<! {:name team })]
     (league/insert-league-team<! {:leagueId leagueId :teamId (:id team)} )))
 
-(defn my_teams [new_teams leagueId]
-  (let [matches (query/find-league-teams { :leagueId leagueId :names (seq new_teams)})]
-    (map #(:name %) matches)))
+(defn brand-new-team [team leagueId seasonId]
+  (add_new_league_team team leagueId)
+  (add_new_season_team seasonId team))
+
+(defn my_teams [leagueId]
+  (query/find-league-teams { :leagueId leagueId }))
+
+(defn find-first-team
+  [teamName existingTeams]
+  (first (filter #(= (:name %) teamName) existingTeams)))
 
 (defn new_league_teams [new_teams leagueId]
   (let [existing_teams (my_teams new_teams leagueId)]
@@ -49,8 +57,12 @@
 
 (defn load_new_teams [schedule leagueId seasonId]
   (let [all_new_teams (all_teams schedule)
-        new-league-teams (new_league_teams all_new_teams leagueId)]
-    (doseq [x new-league-teams] (add_new_league_team x leagueId))))
+        existing_teams (my_teams leagueId)]
+    (doseq [x all_new_teams]
+      (if-let [y (find-first-team x existing_teams)]
+        (add_new_season_team seasonId y)
+        (brand-new-team x leagueId seasonId)
+      ))))
 
 (defn import_schedule [league_id season file]
   (let [schedule (load_things file)
