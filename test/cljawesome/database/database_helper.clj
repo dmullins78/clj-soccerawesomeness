@@ -10,6 +10,5 @@
   (jdbc/execute! pgdb ["delete from teams_seasons;"] )
   (jdbc/execute! pgdb ["delete from games;"] )
   (jdbc/execute! pgdb ["delete from teams;"] )
-  (jdbc/execute! pgdb ["delete from divisions;"] )
   (jdbc/execute! pgdb ["delete from seasons;"] )
   (jdbc/execute! pgdb ["delete from leagues;"] ))

@@ -10,12 +10,6 @@ CREATE TABLE Seasons (
     league_id BIGSERIAL REFERENCES Leagues
 );
 
-CREATE TABLE Divisions (
-    id        BIGSERIAL PRIMARY KEY,
-    name    varchar(40) NOT NULL,
-    season_id BIGSERIAL REFERENCES Seasons
-);
-
 CREATE TABLE Teams (
     id        BIGSERIAL PRIMARY KEY,
     name    varchar(40) NOT NULL
@@ -30,7 +24,7 @@ CREATE TABLE Teams_Leagues (
 CREATE TABLE Teams_Seasons (
     team_id BIGSERIAL REFERENCES Teams,
     season_id BIGSERIAL REFERENCES Seasons,
-    division_id BIGSERIAL REFERENCES Divisions,
+    division varchar(40),
     PRIMARY KEY(team_id, season_id)
 );
 

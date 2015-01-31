@@ -12,6 +12,7 @@
                  [hiccup "1.0.5"]
                  [yesql "0.5.0-rc1"]
                  [environ "1.0.0"]
+                 [clj-time "0.9.0"]
                  [org.clojure/data.csv "0.1.2"]
                  [org.flywaydb/flyway-core "3.0"]]
   :plugins [[lein-ring "0.8.13"]
@@ -23,7 +24,7 @@
                                          [javax.servlet/servlet-api "2.5"]
                                          [ring-mock "0.1.5"]]
 
-                           :plugins     [[lein-midje "3.1.3"]]}
+                          :plugins     [[lein-midje "3.1.3"]]}
 
              ;; Set these in ./profiles.clj
              :test-env-vars {}
