@@ -34,5 +34,7 @@ CREATE TABLE Games (
     away_team_id BIGSERIAL REFERENCES Teams,
     home_team_score smallint NOT NULL,
     away_team_score smallint NOT NULL,
+    field varchar(60),
+    season_id BIGSERIAL REFERENCES Seasons,
     start_time timestamp NOT NULL
 );

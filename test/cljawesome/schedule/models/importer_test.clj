@@ -9,14 +9,16 @@
 
        (with-state-changes [(before :facts (dbtools/resetdb! ))]
 
-         (fact "Gets the specific season"
+         (fact "Makes new league from schedule import"
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
-                     seasonId ((query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}) :id)
-                     teamOneId ((query/insert-team<! {:name "Recipe"}) :id)
-                     teamTwoId ((query/insert-team<! {:name "Red Star" }) :id) ]
-                 (query/insert-season-team<! {:seasonId seasonId :teamId teamOneId :division "Upper"} )
+                     newSeasonId (import_schedule leagueId "Fall" "/Users/dan/Projects/clojure/cljawesome/in-file.csv")
+                     actual (query/select-season-games {:seasonId newSeasonId } )]
+                 (count actual) => 81))
+
+         (fact "Do not create existing teams for subsequent seasons"
+               (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
+                     teamOneId ((query/insert-team<! {:name "Recipe"}) :id) ]
                  (query/insert-league-team<! {:leagueId leagueId :teamId teamOneId} )
-                 (query/insert-season-team<! {:seasonId seasonId :teamId teamTwoId :division "Upper"} )
-                 (query/insert-league-team<! {:leagueId leagueId :teamId teamTwoId} )
-               (let [response (import_schedule leagueId "Fall" "/Users/dan/Projects/clojure/cljawesome/in-file.csv")]
-                 response => { :season "Fall" :teams ["Alpha" "Beta"]})))))
+                 (let [newSeasonId (import_schedule leagueId "Fall" "/Users/dan/Projects/clojure/cljawesome/in-file.csv")
+                       actual (dbtools/entries-in-teams-table "Recipe" )]
+                   actual => 1)))))

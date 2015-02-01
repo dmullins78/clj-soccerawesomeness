@@ -30,8 +30,8 @@
                  (let [teamTwoId ((query/insert-team<! {:name "Red Star" }) :id) ]
                    (query/insert-league-team<! {:leagueId leagueId :teamId teamTwoId} )
                    (query/insert-season-team<! {:seasonId seasonId :teamId teamTwoId :division "Upper"} )
-                   (query/insert-game<! {:home_team_id teamOneId :away_team_id teamTwoId :home_team_score 2 :away_team_score 1 :start_time (c/to-sql-date (t/now))} )
-                   (query/insert-game<! {:home_team_id teamTwoId :away_team_id teamOneId :home_team_score 1 :away_team_score 2 :start_time (c/to-sql-date (t/now))} )))
+                   (query/insert-game<! {:home_team_id teamOneId :away_team_id teamTwoId :home_team_score 2 :away_team_score 1 :start_time (c/to-sql-date (t/now)) :field "Altoona", :seasonId seasonId} )
+                   (query/insert-game<! {:home_team_id teamTwoId :away_team_id teamOneId :home_team_score 1 :away_team_score 2 :start_time (c/to-sql-date (t/now)) :field "Altoona", :seasonId seasonId} )))
                (let [response (app (mock/request :get "/league/cics/2014/spring/teams"))]
                  (:status response) => 200
                  (:body response) => (contains "goal_differential\":2" )
