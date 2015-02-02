@@ -11,7 +11,7 @@
 
          (fact "Makes new league from schedule import"
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
-                     newSeasonId (import_schedule leagueId "Fall" "/Users/dan/Projects/clojure/cljawesome/in-file.csv")
+                     newSeasonId (import_schedule leagueId "Fall" "games.csv")
                      actual (query/select-season-games {:seasonId newSeasonId } )]
                  (count actual) => 81))
 
@@ -19,6 +19,6 @@
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
                      teamOneId ((query/insert-team<! {:name "Recipe"}) :id) ]
                  (query/insert-league-team<! {:leagueId leagueId :teamId teamOneId} )
-                 (let [newSeasonId (import_schedule leagueId "Fall" "/Users/dan/Projects/clojure/cljawesome/in-file.csv")
+                 (let [newSeasonId (import_schedule leagueId "Fall" "games.csv")
                        actual (dbtools/entries-in-teams-table "Recipe" )]
                    actual => 1)))))

@@ -9,6 +9,8 @@
   (first (jdbc/query pgdb ["select count(*) from teams where name = ?" name] :row-fn :count)))
 
 (defn resetdb! []
+  (jdbc/execute! pgdb ["delete from seasons_persons;"] )
+  (jdbc/execute! pgdb ["delete from persons;"] )
   (jdbc/execute! pgdb ["delete from teams_leagues;"] )
   (jdbc/execute! pgdb ["delete from teams_seasons;"] )
   (jdbc/execute! pgdb ["delete from games;"] )

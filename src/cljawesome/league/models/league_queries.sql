@@ -48,6 +48,11 @@ where lower(l.name) = :name
 and s.year = :year
 and s.season = :season
 
+-- name: select-season-players
+SELECT p.*
+FROM persons p
+inner join seasons_persons sp on p.id = sp.person_id
+WHERE sp.season_id = :seasonId
 
 -- name: select-season-games
 SELECT g.*

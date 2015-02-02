@@ -38,3 +38,16 @@ CREATE TABLE Games (
     season_id BIGSERIAL REFERENCES Seasons,
     start_time timestamp NOT NULL
 );
+
+CREATE TABLE Persons (
+    id        BIGSERIAL PRIMARY KEY,
+    name    varchar(100) NOT NULL,
+    email    varchar(40) NOT NULL
+);
+
+CREATE TABLE Seasons_Persons (
+    season_id BIGSERIAL REFERENCES Seasons,
+    person_id BIGSERIAL REFERENCES Persons,
+    PRIMARY KEY(season_id, person_id)
+);
+

@@ -33,8 +33,8 @@
         seasonId (add_season league_id season)
         teams (teams/load-and-return schedule league_id seasonId)]
     (doseq [game schedule]
-      (let [home_team_id  ((teams/find-first-team (:home game) teams) :id)
-            away_team_id  ((teams/find-first-team (:away game) teams) :id)
+      (let [home_team_id  ((teams/find-team (:home game) teams) :id)
+            away_team_id  ((teams/find-team (:away game) teams) :id)
             start-time (.parse (java.text.SimpleDateFormat. "MM/dd/yyyy hh:mm a") (:time game))]
         (league/insert-game<! {
                                :home_team_id home_team_id
