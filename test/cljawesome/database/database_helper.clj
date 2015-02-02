@@ -5,6 +5,9 @@
   { :subprotocol "postgresql"
     :subname "//localhost:5432/cljawesome" })
 
+(defn players-with-name [email]
+  (first (jdbc/query pgdb ["select count(*) from persons where email = ?" email] :row-fn :count)))
+
 (defn entries-in-teams-table [name]
   (first (jdbc/query pgdb ["select count(*) from teams where name = ?" name] :row-fn :count)))
 
