@@ -48,6 +48,6 @@ CREATE TABLE Persons (
 CREATE TABLE Seasons_Persons (
     season_id BIGSERIAL REFERENCES Seasons,
     person_id BIGSERIAL REFERENCES Persons,
-    PRIMARY KEY(season_id, person_id)
+    team_id BIGSERIAL REFERENCES Teams,
+    PRIMARY KEY(season_id, person_id, team_id)
 );
-

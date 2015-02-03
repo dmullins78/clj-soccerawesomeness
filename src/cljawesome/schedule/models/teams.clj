@@ -28,7 +28,7 @@
       (add-team-for-league-season incoming leagueId seasonId))))
 
 (defn existing-teams [leagueId]
-  (query/find-league-teams { :leagueId leagueId }))
+  (query/all-teams-by-league { :leagueId leagueId }))
 
 (defn find-division [team incoming-teams]
   (:division (util/find-first team incoming-teams :home)))
@@ -41,4 +41,4 @@
   (let [incoming (get-teams schedule)
         existing (existing-teams leagueId)]
     (load-teams incoming existing leagueId seasonId )
-    (query/find-league-teams { :leagueId leagueId })))
+    (query/all-teams-by-league { :leagueId leagueId })))

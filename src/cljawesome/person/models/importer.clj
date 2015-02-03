@@ -17,9 +17,9 @@
 (defn find-existing [incoming-people]
   (query/select-people-by-email { :emails (emails incoming-people) }))
 
-(defn add-person [person seasonId]
+(defn add-person [person seasonId teamId]
   (let [person (query/insert-person<! { :email (:email person) :name (:name person)})]
-    (query/insert-person-season<! { :personId (:id person) :seasonId seasonId})))
+    (query/insert-person-season<! { :personId (:id person) :seasonId seasonId :teamId teamId})))
 
 (defn read-file [in-file]
   (with-open [in-file (io/reader in-file)]
@@ -36,11 +36,13 @@
 
 (defn import-people [league-id seasonId file]
   (let [incoming-people (parse-people file)
-        existing-people (find-existing incoming-people)]
+        existing-people (find-existing incoming-people)
+        teams (teams/teams-by-season {:seasonId seasonId} )]
     (doseq [person incoming-people]
-      (if-let [existing-person (existing-person? person existing-people)]
-        (query/insert-person-season<! { :personId (:id existing-person) :seasonId seasonId})
-        (add-person person seasonId)))))
+      (let [team (util/find-first (:team person) teams :name)]
+        (if-let [existing-person (existing-person? person existing-people)]
+          (query/insert-person-season<! { :teamId (:id team) :personId (:id existing-person) :seasonId seasonId})
+          (add-person person seasonId (:id team)))))))
 
 
-;teams (teams/all-teams-by-league { :leagueId league-id })]
+
