@@ -5,6 +5,9 @@
   { :subprotocol "postgresql"
     :subname "//localhost:5432/cljawesome" })
 
+(defn players-by-season [seasonId]
+  (first (jdbc/query pgdb ["select count(*) from seasons_persons where season_id = ?" seasonId] :row-fn :count)))
+
 (defn players-with-name [email]
   (first (jdbc/query pgdb ["select count(*) from persons where email = ?" email] :row-fn :count)))
 

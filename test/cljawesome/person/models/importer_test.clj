@@ -22,5 +22,7 @@
                      seasonId ((query/insert-season<! {:year 2014 :season "Fall" :league_id leagueId}) :id)
                      player (p/insert-person<! { :email "one@foo.com" :name "Test One" })]
                  (import-people leagueId seasonId "players.csv")
-                 (let [actual (dbtools/players-with-name "one@foo.com" )]
-                   actual => 1)))))
+                 (let [actual (dbtools/players-with-name "one@foo.com" )
+                       season-player-count (dbtools/players-by-season seasonId )]
+                   actual => 1
+                   season-player-count => 2)))))
