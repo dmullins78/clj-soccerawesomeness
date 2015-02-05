@@ -8,10 +8,6 @@
            [cljawesome.league.models.query-defs :as league]
            [clojure.java.io :as io]))
 
-(defn add_season [leagueId season]
-  (let [currentYear (t/year (t/now))]
-    ((league/insert-season<! {:year currentYear :season season :league_id leagueId}) :id)))
-
 (defn read-file [in-file]
   (with-open [in-file (io/reader in-file) ]
     (doall (csv/read-csv in-file))))
@@ -27,10 +23,8 @@
 (defn parse-schedule [file]
   (-> file read-file to-games))
 
-
-(defn import_schedule [league_id season file]
+(defn import_schedule [league_id seasonId file]
   (let [schedule (parse-schedule file)
-        seasonId (add_season league_id season)
         teams (teams/load-and-return schedule league_id seasonId)]
     (doseq [game schedule]
       (let [home_team_id  ((teams/find-team (:home game) teams) :id)
@@ -44,5 +38,5 @@
                                :field (:field game)
                                :seasonId seasonId
                                :start_time (c/to-sql-date start-time)} )))
-    seasonId))
+    (league/select-season-games {:seasonId seasonId } )))
 

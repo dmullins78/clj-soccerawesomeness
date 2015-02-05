@@ -1,9 +1,10 @@
 -- name: select-league-season
--- Selects all contacts
 SELECT
+l.id,
 l.name as league,
 s.year,
-s.season
+s.season,
+s.id as seasonId
 FROM leagues l
 inner join seasons s on s.league_id = l.id
 WHERE lower(l.name) = :name

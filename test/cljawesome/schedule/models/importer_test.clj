@@ -11,14 +11,15 @@
 
          (fact "Makes new league from schedule import"
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
-                     newSeasonId (import_schedule leagueId "Fall" "games.csv")
-                     actual (query/select-season-games {:seasonId newSeasonId } )]
+                     season (query/insert-season<! {:year 2015 :season "Spring" :league_id leagueId})
+                     actual (import_schedule leagueId (:id season) "games.csv")]
                  (count actual) => 81))
 
          (fact "Do not create existing teams for subsequent seasons"
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
+                     season (query/insert-season<! {:year 2015 :season "Spring" :league_id leagueId})
                      teamOneId ((query/insert-team<! {:name "Recipe"}) :id) ]
                  (query/insert-league-team<! {:leagueId leagueId :teamId teamOneId} )
-                 (let [newSeasonId (import_schedule leagueId "Fall" "games.csv")
-                       actual (dbtools/entries-in-teams-table "Recipe" )]
+                 (import_schedule leagueId (:id season) "games.csv")
+                 (let [actual (dbtools/entries-in-teams-table "Recipe" )]
                    actual => 1)))))

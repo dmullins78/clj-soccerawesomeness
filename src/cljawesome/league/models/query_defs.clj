@@ -16,5 +16,7 @@
 
 (defn get-team-standings [league year season]
   (let [teams (select-season-teams {:name league :year year :season season})]
-    (map calculate-team-points teams)
-    ))
+    (map calculate-team-points teams)))
+
+(defn season-id [league year season]
+  (first (select-league-season {:name league :year (Integer. year) :season season})))
