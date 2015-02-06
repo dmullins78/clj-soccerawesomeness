@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Teams
+{% endblock %}
+
+{% block content %}
+<ul>Teams
+  {% for team in teams %}
+  <li>
+  <a href="{{team.id}}">{{team.name}}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
