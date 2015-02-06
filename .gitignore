@@ -9,3 +9,6 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 .idea
+node_modules
+bower_components
+*.css

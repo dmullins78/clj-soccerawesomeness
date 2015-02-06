@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Games
+{% endblock %}
+
+{% block content %}
+<h1>Games</h1>
+<hr/>
+
+<div class="medium-centered medium-6 columns">
+  {% for game in games %}
+  <a href="/team/{{base}}/game/{{game.id}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}} vs {{game.away_team}}</a>
+  {% endfor %}
+</div>
+{% endblock %}
+

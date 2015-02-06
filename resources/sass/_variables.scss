@@ -1,0 +1,33 @@
+/*Main brand colors & Internal colors*/
+$brand-main-green:#00693c;
+$brand-main-white:#ffffff;
+$brand-main-gray:#b7b1a9;
+$brand-main-black:#151514;
+
+/*Primary accent colors*/
+$brand-primary-yellow:#fdc82f;
+$brand-primary-dark-gray:#988f86;
+$brand-primary-light-green:#dae5cd;
+//Primary 40% gray is the same color main gray
+
+/*Secondary active colors*/
+$brand-secondary-blue:#003f72;
+$brand-secondary-kelly-green:#3f9c35;
+$brand-secondary-rust:#783037;
+//Secondary yellow is the same color as primary yellow
+
+/*Secondary neutral colors*/
+$brand-secondary-neutral-tan:#b2995d;
+$brand-secondary-neutral-brown:#6c4d23;
+$brand-secondary-neutral-beige:#e1d8b7;
+$brand-secondary-neutral-butter:#f8e498;
+
+/*Legacy colors (should be removed upon redesign)*/
+/* Global SASS Variables for eAdvantage */
+/* Colors */
+$top-nav-links:$brand-secondary-blue;
+$sidebar-nav-links:$brand-main-green;
+
+$sans-serif-font-family: Verdana, Helvetica, sans-serif;
+$serif-font-family: Georgia, Times, "Times New Roman", serif;
+

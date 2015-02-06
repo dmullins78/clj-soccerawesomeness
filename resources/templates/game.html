@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{game.home_team}} vs {{game.away_team}}
+{% endblock %}
+
+{% block content %}
+<h1>{{game.home_team}} vs {{game.away_team}}</h1>
+<hr/>
+
+<div class="medium-centered medium-6 columns text-left">
+  <form>
+    <div class="row">
+      <div class="large-6 columns">
+        <label>Starts
+          <input type="text" value="{{game.starts_at}}"/>
+        </label>
+      </div>
+      <div class="large-6 columns">
+        <label>Field
+          <input type="text" value="{{game.field}}"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-10 columns">
+        <label>Home Team
+          <input type="text" value="{{game.home_team}}"/>
+        </label>
+      </div>
+      <div class="large-2 columns">
+        <label>Score
+          <input type="text" value="{{game.ht_team}}"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-10 columns">
+        <label>Away Team
+          <input type="text" value="{{game.away_team}}"/>
+        </label>
+      </div>
+      <div class="large-2 columns">
+        <label>Score
+          <input type="text" value="{{game.at_team}}"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 small-centered columns">
+        <input type="submit" class="button" name="Save"/>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+

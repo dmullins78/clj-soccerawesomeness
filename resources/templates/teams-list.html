@@ -5,13 +5,14 @@ Teams
 {% endblock %}
 
 {% block content %}
-<h1>{{base}}</h1>
-<ul>Teams
+<h1>Teams</h1>
+<hr/>
+
+<div class="medium-centered medium-6 columns">
   {% for team in teams %}
-  <li>
-  <a href="/team/{{base}}/{{team.id}}/games">{{team.name}}</a>
-  </li>
+    <a href="/team/{{base}}/{{team.id}}/games" class="button expand">{{team.name}}</a><br/>
   {% endfor %}
-</ul>
+</div>
+
 {% endblock %}
 
