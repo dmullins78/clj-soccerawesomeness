@@ -19,7 +19,7 @@
                  (query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}))
                (let [response (app (mock/request :get "/league/cics/2014/fall"))]
                  (:status response) => 200
-                 (:body response) => "{\"season\":\"fall\",\"year\":2014,\"league\":\"CICS\"}"))
+                 (:body response) => (contains "season\":\"fall\"")))
 
          (fact "Gets teams from the active session and calculates their points"
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)

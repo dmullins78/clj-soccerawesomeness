@@ -8,7 +8,7 @@
 
 (defn parse-params [params]
   [(get params :file)
-   (league/season-id
+   (league/get-season
      (get params :name)
      (get params :year)
      (get params :season))

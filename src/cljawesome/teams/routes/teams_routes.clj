@@ -8,7 +8,7 @@
             [ring.util.response :refer [resource-response response]]))
 
 (defn parse-params [params]
-  (league/season-id
+  (league/get-season
     (get params :name)
     (get params :year)
     (get params :season)))

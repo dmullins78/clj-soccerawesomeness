@@ -12,13 +12,13 @@
 
 (def calc-game-points (comp calculate normalize))
 
-(defn calculate-team-points [team seasonId]
-  (let [games (select-games {:team_id (:id team) :seasonId (Integer. seasonId)})]
+(defn calculate-team-points [team]
+  (let [games (select-games {:team_id (:id team) :seasonId (:seasonid team)})]
     (let [[points goal_diff] (calc-game-points (:id team) games)]
       (merge team {:points points :goal_differential goal_diff}))))
 
 (defn get-team-standings [league year season]
   (let [seasonMap (get-season league year season)
         teams (select-season-teams {:seasonId (:seasonid seasonMap)})]
-    (map calculate-team-points teams (:seasonid seasonMap))))
+    (map calculate-team-points teams)))
 

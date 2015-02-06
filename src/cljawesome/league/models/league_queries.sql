@@ -39,6 +39,7 @@ VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start
 select
 t.id,
 t.name,
+s.id as seasonId,
 ts.division
 from teams t
 inner join teams_leagues tl on tl.team_id = t.id
