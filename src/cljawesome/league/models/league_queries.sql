@@ -45,9 +45,7 @@ inner join teams_leagues tl on tl.team_id = t.id
 inner join leagues l on tl.league_id = l.id
 inner join teams_seasons ts on ts.team_id = t.id
 inner join seasons s on s.id = ts.season_id
-where lower(l.name) = :name
-and s.year = :year
-and s.season = :season
+where ts.season_id = :seasonId
 
 -- name: select-season-players
 SELECT p.*, t.name as team
@@ -69,3 +67,4 @@ away_team_id,
 away_team_score as at_score
 FROM games
 WHERE home_team_id = :team_id or away_team_id = :team_id
+AND season_id = :seasonId
