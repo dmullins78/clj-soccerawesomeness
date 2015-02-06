@@ -5,10 +5,11 @@ Teams
 {% endblock %}
 
 {% block content %}
+<h1>{{base}}</h1>
 <ul>Teams
   {% for team in teams %}
   <li>
-  <a href="{{team.id}}">{{team.name}}</a>
+  <a href="team/{{base}}/{{team.id}}/games">{{team.name}}</a>
   </li>
   {% endfor %}
 </ul>

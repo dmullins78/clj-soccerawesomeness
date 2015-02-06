@@ -18,7 +18,8 @@
   :plugins [[lein-ring "0.8.13"]
             [lein-midje "3.1.3"]
             [lein-environ "1.0.0"]]
-  :ring {:handler cljawesome.core.handler/app}
+  :ring {:handler cljawesome.core.handler/app
+         :init cljawesome.core.handler/init }
   :aliases {"migrate" ["run" "-m" "cljawesome.migrations.migration/migrate"]}
   :profiles {:test-local {:dependencies [[midje "1.6.3"]
                                          [javax.servlet/servlet-api "2.5"]
@@ -31,4 +32,7 @@
              :dev-env-vars  {}
 
              :test [:test-local :test-env-vars]
-             :dev  [:dev-env-vars]})
+             :dev  [:dev-env-vars]
+             :production {:ring {:open-browser? false
+                                 :stacktraces?  false
+                                 :auto-reload?  false}}})
