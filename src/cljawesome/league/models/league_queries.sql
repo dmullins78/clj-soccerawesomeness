@@ -62,10 +62,15 @@ WHERE g.season_id = :seasonId
 
 -- name: select-games
 SELECT
+to_char(start_time, 'MonthD HH:MMam') as starts_at,
 home_team_id,
 home_team_score as ht_score,
 away_team_id,
-away_team_score as at_score
+away_team_score as at_score,
+away.name as away_team,
+home.name as home_team
 FROM games
+inner join teams home on home_team_id = home.id
+inner join teams away on away_team_id = away.id
 WHERE home_team_id = :team_id or away_team_id = :team_id
 AND season_id = :seasonId

@@ -18,6 +18,7 @@
 
 (defn show-team-games [league teamId]
   (let [games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
+    (println games)
     (render-file "games.html" {:games games :teamId teamId :base (base-path league)})))
 
 (defn show-teams [league]
