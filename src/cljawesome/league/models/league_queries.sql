@@ -66,7 +66,7 @@ WHERE g.season_id = :seasonId
 -- name: select-game
 SELECT
 g.id,
-to_char(start_time, 'mm/DD/yyyy HH:MMam') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
 g.field,
 home_team_id,
 home_team_score as ht_score,
@@ -83,7 +83,7 @@ WHERE g.id = :gameId
 SELECT
 g.id,
 g.field,
-to_char(start_time, 'mm/DD/yyyy HH:MMam') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
 home_team_id,
 home_team_score as ht_score,
 away_team_id,

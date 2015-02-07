@@ -8,6 +8,9 @@
 (defn players-by-season [seasonId]
   (first (jdbc/query pgdb ["select count(*) from seasons_persons where season_id = ?" seasonId] :row-fn :count)))
 
+(defn player-game-stats [playerId]
+  (first (jdbc/query pgdb ["select * from Persons_Games_Stats where person_id = ?" playerId] )))
+
 (defn players-with-name [email]
   (first (jdbc/query pgdb ["select count(*) from persons where email = ?" email] :row-fn :count)))
 
@@ -15,6 +18,7 @@
   (first (jdbc/query pgdb ["select count(*) from teams where name = ?" name] :row-fn :count)))
 
 (defn resetdb! []
+  (jdbc/execute! pgdb ["delete from persons_games_stats;"] )
   (jdbc/execute! pgdb ["delete from seasons_persons;"] )
   (jdbc/execute! pgdb ["delete from persons;"] )
   (jdbc/execute! pgdb ["delete from teams_leagues;"] )
