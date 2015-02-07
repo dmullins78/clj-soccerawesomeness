@@ -31,6 +31,9 @@ VALUES (:teamId, :leagueId );
 INSERT INTO teams_seasons (team_id, season_id, division)
 VALUES (:teamId, :seasonId, :division);
 
+-- name: update-game<!
+update games set home_team_score = :home_score, away_team_score = :away_score where id = :id
+
 -- name: insert-game<!
 INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
 VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start_time, :field, :seasonId);
@@ -63,7 +66,7 @@ WHERE g.season_id = :seasonId
 -- name: select-game
 SELECT
 g.id,
-to_char(start_time, 'MonthD HH:MMam') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MMam') as starts_at,
 g.field,
 home_team_id,
 home_team_score as ht_score,
@@ -80,7 +83,7 @@ WHERE g.id = :gameId
 SELECT
 g.id,
 g.field,
-to_char(start_time, 'MonthD HH:MMam') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MMam') as starts_at,
 home_team_id,
 home_team_score as ht_score,
 away_team_id,

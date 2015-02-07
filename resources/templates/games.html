@@ -10,7 +10,7 @@ Games
 
 <div class="medium-centered medium-6 columns">
   {% for game in games %}
-  <a href="/team/{{base}}/game/{{game.id}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}} vs {{game.away_team}}</a>
+  <a href="/teams/{{base}}/{{teamId}}/games/{{game.id}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}} vs {{game.away_team}}</a>
   {% endfor %}
 </div>
 {% endblock %}

@@ -5,44 +5,44 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{game.home_team}} vs {{game.away_team}}</h1>
+<h1>{{game.home_team}} <br/>vs<br/> {{game.away_team}}</h1>
 <hr/>
 
 <div class="medium-centered medium-6 columns text-left">
-  <form>
+  <form method="POST" action="/teams/{{base}}/{{teamId}}/games/{{game.id}}">
     <div class="row">
       <div class="large-6 columns">
         <label>Starts
-          <input type="text" value="{{game.starts_at}}"/>
+          <input type="text" value="{{game.starts_at}}" disabled="true"/>
         </label>
       </div>
       <div class="large-6 columns">
         <label>Field
-          <input type="text" value="{{game.field}}"/>
+          <input type="text" value="{{game.field}}" disabled="true"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="large-10 columns">
         <label>Home Team
-          <input type="text" value="{{game.home_team}}"/>
+          <input type="text" value="{{game.home_team}}" disabled="true"/>
         </label>
       </div>
       <div class="large-2 columns">
         <label>Score
-          <input type="text" value="{{game.ht_team}}"/>
+          <input type="text" name="home_score" value="{{game.ht_score}}"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="large-10 columns">
         <label>Away Team
-          <input type="text" value="{{game.away_team}}"/>
+          <input type="text" value="{{game.away_team}}" disabled="true"/>
         </label>
       </div>
       <div class="large-2 columns">
         <label>Score
-          <input type="text" value="{{game.at_team}}"/>
+          <input type="text" name="away_score" value="{{game.at_score}}"/>
         </label>
       </div>
     </div>
