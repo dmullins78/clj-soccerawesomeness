@@ -53,5 +53,90 @@
     </form>
   </div>
 </div>
+
+<div id="app"></div>
+
+<script id="index-template" type="text/x-backbone">
+Welcome to Marionette's Main Template
+
+<a href="#" id="addStat">Add Stuff</a>
+</script>
+
+<script src="/js/sawesomeness.js"></script>
+<script>
+var testData = [
+{id : 1, email: 'test@test.com'},
+{id : 2, email: 'test2@test.com'} ];
+
+var app = new Marionette.Application();
+
+var AppRouter = Backbone.Router.extend({ routes: {
+  "" : "showIndex",
+  "users" : "showUserList"
+  },
+
+  showIndex : function() {
+    app.AppController.showIndex();
+  },
+  showUserList : function() {
+    app.AppController.showUserList();
+  }
+});
+
+var AppController = Marionette.Controller.extend({
+  showIndex: function() {
+    var IndexView = Marionette.ItemView.extend({
+      template : '#index-template',
+
+      events: {
+        "click #addStat" : "showUserList"
+      },
+
+      showUserList: function(ev) {
+        ev.preventDefault();
+        app.AppController.showUserList();
+        app.Router.navigate("users");
+      }
+    });
+
+    app.mainRegion.show(new IndexView());
+  },
+
+  showUserList: function() {
+    var userListView = new UserListView({ collection: new Backbone.Collection(testData) });
+    app.mainRegion.show(userListView);
+  }
+
+});
+
+app.addInitializer(function() {
+
+    app.addRegions({
+      mainRegion : '#app'
+    });
+
+  app.AppController = new AppController();
+  app.Router = new AppRouter();
+
+  Backbone.history.start();
+});
+
+var UserItemView = Marionette.ItemView.extend({
+  tagName : "tr",
+  template: _.template("<td><%=email%></td>")
+});
+
+var UserListView = Marionette.CollectionView.extend({
+    tagName : "table",
+    className: "table table-striped",
+    childView: UserItemView,
+    onBeforeRender: function() {
+      this.$el.append("<h2>User List</h2>");
+    }
+});
+
+app.start();
+
+</script>
 {% endblock %}
 

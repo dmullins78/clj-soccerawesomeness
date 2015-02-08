@@ -1,6 +1,9 @@
 {
-  "name": "foundation-libsass-template",
+  "name": "sawesome",
   "dependencies": {
-    "foundation": "zurb/bower-foundation"
+    "foundation": "zurb/bower-foundation",
+    "jquery": "latest",
+    "underscore": "latest",
+    "marionette": "latest"
   }
 }

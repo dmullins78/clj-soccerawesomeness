@@ -1,7 +1,6 @@
 (ns cljawesome.person.routes.person-routes
   (:require [compojure.core :refer :all]
             [cljawesome.util.league-params :as lp]
-            [cljawesome.core.views.layout :refer :all]
             [cljawesome.person.models.query-defs :as pq]
             [cljawesome.person.views.login-view :refer :all]
             [ring.util.response :refer [resource-response response]]))
@@ -19,4 +18,5 @@
   "")
 
 (defroutes person-routes
-  (POST "/persons/:name/:year/:season/:id/game/:gameId" {params :params} (println "PX ")(update-player-stats (lp/parse-params params) (:id params) (:gameId params) params)))
+  (POST "/persons/:name/:year/:season/:id/game/:gameId" {params :params}
+        (update-player-stats (lp/parse-params params) (:id params) (:gameId params) params)))

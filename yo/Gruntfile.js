@@ -21,6 +21,16 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      dist: {
+        src: ['bower_components/jquery/dist/jquery.js',
+          'bower_components/underscore/underscore.js',
+          'bower_components/backbone/backbone.js',
+          'bower_components/marionette/lib/backbone.marionette.js'],
+          dest: '../resources/public/js/<%= pkg.name %>.js'
+      }
+    },
+
     watch: {
       grunt: {
         files: ['Gruntfile.js'],
@@ -38,6 +48,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('default', ['sass','watch']);
 }
