@@ -21,9 +21,12 @@
   (league/update-game<! (update-game-params gameId params))
   (redirect (format "/teams/%s/%s/games/%s" (base-path league) (:teamId params) gameId)))
 
-(defn show-game [league teamId gameId]
+(defn delete-player-game [league gameId playerId]
+  "DELETED")
+
+(defn show-game [league gameId]
   (let [game (league/select-game {:gameId (Integer. gameId) })]
-    (render-file "game.html" {:game (first game) :teamId teamId :base (base-path league)})))
+    (render-file "game.html" {:game (first game) :base (base-path league)})))
 
 (defn show-team-games [league teamId]
   (let [games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
@@ -34,7 +37,9 @@
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 
 (defroutes teams-routes
-  (GET "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (show-game (lp/parse-params params) (:teamId params) (:id params)))
-  (POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (update-game (lp/parse-params params) (:id params) params ))
+  (GET "/games/:name/:year/:season/:id" {params :params} (show-game (lp/parse-params params) (:id params)))
+  (DELETE "/games/:name/:year/:season/:id/player/:playerId" {params :params} (delete-player-game (lp/parse-params params) (:id params) (:playerId params)))
+  ;(POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (println "PP " + (:player params)) (update-game (lp/parse-params params) (:id params) params ))
+  (PUT "/games/:name/:year/:season/:id/player/:playerId" [id playerId] (println "CB " + id + " player " + playerId ) "")
   (GET "/teams/:name/:year/:season/:id/games" {params :params} (show-team-games (lp/parse-params params) (:id params) ))
   (GET "/teams/:name/:year/:season" {params :params} (show-teams (lp/parse-params params) )))

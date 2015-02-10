@@ -8,39 +8,39 @@
 <h1>{{game.home_team}} <br/>vs<br/> {{game.away_team}}</h1>
 <hr/>
 
-<div class="medium-centered medium-6 columns text-left">
+<div class="medium-centered medium-8 columns text-left">
   <form method="POST" action="/teams/{{base}}/{{teamId}}/games/{{game.id}}">
     <div class="row">
-      <div class="large-6 columns">
+      <div class="medium-6 columns">
         <label>Starts
           <input type="text" value="{{game.starts_at}}" disabled="true"/>
         </label>
       </div>
-      <div class="large-6 columns">
+      <div class="medium-6 columns">
         <label>Field
           <input type="text" value="{{game.field}}" disabled="true"/>
         </label>
       </div>
     </div>
     <div class="row">
-      <div class="large-10 columns">
+      <div class="small-10 columns">
         <label>Home Team
           <input type="text" value="{{game.home_team}}" disabled="true"/>
         </label>
       </div>
-      <div class="large-2 columns">
+      <div class="small-2 columns">
         <label>Score
           <input type="text" name="home_score" value="{{game.ht_score}}"/>
         </label>
       </div>
     </div>
     <div class="row">
-      <div class="large-10 columns">
+      <div class="small-10 columns">
         <label>Away Team
           <input type="text" value="{{game.away_team}}" disabled="true"/>
         </label>
       </div>
-      <div class="large-2 columns">
+      <div class="small-2 columns">
         <label>Score
           <input type="text" name="away_score" value="{{game.at_score}}"/>
         </label>
@@ -51,88 +51,211 @@
         <input type="submit" class="button" name="Save"/>
       </div>
     </form>
+    <div id="stats"></div>
+    <div id="app"></div>
   </div>
 </div>
 
-<div id="app"></div>
+<script id="stat-display-template" type="text/x-backbone">
+<div class="row">
+    <div class="small-12 medium-2 columns">
+      <span><%= name %></span>
+    </div>
+    <div class="small-2 medium-2 columns">
+      <span><%= goals %> Goals</span>
+    </div>
+    <div class="small-2 medium-2 columns">
+      <span><%= assists %> Assists</span>
+    </div>
+    <div class="small-3 medium-2 columns">
+      <%= cards %> Card
+    </div>
+    <div class="small-5 medium-4 columns">
+        <a id="edit">Edit</a>
+        <a id="remove" class="">Remove</a>
+    </div>
+  </div>
+</script>
 
-<script id="index-template" type="text/x-backbone">
-Welcome to Marionette's Main Template
-
-<a href="#" id="addStat">Add Stuff</a>
+<script id="stat-template" type="text/x-backbone">
+<div class="row">
+  <form id="player_stats">
+    <div class="small-12 medium-5 columns">
+      <label>Player
+        <select class="name">
+          <option value="1">Dan Mullins</option>
+        </select>
+      </label>
+    </div>
+    <div class="small-2 medium-2 columns">
+      <label>Goals
+        <input type="text" class="goals" value="<%= goals %>"/>
+      </label>
+    </div>
+    <div class="small-2 medium-2 columns">
+      <label>Assists
+        <input type="text" class="assists" value="<%= assists %>"/>
+      </label>
+    </div>
+    <div class="small-3 medium-3 columns">
+      <label>Card?
+        <select class="card">
+          <option>None</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 medium-4 columns small-centered">
+      <ul class="button-group">
+        <li><a id="cancel" class="tiny button">Cancel</a></li>
+        <li><a id="saved" class="tiny button">Save</a></li>
+      </ul>
+    </div>
+  </div>
+  </form>
+</div>
 </script>
 
 <script src="/js/sawesomeness.js"></script>
 <script>
+
 var testData = [
-{id : 1, email: 'test@test.com'},
-{id : 2, email: 'test2@test.com'} ];
+{id: 1, playerId : 1, playerName: "Name 1", goals: 3, assists: 5, cardLabel: "Red"},
+{id: 2, playerId : 2, playerName: "Name 2", goals: 2, assists: 4, cardLabel: "Yellow"} ];
 
 var app = new Marionette.Application();
 
-var AppRouter = Backbone.Router.extend({ routes: {
-  "" : "showIndex",
-  "users" : "showUserList"
+var AppRouter = Backbone.Router.extend({
+  routes: {
+    "" : "showUserList"
   },
 
-  showIndex : function() {
-    app.AppController.showIndex();
-  },
   showUserList : function() {
+    app.otherRegion.show(new FooView());
     app.AppController.showUserList();
   }
 });
 
 var AppController = Marionette.Controller.extend({
-  showIndex: function() {
-    var IndexView = Marionette.ItemView.extend({
-      template : '#index-template',
-
-      events: {
-        "click #addStat" : "showUserList"
-      },
-
-      showUserList: function(ev) {
-        ev.preventDefault();
-        app.AppController.showUserList();
-        app.Router.navigate("users");
-      }
-    });
-
-    app.mainRegion.show(new IndexView());
-  },
-
   showUserList: function() {
-    var userListView = new UserListView({ collection: new Backbone.Collection(testData) });
-    app.mainRegion.show(userListView);
-  }
-
+      var userListView = new UserListView({ collection: app.collection});
+      app.mainRegion.show(userListView);
+    }
 });
 
 app.addInitializer(function() {
-
-    app.addRegions({
-      mainRegion : '#app'
-    });
+  app.addRegions({
+    mainRegion : '#app',
+    otherRegion : '#stats'
+  });
 
   app.AppController = new AppController();
   app.Router = new AppRouter();
+  app.collection = new UserModels(testData);
 
   Backbone.history.start();
 });
 
+var FooView = Marionette.ItemView.extend({
+  template: _.template("<a id='addStat'>Add Player Details</a>"),
+
+  events: {
+    "click #addStat" : "showEntryScreen"
+  },
+
+  showEntryScreen: function(ev) {
+    app.otherRegion.show(new AddEntryView());
+  }
+
+});
+
+var AddEntryView = Marionette.ItemView.extend({
+  template: "#stat-template",
+
+  events: {
+    "click #cancel" : "cancel",
+    "click #saved" : "save"
+  },
+
+  save: function(ev) {
+    app.collection.create({
+      "id" : $('.name', this.$el).val(),
+      "playerName": $(".name option:selected", this.$el).text(),
+      "goals": $('.goals', this.$el).val(),
+      "assists": $('.assists', this.$el).val(),
+      "card": $('.card', this.$el).val(),
+      "cardLabel": $(".card option:selected", this.$el).text()
+    });
+
+    app.otherRegion.show(new FooView());
+  },
+
+  serializeData: function() {
+    return {
+      name: this.model.get('playerName'),
+      goals: this.model.get('goals'),
+      assists: this.model.get('assists'),
+      cards: this.model.get('cardLabel')
+    };
+  },
+
+  cancel: function(ev) {
+    app.otherRegion.show(new FooView());
+  }
+});
+
+var UserModel = Backbone.Model.extend({
+  initialize: function(){
+    this.listenTo(this, "remove", this.suicide);
+  },
+
+  suicide: function() {
+    this.destroy();
+  }
+});
+
+var UserModels = Backbone.Collection.extend({
+  model: UserModel,
+
+  url: function() {
+    return window.location.pathname + "/player";
+  }
+});
+
 var UserItemView = Marionette.ItemView.extend({
-  tagName : "tr",
-  template: _.template("<td><%=email%></td>")
+  template: "#stat-display-template",
+
+  events: {
+    "click #remove" : "remove2",
+    "click #edit" : "edit"
+  },
+
+  edit: function() {
+    console.log("editing");
+    var entryView = new AddEntryView({model: this.model});
+
+    app.otherRegion.show(entryView);
+  },
+
+  remove2: function() {
+    app.collection.remove(this.model);
+  },
+
+  serializeData: function() {
+    return {
+      name: this.model.get('playerName'),
+      goals: this.model.get('goals'),
+      assists: this.model.get('assists'),
+      cards: this.model.get('cardLabel')
+    };
+  }
 });
 
 var UserListView = Marionette.CollectionView.extend({
-    tagName : "table",
-    className: "table table-striped",
-    childView: UserItemView,
-    onBeforeRender: function() {
-      this.$el.append("<h2>User List</h2>");
-    }
+  childView: UserItemView
 });
 
 app.start();

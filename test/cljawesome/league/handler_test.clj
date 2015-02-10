@@ -22,6 +22,7 @@
                  (:body response) => (contains "season\":\"fall\"")))
 
          (fact "Gets teams from the active session and calculates their points"
+
                (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
                      seasonId ((query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}) :id)
                      teamOneId ((query/insert-team<! {:name "Recipe"}) :id)]
