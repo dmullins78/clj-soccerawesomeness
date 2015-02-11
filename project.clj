@@ -13,6 +13,7 @@
                  [environ "1.0.0"]
                  [selmer "0.8.0"]
                  [clj-time "0.9.0"]
+                 [org.clojure/data.json "0.2.5"]
                  [org.clojure/data.csv "0.1.2"]
                  [org.flywaydb/flyway-core "3.0"]]
   :plugins [[lein-ring "0.8.13"]

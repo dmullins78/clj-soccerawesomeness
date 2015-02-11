@@ -38,6 +38,20 @@ update games set home_team_score = :home_score, away_team_score = :away_score wh
 INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
 VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start_time, :field, :seasonId);
 
+-- name: delete-player-game-stats<!
+delete from persons_games_stats where person_id = :personId and game_id = :gameId
+
+-- name: get-players-for-game
+select
+p.id,
+p.name as playerName,
+ps.goals,
+ps.assists,
+ps.card
+from persons p
+inner join persons_games_stats ps on ps.person_id = p.id
+where ps.game_id = :gameId
+
 -- name: select-season-teams
 select
 t.id,
@@ -50,6 +64,13 @@ inner join leagues l on tl.league_id = l.id
 inner join teams_seasons ts on ts.team_id = t.id
 inner join seasons s on s.id = ts.season_id
 where ts.season_id = :seasonId
+
+-- name: players-by-teams
+SELECT p.id, p.name
+FROM persons p
+inner join seasons_persons sp on p.id = sp.person_id
+inner join teams t on t.id = sp.team_id
+WHERE t.id in (:teamIds)
 
 -- name: select-season-players
 SELECT p.*, t.name as team

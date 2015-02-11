@@ -56,8 +56,7 @@ CREATE TABLE Persons_Games_Stats (
     season_id BIGSERIAL REFERENCES Seasons,
     person_id BIGSERIAL REFERENCES Persons,
     game_id BIGSERIAL REFERENCES Games,
-    yellow_card boolean,
-    red_card boolean,
+    card CHAR(1),
     goals smallint,
     assists smallint,
     PRIMARY KEY(season_id, person_id, game_id)

@@ -20,6 +20,6 @@
 
 (def app
   (-> (routes schedule-routes league-routes person-routes teams-routes app-routes)
-      (middleware/wrap-json-body)
+      (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)
       (wrap-defaults (assoc-in site-defaults [:security :anti-forgery] false))))

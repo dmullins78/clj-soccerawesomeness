@@ -23,10 +23,13 @@
                      personId ((p/insert-person<! {:name "Test" :email "foo@foo.com"}) :id)]
                  (query/insert-season-team<! {:seasonId seasonId :teamId teamOneId :division "Upper"} )
                  (p/insert-person-season<! {:seasonId seasonId :teamId teamOneId :personId personId} )
-                 (let [uri (format "/persons/cics/2014/spring/%s/game/%s" personId (:id game))
-                       response ( app (mock/request :post uri {:red_card true :goals 2 :yellow_card true :assists 4 }))
+
+                 (println (format "/games/cics/2014/spring/%s/players/%s" (:id game) personId))
+
+                 (let [uri (format "/games/cics/2014/spring/%s/players/%s" (:id game) personId)
+                       response ( app (mock/request :post uri {:goals 2 :card "Y" :assists 4 }))
                        stats (dbtools/player-game-stats personId)]
                    (:status response) => 200
                    (:goals stats) => 2
-                   (:yellow_card stats) => true)))))
+                   (:card stats) => "Y")))))
 

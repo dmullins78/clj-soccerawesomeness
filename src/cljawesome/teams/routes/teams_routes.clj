@@ -2,9 +2,11 @@
   (:use ring.util.response)
   (:require [compojure.core :refer :all]
             [selmer.parser :refer [render-file]]
+            [selmer.filters :refer :all]
             [cljawesome.util.league-params :as lp]
             [cljawesome.league.models.query-defs :as league]
             [cljawesome.schedule.models.query-defs :as teams]
+            [clojure.data.json :as json]
             [ring.util.response :as ring-resp]
             [clojure.string :refer [lower-case]]
             [ring.util.response :refer [resource-response response]]))
@@ -21,12 +23,16 @@
   (league/update-game<! (update-game-params gameId params))
   (redirect (format "/teams/%s/%s/games/%s" (base-path league) (:teamId params) gameId)))
 
-(defn delete-player-game [league gameId playerId]
-  "DELETED")
+(defn get-players-for-game [gameId]
+  (league/get-players-for-game {:gameId (Integer. gameId)}))
+
+(defn delete-player-game [gameId personId]
+  (league/delete-player-game-stats<! {:gameId (Integer. gameId) :personId (Integer. personId)}))
 
 (defn show-game [league gameId]
-  (let [game (league/select-game {:gameId (Integer. gameId) })]
-    (render-file "game.html" {:game (first game) :base (base-path league)})))
+  (let [game (first (league/select-game {:gameId (Integer. gameId) }))
+        players (league/players-by-teams {:teamIds [(:home_team_id game) (:away_team_id game)] })]
+    (render-file "game.html" {:game game :players players :base (base-path league)})))
 
 (defn show-team-games [league teamId]
   (let [games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
@@ -38,8 +44,8 @@
 
 (defroutes teams-routes
   (GET "/games/:name/:year/:season/:id" {params :params} (show-game (lp/parse-params params) (:id params)))
-  (DELETE "/games/:name/:year/:season/:id/player/:playerId" {params :params} (delete-player-game (lp/parse-params params) (:id params) (:playerId params)))
-  ;(POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (println "PP " + (:player params)) (update-game (lp/parse-params params) (:id params) params ))
-  (PUT "/games/:name/:year/:season/:id/player/:playerId" [id playerId] (println "CB " + id + " player " + playerId ) "")
+  (GET "/games/:name/:year/:season/:gameId/players" [gameId] (get-players-for-game gameId ))
+  (DELETE "/games/:name/:year/:season/:gameId/players/:personId" [gameId personId] (delete-player-game gameId personId))
+  (POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (update-game (lp/parse-params params) (:id params) params ))
   (GET "/teams/:name/:year/:season/:id/games" {params :params} (show-team-games (lp/parse-params params) (:id params) ))
   (GET "/teams/:name/:year/:season" {params :params} (show-teams (lp/parse-params params) )))

@@ -9,7 +9,7 @@ select * from persons
 where email in (:emails)
 
 -- name: insert-person-game-stats<!
-insert into Persons_Games_Stats (season_id, person_id, game_id, yellow_card, red_card, goals, assists)
-values (:seasonId, :personId, :gameId, :yellow_card, :red_card, :goals, :assists)
+insert into Persons_Games_Stats (season_id, person_id, game_id, card, goals, assists)
+values (:seasonId, :personId, :gameId, :card, :goals, :assists)
 
 

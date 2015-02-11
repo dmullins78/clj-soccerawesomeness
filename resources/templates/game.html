@@ -56,6 +56,10 @@
   </div>
 </div>
 
+<script type="text/javascript">
+var players = {{players|json|safe}};
+</script>
+
 <script id="stat-display-template" type="text/x-backbone">
 <div class="row">
     <div class="small-12 medium-2 columns">
@@ -83,7 +87,9 @@
     <div class="small-12 medium-5 columns">
       <label>Player
         <select class="name">
-          <option value="1">Dan Mullins</option>
+        <% _.each(players, function(player){ %>
+          <option value="<%=player.id%>"><%=player.name%></option>
+        <% }); %>
         </select>
       </label>
     </div>
@@ -100,7 +106,7 @@
     <div class="small-3 medium-3 columns">
       <label>Card?
         <select class="card">
-          <option>None</option>
+          <option value="N">None</option>
           <option value="Y">Yellow</option>
           <option value="R">Red</option>
         </select>
@@ -121,6 +127,7 @@
 
 <script src="/js/sawesomeness.js"></script>
 <script>
+
 
 var testData = [
 {id: 1, playerId : 1, playerName: "Name 1", goals: 3, assists: 5, cardLabel: "Red"},
@@ -154,8 +161,9 @@ app.addInitializer(function() {
 
   app.AppController = new AppController();
   app.Router = new AppRouter();
-  app.collection = new UserModels(testData);
+  app.collection = new UserModels();
 
+  app.collection.fetch();
   Backbone.history.start();
 });
 
@@ -167,7 +175,7 @@ var FooView = Marionette.ItemView.extend({
   },
 
   showEntryScreen: function(ev) {
-    app.otherRegion.show(new AddEntryView());
+    app.otherRegion.show(new AddEntryView({model: new UserModel() }));
   }
 
 });
@@ -183,7 +191,7 @@ var AddEntryView = Marionette.ItemView.extend({
   save: function(ev) {
     app.collection.create({
       "id" : $('.name', this.$el).val(),
-      "playerName": $(".name option:selected", this.$el).text(),
+      "playername": $(".name option:selected", this.$el).text(),
       "goals": $('.goals', this.$el).val(),
       "assists": $('.assists', this.$el).val(),
       "card": $('.card', this.$el).val(),
@@ -195,10 +203,11 @@ var AddEntryView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
-      name: this.model.get('playerName'),
+      name: this.model.get('playername'),
       goals: this.model.get('goals'),
       assists: this.model.get('assists'),
-      cards: this.model.get('cardLabel')
+      cards: this.model.get('cardLabel'),
+      players: players
     };
   },
 
@@ -221,7 +230,7 @@ var UserModels = Backbone.Collection.extend({
   model: UserModel,
 
   url: function() {
-    return window.location.pathname + "/player";
+    return window.location.pathname + "/players";
   }
 });
 
@@ -246,7 +255,7 @@ var UserItemView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
-      name: this.model.get('playerName'),
+      name: this.model.get('playername'),
       goals: this.model.get('goals'),
       assists: this.model.get('assists'),
       cards: this.model.get('cardLabel')
