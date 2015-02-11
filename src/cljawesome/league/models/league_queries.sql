@@ -66,11 +66,12 @@ inner join seasons s on s.id = ts.season_id
 where ts.season_id = :seasonId
 
 -- name: players-by-teams
-SELECT p.id, p.name
+SELECT p.id, p.name, t.name as team
 FROM persons p
 inner join seasons_persons sp on p.id = sp.person_id
 inner join teams t on t.id = sp.team_id
 WHERE t.id in (:teamIds)
+order by t.name, p.name
 
 -- name: select-season-players
 SELECT p.*, t.name as team

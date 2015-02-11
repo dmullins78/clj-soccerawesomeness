@@ -72,7 +72,7 @@ var players = {{players|json|safe}};
       <span><%= assists %> Assists</span>
     </div>
     <div class="small-3 medium-2 columns">
-      <%= cards %> Card
+      <%= getCardLabel() %> Card
     </div>
     <div class="small-5 medium-4 columns">
         <a id="edit">Edit</a>
@@ -84,31 +84,31 @@ var players = {{players|json|safe}};
 <script id="stat-template" type="text/x-backbone">
 <div class="row">
   <form id="player_stats">
-    <div class="small-12 medium-5 columns">
+    <div class="small-12 medium-7 columns">
       <label>Player
         <select class="name">
         <% _.each(players, function(player){ %>
-          <option value="<%=player.id%>"><%=player.name%></option>
+          <option value="<%=player.id%>"><%=player.team + '-' + player.name%></option>
         <% }); %>
         </select>
       </label>
     </div>
-    <div class="small-2 medium-2 columns">
+    <div class="small-2 medium-1 columns">
       <label>Goals
         <input type="text" class="goals" value="<%= goals %>"/>
       </label>
     </div>
-    <div class="small-2 medium-2 columns">
+    <div class="small-2 medium-1 columns">
       <label>Assists
         <input type="text" class="assists" value="<%= assists %>"/>
       </label>
     </div>
     <div class="small-3 medium-3 columns">
-      <label>Card?
+      <label>Card
         <select class="card">
-          <option value="N">None</option>
-          <option value="Y">Yellow</option>
-          <option value="R">Red</option>
+          <option value="N" <%= isCardChecked('N') %>>None</option>
+          <option value="Y" <%= isCardChecked('Y') %>>Yellow</option>
+          <option value="R" <%= isCardChecked('R') %>>Red</option>
         </select>
       </label>
     </div>
@@ -127,11 +127,6 @@ var players = {{players|json|safe}};
 
 <script src="/js/sawesomeness.js"></script>
 <script>
-
-
-var testData = [
-{id: 1, playerId : 1, playerName: "Name 1", goals: 3, assists: 5, cardLabel: "Red"},
-{id: 2, playerId : 2, playerName: "Name 2", goals: 2, assists: 4, cardLabel: "Yellow"} ];
 
 var app = new Marionette.Application();
 
@@ -194,11 +189,18 @@ var AddEntryView = Marionette.ItemView.extend({
       "playername": $(".name option:selected", this.$el).text(),
       "goals": $('.goals', this.$el).val(),
       "assists": $('.assists', this.$el).val(),
-      "card": $('.card', this.$el).val(),
-      "cardLabel": $(".card option:selected", this.$el).text()
+      "card": $('.card', this.$el).val()
     });
 
     app.otherRegion.show(new FooView());
+  },
+
+  templateHelpers: function () {
+    return {
+      isCardChecked: function(value){
+        return this.card === value ? 'selected' : "";
+      }
+    };
   },
 
   serializeData: function() {
@@ -206,7 +208,7 @@ var AddEntryView = Marionette.ItemView.extend({
       name: this.model.get('playername'),
       goals: this.model.get('goals'),
       assists: this.model.get('assists'),
-      cards: this.model.get('cardLabel'),
+      card: this.model.get('card'),
       players: players
     };
   },
@@ -253,12 +255,27 @@ var UserItemView = Marionette.ItemView.extend({
     app.collection.remove(this.model);
   },
 
+  templateHelpers: function () {
+    return {
+      getCardLabel: function() {
+        switch(this.card) {
+            case 'R':
+                return "Red"
+            case 'Y':
+                return "Yellow"
+            default:
+              return "No"
+        }
+      }
+    }
+  },
+
   serializeData: function() {
     return {
       name: this.model.get('playername'),
       goals: this.model.get('goals'),
       assists: this.model.get('assists'),
-      cards: this.model.get('cardLabel')
+      card: this.model.get('card')
     };
   }
 });
