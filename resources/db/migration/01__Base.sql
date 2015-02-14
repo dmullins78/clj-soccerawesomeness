@@ -52,6 +52,21 @@ CREATE TABLE Seasons_Persons (
     PRIMARY KEY(season_id, person_id, team_id)
 );
 
+CREATE TABLE League_Admins (
+    league_id BIGSERIAL REFERENCES Leagues,
+    person_id BIGSERIAL REFERENCES Persons,
+    role varchar(20),
+    PRIMARY KEY(league_id, person_id)
+);
+
+CREATE TABLE Team_Admins (
+    league_id BIGSERIAL REFERENCES Leagues,
+    person_id BIGSERIAL REFERENCES Persons,
+    team_id BIGSERIAL REFERENCES Teams,
+    role varchar(20),
+    PRIMARY KEY(league_id, person_id)
+);
+
 CREATE TABLE Persons_Games_Stats (
     season_id BIGSERIAL REFERENCES Seasons,
     person_id BIGSERIAL REFERENCES Persons,

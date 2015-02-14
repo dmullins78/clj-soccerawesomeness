@@ -1,19 +1,21 @@
 To Do First:
 Games API
-Set-Up League from Spreadsheet
 Assign captains to teams
-Captain login
+print rosters
+Add player number to player info
+referee comments
+
+Set-Up League from Spreadsheet
+Basic authentication security
+track cards per player
 Captain edit scores
 Import players from spreadsheet
-track cards per player
-print rosters
-Basic authentication security
+Captain login
+Track player statistics (goals, assists, saves)
 
 Later:
 Admin can create a new season
 Associate players with multiple leagues
-Track player statistics (goals, assists, saves)
-Add player number to player info
 Show top performing players
 Social media?
 

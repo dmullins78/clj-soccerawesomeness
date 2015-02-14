@@ -12,4 +12,11 @@ where email in (:emails)
 insert into Persons_Games_Stats (season_id, person_id, game_id, card, goals, assists)
 values (:seasonId, :personId, :gameId, :card, :goals, :assists)
 
-
+-- name: admin-roles
+select p.id, p.name, p.email, role from  League_Admins
+inner join persons p on p.id = league_admins.person_id
+where p.email = :email
+union
+select p.id, p.name, p.email, role from  Team_Admins
+inner join persons p on p.id = team_admins.person_id
+where p.email = :email

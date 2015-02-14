@@ -7,8 +7,8 @@
             [ring.util.response :refer [response redirect content-type]]
             [ring.middleware.session :refer [wrap-session]]
             [ring.middleware.params :refer [wrap-params]]
-            [ring.adapter.jetty :as jetty]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
+            [cljawesome.person.models.query-defs :as pdb]
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
 
@@ -16,14 +16,11 @@
   (render-file "login.html" {}))
 
 (defn home [request]
-  (println "Session " + (:session request))
-  (when (not (authenticated? request))
-    (throw-unauthorized {:message "Not authorized"}))
   (let [session (:session request)]
     (render-file "home.html" {:person (:identity session)})))
 
 (defn auth [email]
-  {:name email + " Admin" :role email})
+  (first (pdb/admin-roles {:email email})))
 
 (defn login-authenticate
   [email password session]
