@@ -29,10 +29,18 @@
 (defn delete-player-game [gameId personId]
   (league/delete-player-game-stats<! {:gameId (Integer. gameId) :personId (Integer. personId)}))
 
-(defn show-game [league gameId]
+(defn game-permissions [user]
+  (cond
+    (nil? user) {:details "disabled" :score "disabled"}
+    (= "teamadmin" (:role user)) {:details "disabled" :update true}
+    (= "leagueadmin" (:role user)) {:update true}))
+
+(defn show-game [league gameId user]
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))
-        players (league/players-by-teams {:teamIds [(:home_team_id game) (:away_team_id game)] })]
-    (render-file "game.html" {:game game :players players :base (base-path league)})))
+        players (league/players-by-teams {:teamIds [(:home_team_id game) (:away_team_id game)] })
+        permissions (game-permissions user)]
+    (println permissions)
+    (render-file "game.html" {:game game :players players :base (base-path league) :permissions permissions})))
 
 (defn show-team-games [league teamId]
   (let [games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
@@ -43,7 +51,7 @@
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 
 (defroutes teams-routes
-  (GET "/games/:name/:year/:season/:id" {params :params} (show-game (lp/parse-params params) (:id params)))
+  (GET "/games/:name/:year/:season/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:identity session)))
   (GET "/games/:name/:year/:season/:gameId/players" [gameId] (get-players-for-game gameId ))
   (DELETE "/games/:name/:year/:season/:gameId/players/:personId" [gameId personId] (delete-player-game gameId personId))
   (POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params} (update-game (lp/parse-params params) (:id params) params ))

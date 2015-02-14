@@ -13,6 +13,8 @@
                  [environ "1.0.0"]
                  [selmer "0.8.0"]
                  [clj-time "0.9.0"]
+                 [buddy/buddy-core "0.3.0"]
+                 [buddy/buddy-auth "0.3.0"]
                  [org.clojure/data.json "0.2.5"]
                  [org.clojure/data.csv "0.1.2"]
                  [org.flywaydb/flyway-core "3.0"]]
@@ -33,7 +35,7 @@
              :dev-env-vars  {}
 
              :test [:test-local :test-env-vars]
-             :dev  [:dev-env-vars]
+             :dev  {:test-paths ^:replace []}
              :production {:ring {:open-browser? false
                                  :stacktraces?  false
                                  :auto-reload?  false}}})

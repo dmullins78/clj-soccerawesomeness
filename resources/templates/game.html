@@ -2,6 +2,7 @@
 
 {% block title %}
 {{game.home_team}} vs {{game.away_team}}
+
 {% endblock %}
 
 {% block content %}
@@ -13,50 +14,53 @@
     <div class="row">
       <div class="medium-6 columns">
         <label>Starts
-          <input type="text" value="{{game.starts_at}}" disabled="true"/>
+          <input type="text" value="{{game.starts_at}}" {{permissions.details}}/>
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Field
-          <input type="text" value="{{game.field}}" disabled="true"/>
+          <input type="text" value="{{game.field}}" {{permissions.details}}/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="small-10 columns">
         <label>Home Team
-          <input type="text" value="{{game.home_team}}" disabled="true"/>
+          <input type="text" value="{{game.home_team}}" {{permissions.details}}/>
         </label>
       </div>
       <div class="small-2 columns">
         <label>Score
-          <input type="text" name="home_score" value="{{game.ht_score}}"/>
+          <input type="text" name="home_score" value="{{game.ht_score}}" {{permissions.score}}/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="small-10 columns">
         <label>Away Team
-          <input type="text" value="{{game.away_team}}" disabled="true"/>
+          <input type="text" value="{{game.away_team}}" {{permissions.details}}/>
         </label>
       </div>
       <div class="small-2 columns">
         <label>Score
-          <input type="text" name="away_score" value="{{game.at_score}}"/>
+          <input type="text" name="away_score" value="{{game.at_score}}" {{permissions.score}}/>
         </label>
       </div>
     </div>
-    <div class="row">
-      <div class="small-3 small-centered columns">
-        <input type="submit" class="button" name="Save"/>
-      </div>
-    </form>
-    <div id="stats"></div>
+    {% if permissions.update %}
+      <div class="row">
+        <div class="small-3 small-centered columns">
+          <input type="submit" class="button" name="Save"/>
+        </div>
+      </form>
+    {% endif %}
     <div id="app"></div>
+    <div id="stats"></div>
   </div>
 </div>
 
 <script type="text/javascript">
+var editable = {{permissions.update|default:false}};
 var players = {{players|json|safe}};
 </script>
 
@@ -74,10 +78,12 @@ var players = {{players|json|safe}};
     <div class="small-3 medium-2 columns">
       <%= getCardLabel() %> Card
     </div>
-    <div class="small-5 medium-4 columns">
-        <a id="edit">Edit</a>
-        <a id="remove" class="">Remove</a>
-    </div>
+    <% if (editable) { %>
+      <div class="small-5 medium-4 columns">
+          <a id="edit">Edit</a>
+          <a id="remove" class="">Remove</a>
+      </div>
+    <% } %>
   </div>
 </script>
 
@@ -136,8 +142,10 @@ var AppRouter = Backbone.Router.extend({
   },
 
   showUserList : function() {
-    app.otherRegion.show(new FooView());
     app.AppController.showUserList();
+    if(editable) {
+      app.otherRegion.show(new FooView());
+    }
   }
 });
 
@@ -159,6 +167,7 @@ app.addInitializer(function() {
   app.collection = new UserModels();
 
   app.collection.fetch();
+
   Backbone.history.start();
 });
 
@@ -245,7 +254,6 @@ var UserItemView = Marionette.ItemView.extend({
   },
 
   edit: function() {
-    console.log("editing");
     var entryView = new AddEntryView({model: this.model});
 
     app.otherRegion.show(entryView);

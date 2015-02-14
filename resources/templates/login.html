@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<hr/>
+
+<div class="medium-centered medium-8 columns text-left">
+  <form method="POST" action="/login">
+    <div class="row">
+      <div class="medium-6 columns">
+        <label>E-Mail
+          <input type="text" name="email"/>
+        </label>
+      </div>
+      <div class="medium-6 columns">
+        <label>E-Mail
+          <input type="text" name="password"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 small-centered columns">
+        <input type="submit" class="button" value="Login"/>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
