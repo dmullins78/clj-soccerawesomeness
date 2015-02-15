@@ -17,7 +17,6 @@
   (render-file "login.html" {}))
 
 (defn home [league year season session]
-  (println "SESS: " + session)
   (let [person (:identity session)]
     (render-file "home.html" {:base (lp/basepath league year season)})))
 

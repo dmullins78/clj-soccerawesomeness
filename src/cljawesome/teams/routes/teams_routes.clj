@@ -58,7 +58,7 @@
 (defroutes teams-routes
   (GET "/:name/:year/:season/games/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:teamId params) (:identity session)))
   (GET "/:name/:year/:season/games/:gameId/players" [gameId] (get-players-for-game gameId ))
-  (DELETE "/games/:name/:year/:season/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
+  (DELETE "/:name/:year/:season/games/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
   (POST "/:league/:year/:season/games/:gameId" [league year season gameId teamId :as request] (update-game league year season teamId gameId request))
   (GET "/:league/:year/:season/teams/:teamId/games" [league year season teamId] (show-team-games league year season teamId))
   (GET "/:name/:year/:season/teams" {params :params} (show-teams (lp/parse-params params) )))
