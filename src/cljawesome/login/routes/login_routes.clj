@@ -9,26 +9,36 @@
             [ring.middleware.params :refer [wrap-params]]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [cljawesome.person.models.query-defs :as pdb]
+            [cljawesome.util.league-params :as lp]
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
 
 (defn login [request]
   (render-file "login.html" {}))
 
-(defn home [request]
-  (let [session (:session request)]
-    (render-file "home.html" {:person (:identity session)})))
+(defn home [league year season session]
+  (println "SESS: " + session)
+  (let [person (:identity session)]
+    (render-file "home.html" {:base (lp/basepath league year season)})))
 
 (defn auth [email]
-  (first (pdb/admin-roles {:email email})))
+  (when-let [credential (first (pdb/admin-roles {:email email}))]
+    (let [teams (pdb/admin-roles-teams {:adminId (:adminid credential)})
+          active-season (pdb/active-season {:personId (:id credential)})]
+      (assoc credential :teams teams :active-season (first active-season)))))
+
+(defn base-path [identity path]
+  (let [season (:active-season identity)]
+    (clojure.string/join "/" [(:league season) (:year season) (:season season) path])))
 
 (defn login-authenticate
   [email password session]
-  (let [session (assoc session :identity (auth email))]
-    (-> (redirect "/home")
-        (assoc :session session))))
+  (if-let [identity (auth email)]
+    (-> (redirect (base-path identity "home"))
+        (assoc :session (assoc session :identity identity)))
+    (render-file "login.html" {:error "Incorrect authentication credentials" })))
 
 (defroutes login-routes
   (GET "/login" [] login)
-  (GET "/home" [] home)
+  (GET "/:league/:year/:season/home" [league year season :as {session :session}] (home league year season session))
   (POST "/login" [email password :as {session :session}] (login-authenticate email password session)))

@@ -1,35 +1,30 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Login
+Roster Import
 {% endblock %}
 
 {% block content %}
-<h1>Login</h1>
+<h1>Player Import</h1>
 <hr/>
 
 <div class="medium-centered medium-8 columns text-left">
-  {% if error%}
-    <div data-alert class="alert-box alert">
-      {{error}}
+  {% if rosters %}
+    <div data-alert class="alert-box success">
+      Success - roster imported
     </div>
   {% endif %}
-  <form method="POST" action="/login">
+  <form method="POST" action="/{{base}}roster/load" enctype="multipart/form-data">
     <div class="row">
       <div class="medium-6 columns">
-        <label>E-Mail
-          <input type="text" name="email"/>
-        </label>
-      </div>
-      <div class="medium-6 columns">
-        <label>E-Mail
-          <input type="text" name="password"/>
+        <label>Player File
+          <input type="file" name="file">
         </label>
       </div>
     </div>
     <div class="row">
       <div class="small-3 small-centered columns">
-        <input type="submit" class="button" value="Login"/>
+        <input type="submit" class="button" value="Import"/>
       </div>
     </form>
   </div>

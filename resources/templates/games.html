@@ -8,9 +8,9 @@ Games
 <h1>Games</h1>
 <hr/>
 
-<div class="medium-centered medium-6 columns">
+<div class="medium-centered small-12 medium-4 columns">
   {% for game in games %}
-  <a href="/games/{{base}}/{{game.id}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}} vs {{game.away_team}}</a>
+  <a href="/{{base}}/games/{{game.id}}?teamId={{teamId}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}}<br> vs <br> {{game.away_team}}</a>
   {% endfor %}
 </div>
 {% endblock %}

@@ -20,11 +20,11 @@
    :away_score (Integer. (:away_score params))
    :id (Integer. gameId)})
 
-(defn update-game [league gameId params request]
+(defn update-game [league year season teamId gameId request]
   (when (not (authenticated? request))
     (throw-unauthorized {:message "Not authorized"}))
-  (league/update-game<! (update-game-params gameId params))
-  (redirect (format "/teams/%s/%s/games/%s" (base-path league) (:teamId params) gameId)))
+  (league/update-game<! (update-game-params gameId (:params request)))
+  (redirect (lp/basepath-lead-slash league year season "teams/" teamId "/games")))
 
 (defn get-players-for-game [gameId]
   (league/get-players-for-game {:gameId (Integer. gameId)}))
@@ -40,15 +40,15 @@
     (= "teamadmin" (:role user)) {:details "disabled" :update true}
     (= "leagueadmin" (:role user)) {:update true}))
 
-(defn show-game [league gameId user]
+(defn show-game [league gameId teamId user]
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))
         players (league/players-by-teams {:teamIds [(:home_team_id game) (:away_team_id game)] })
         permissions (game-permissions user)]
-    (println permissions)
-    (render-file "game.html" {:game game :players players :base (base-path league) :permissions permissions})))
+    (render-file "game.html" {:game game :players players :teamId teamId :base (base-path league) :permissions permissions})))
 
-(defn show-team-games [league teamId]
-  (let [games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
+(defn show-team-games [league year season teamId]
+  (let [league (league/get-season league year season)
+        games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
     (render-file "games.html" {:games games :teamId teamId :base (base-path league)})))
 
 (defn show-teams [league]
@@ -56,9 +56,9 @@
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 
 (defroutes teams-routes
-  (GET "/games/:name/:year/:season/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:identity session)))
-  (GET "/games/:name/:year/:season/:gameId/players" [gameId] (get-players-for-game gameId ))
-  (DELETE "/games/:name/:year/:season/:gameId/players/:personId" [gameId personId :as {request :request}] (delete-player-game gameId personId request))
-  (POST "/teams/:name/:year/:season/:teamId/games/:id" {params :params request :request} (update-game (lp/parse-params params) (:id params) params request))
-  (GET "/teams/:name/:year/:season/:id/games" {params :params} (show-team-games (lp/parse-params params) (:id params) ))
-  (GET "/teams/:name/:year/:season" {params :params} (show-teams (lp/parse-params params) )))
+  (GET "/:name/:year/:season/games/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:teamId params) (:identity session)))
+  (GET "/:name/:year/:season/games/:gameId/players" [gameId] (get-players-for-game gameId ))
+  (DELETE "/games/:name/:year/:season/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
+  (POST "/:league/:year/:season/games/:gameId" [league year season gameId teamId :as request] (update-game league year season teamId gameId request))
+  (GET "/:league/:year/:season/teams/:teamId/games" [league year season teamId] (show-team-games league year season teamId))
+  (GET "/:name/:year/:season/teams" {params :params} (show-teams (lp/parse-params params) )))

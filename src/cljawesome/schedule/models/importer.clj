@@ -23,7 +23,12 @@
 (defn parse-schedule [file]
   (-> file read-file to-games))
 
+(defn reset-season [seasonId]
+  (query/delete-season-teams<! {:seasonId seasonId})
+  (query/delete-season-games<! {:seasonId seasonId}))
+
 (defn import_schedule [league_id seasonId file]
+  (reset-season seasonId)
   (let [schedule (parse-schedule file)
         teams (teams/load-and-return schedule league_id seasonId)]
     (doseq [game schedule]

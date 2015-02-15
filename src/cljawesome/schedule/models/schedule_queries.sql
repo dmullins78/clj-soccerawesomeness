@@ -17,3 +17,9 @@ select
   inner join seasons s on ts.season_id = s.id
   where s.id = :seasonId
   order by t.name
+
+-- name: delete-season-teams<!
+delete from games where season_id = :seasonId
+
+-- name: delete-season-games<!
+delete from teams_seasons where season_id = :seasonId

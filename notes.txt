@@ -4,6 +4,7 @@ Assign captains to teams
 print rosters
 Add player number to player info
 referee comments
+add game
 
 Set-Up League from Spreadsheet
 Basic authentication security

@@ -7,7 +7,8 @@ CREATE TABLE Seasons (
     id        BIGSERIAL PRIMARY KEY,
     year      smallint NOT NULL,
     season    varchar(40) NOT NULL,
-    league_id BIGSERIAL REFERENCES Leagues
+    league_id BIGSERIAL REFERENCES Leagues,
+    created timestamp default now()
 );
 
 CREATE TABLE Teams (
@@ -52,19 +53,17 @@ CREATE TABLE Seasons_Persons (
     PRIMARY KEY(season_id, person_id, team_id)
 );
 
-CREATE TABLE League_Admins (
+CREATE TABLE Admins (
+    id        BIGSERIAL PRIMARY KEY,
     league_id BIGSERIAL REFERENCES Leagues,
     person_id BIGSERIAL REFERENCES Persons,
-    role varchar(20),
-    PRIMARY KEY(league_id, person_id)
+    role varchar(20)
 );
 
-CREATE TABLE Team_Admins (
-    league_id BIGSERIAL REFERENCES Leagues,
-    person_id BIGSERIAL REFERENCES Persons,
+CREATE TABLE Admin_Teams (
+    admin_id BIGSERIAL REFERENCES Admins,
     team_id BIGSERIAL REFERENCES Teams,
-    role varchar(20),
-    PRIMARY KEY(league_id, person_id)
+    PRIMARY KEY(admin_id, team_id)
 );
 
 CREATE TABLE Persons_Games_Stats (

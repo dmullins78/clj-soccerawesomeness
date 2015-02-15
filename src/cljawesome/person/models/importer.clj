@@ -34,10 +34,14 @@
 (defn parse-people [file]
   (-> file read-file to-person))
 
+(defn reset-season-rosters [seasonId]
+  (query/reset-season-roster<! {:seasonId seasonId}))
+
 (defn import-people [league-id seasonId file]
   (let [incoming-people (parse-people file)
         existing-people (find-existing incoming-people)
         teams (teams/teams-by-season {:seasonId seasonId} )]
+    (reset-season-rosters seasonId)
     (doseq [person incoming-people]
       (let [team (util/find-first (:team person) teams :name)]
         (if-let [existing-person (existing-person? person existing-people)]
