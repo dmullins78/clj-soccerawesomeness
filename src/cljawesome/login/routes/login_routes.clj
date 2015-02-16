@@ -18,7 +18,8 @@
 
 (defn home [league year season session]
   (let [person (:identity session)]
-    (render-file "home.html" {:base (lp/basepath league year season)})))
+    (println person)
+    (render-file "home.html" {:base (lp/basepath league year season) :admin (= "leagueadmin" (:role person))})))
 
 (defn auth [email]
   (when-let [credential (first (pdb/admin-roles {:email email}))]
