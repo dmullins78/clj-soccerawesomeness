@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Games
+{{team.name}}
 {% endblock %}
 
 {% block content %}
-<h1>Games</h1>
+<h1>{{team.name}}</h1>
 <hr/>
 
 <div class="medium-centered small-12 medium-4 columns">
+  <a href="/{{base}}/teams/{{team.id}}/players" class="button expand info">View Players</a>
   {% for game in games %}
   <a href="/{{base}}/games/{{game.id}}?teamId={{teamId}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}}<br> vs <br> {{game.away_team}}</a>
   {% endfor %}

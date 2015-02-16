@@ -10,6 +10,7 @@
             [cljawesome.teams.routes.teams-routes :refer [teams-routes]]
             [compojure.response :refer [render]]
             [ring.util.response :refer [resource-response response]]
+            [selmer.filters :refer [add-filter!]]
             [ring.middleware.json :as middleware]
             [clojure.java.io :as io]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
@@ -24,6 +25,9 @@
 (defn unauthorized-handler [request metadata]
   (-> (render (slurp (io/resource "invalid.html")) request)
       (assoc :status 403)))
+
+(add-filter! :cardlabel
+             (fn [x] (if (= x "R") "Red" "Yellow")))
 
 (defn init []
   (selmer.parser/set-resource-path! (.getAbsolutePath (io/as-file "./resources/templates"))))

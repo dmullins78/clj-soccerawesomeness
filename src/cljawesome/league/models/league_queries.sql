@@ -80,6 +80,26 @@ inner join seasons_persons sp on p.id = sp.person_id
 inner join teams t on t.id = sp.team_id
 WHERE sp.season_id = :seasonId
 
+-- name: get-players
+SELECT p.*, sp.season_id as seasonid
+FROM persons p
+inner join seasons_persons sp on sp.person_id = p.id
+WHERE sp.team_id = :teamId
+AND sp.season_id = :seasonId
+order by p.name
+
+-- name: get-player-stats
+select g.start_time, card from persons_games_stats ps
+inner join games g on g.id = ps.game_id
+where ps.person_id = :personId
+and ps.season_id = :seasonId
+order by g.start_time desc limit 1
+
+-- name: get-team
+SELECT t.*
+FROM teams t
+WHERE t.id = :teamId
+
 -- name: select-season-games
 SELECT g.*
 FROM games g
