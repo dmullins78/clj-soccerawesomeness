@@ -48,6 +48,13 @@
         </label>
       </div>
     </div>
+    <div class="row">
+      <div class="small-12 columns">
+        <label>Comments
+          <textarea name="comments" rows="6" cols="50" {{permissions.score}}>{{game.comments}}</textarea>
+        </label>
+      </div>
+    </div>
     {% if permissions.update %}
       <div class="row">
         <div class="small-3 small-centered columns">

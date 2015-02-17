@@ -18,13 +18,14 @@
 (defn update-game-params [gameId params]
   {:home_score (Integer. (:home_score params))
    :away_score (Integer. (:away_score params))
-   :id (Integer. gameId)})
+   :id (Integer. gameId)
+   :comments (:comments params)})
 
 (defn update-game [league year season teamId gameId request]
   (when (not (authenticated? request))
     (throw-unauthorized {:message "Not authorized"}))
   (league/update-game<! (update-game-params gameId (:params request)))
-  (redirect (lp/basepath-lead-slash league year season "teams/" teamId "/games")))
+  (redirect (lp/basepath-lead-slash league year season "games/" gameId (str "?teamId=" teamId))))
 
 (defn get-players-for-game [gameId]
   (league/get-players-for-game {:gameId (Integer. gameId)}))

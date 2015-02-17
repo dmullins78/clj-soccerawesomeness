@@ -16,10 +16,10 @@ Schedule Import
   {% endif %}
   {% if games %}
     <div data-alert class="alert-box success">
-      Success - {{games|count}} games create. <a href="/teams/{{base}}">Go to League</a>
+      Success - {{games|count}} games create. <a href="/{{base}}/teams">Go to League</a>
     </div>
   {% endif %}
-  <form method="POST" action="/{{base}}/schedule/load" enctype="multipart/form-data">
+  <form method="POST" action="/{{base}}schedule/load" enctype="multipart/form-data">
     <div class="row">
       <div class="medium-6 columns">
         <label>Schedule
