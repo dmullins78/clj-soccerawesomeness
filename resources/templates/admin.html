@@ -9,29 +9,33 @@ Admin
 <hr/>
 
 <div class="medium-centered medium-6 columns">
-  <form method="POST" action="/{{base}}admin">
+  <form method="POST" action="/{{base}}admins{% if admin.id %}/{{admin.id}}{% endif %}">
     <div class="row">
       <div class="medium-6 columns">
         <label>E-Mail
-          <input type="text" value="{{admin.email}}"/>
+          <input type="text" name="email" value="{{admin.email}}"/>
         </label>
       </div>
-      <div class="row">
-        <div class="medium-6 columns">
-          <h3>Teams</h3>
-            {% for team in teams %}
-            <input type="checkbox" name="teams[]" value="{{team.id}}">{{team.name}}</input><br/>
-            {% endfor %}
-          </label>
-        </div>
+      <div class="medium-6 columns">
+        <label>Password
+          <input type="password" name="password" value="{{admin.password}}"/>
+        </label>
       </div>
       <div class="row">
         <div class="small-3 small-centered columns">
           <input type="submit" class="button" name="Save"/>
         </div>
-      </form>
-    </form>
+      </div>
+      <div class="row">
+        <div class="medium-6 columns">
+          <h4>Existing Admins</h4>
+          {% for admin in admins %}
+            <a href="/{{base}}admins/{{admin.id}}">{{admin.email}}</a><br/>
+          {% endfor %}
+        </label>
+      </div>
+    </div>
+  </form>
 </div>
-
 {% endblock %}
 

@@ -15,22 +15,35 @@
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
 
-(defn show-admins [league year season request]
+(defn show-admin [league year season adminId]
+  (let [lg (league/get-season league year season)
+        admin (adb/get-league-admin {:adminId (Integer. adminId) :leagueId (:id lg)})
+        admins (adb/get-league-admins {:leagueId (:id lg)})]
+    (render-file "admin.html" {:admin (first admin) :admins admins :base (lp/basepath league year season)})))
+
+(defn show-admins [league year season]
+  (let [lg (league/get-season league year season)
+        admins (adb/get-league-admins {:leagueId (:id lg)})]
+    (render-file "admin.html" {:admins admins :base (lp/basepath league year season)})))
+
+(defn update-admin [league year season id email password request]
+  ;(when (not (authenticated? request))
+  ;(throw-unauthorized {:message "Not authorized"}))
+  (adb/update-league-admin<! {:adminId (Integer. id) :email email :password password})
+  (let [lg (league/get-season league year season)
+        admins (adb/get-league-admins {:leagueId (:id lg)})]
+    (render-file "admin.html" {:admins admins})))
+
+(defn add-admin [league year season email password request]
   ;(when (not (authenticated? request))
   ;(throw-unauthorized {:message "Not authorized"}))
   (let [lg (league/get-season league year season)
-        teams (league/select-teams-by-season {:seasonId (:seasonid lg)})]
-    (render-file "admin.html" {:teams teams :base (lp/basepath league year season)})))
+        admin (adb/insert-admin<! {:email email :password password :leagueId (:id lg) })
+        admins (adb/get-league-admins {:leagueId (:id lg)})]
+    (render-file "admin.html" {:admins admins})))
 
-(defn add-admin [league year season email teams request]
-  ;(when (not (authenticated? request))
-  ;(throw-unauthorized {:message "Not authorized"}))
-  (let [lg (league/get-season league year season)
-        admin (adb/insert-admin<! {:email email :season (:seasonid lg) })]
-    (doseq [team teams]
-        (adb/insert-admin-teams<! {:adminId (:id admin) :teamId team :role "teamadmin"}))
-    (render-file "admin.html" {}))
-
-  (defroutes admin-routes
-    (GET "/:league/:year/:season/admin" [league year season :as request] (show-admins league year season request))
-    (POST "/:league/:year/:season/admin" [league year season email teams :as request] (add-admin league year season email teams request)))
+(defroutes admin-routes
+  (GET "/:league/:year/:season/admins" [league year season] (show-admins league year season))
+  (GET "/:league/:year/:season/admins/:adminId" [league year season adminId :as request] (show-admin league year season adminId))
+  (POST "/:league/:year/:season/admins" [league year season email password :as request] (add-admin league year season email password request))
+  (POST "/:league/:year/:season/admins/:adminId" [league year season adminId email password :as request] (update-admin league year season adminId email password request)))

@@ -13,24 +13,11 @@ insert into Persons_Games_Stats (season_id, person_id, game_id, card, goals, ass
 values (:seasonId, :personId, :gameId, :card, :goals, :assists)
 
 -- name: admin-roles
-select p.id, p.name, p.email, a.role from Admins a
-inner join persons p on p.id = a.person_id
-where p.email = :email and a.password = :password
-
--- name: admin-roles
-select p.id, p.name, p.email, a.role, a.id as adminid
-FROM Admins a
-inner join persons p on p.id = a.person_id
-where p.email = :email
---and a.password = :password
+select a.id, a.league_id as leagueid, a.email, a.role from Admins a
+where a.email = :email and a.password = :password
 
 -- name: reset-season-roster<!
 delete from seasons_persons where season_id = :seasonId
-
--- name: admin-roles-teams
-select t.team_id as id
-FROM Admin_teams t
-where t.admin_id = :adminId
 
 -- name: active-season
 select
@@ -39,13 +26,10 @@ select
    s.year
 FROM
    seasons s
-INNER join
-   seasons_persons sp
-      ON s.id = sp.season_id
 INNER Join
    leagues l
       On l.id = s.league_id
 WHERE
-   sp.person_id = :personId
+   l.id = :leagueId
 ORDER BY
    s.created DESC limit 1

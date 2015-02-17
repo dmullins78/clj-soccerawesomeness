@@ -21,11 +21,10 @@
     (println person)
     (render-file "home.html" {:base (lp/basepath league year season) :admin (= "leagueadmin" (:role person))})))
 
-(defn auth [email]
-  (when-let [credential (first (pdb/admin-roles {:email email}))]
-    (let [teams (pdb/admin-roles-teams {:adminId (:adminid credential)})
-          active-season (pdb/active-season {:personId (:id credential)})]
-      (assoc credential :teams teams :active-season (first active-season)))))
+(defn auth [email password]
+  (when-let [credential (first (pdb/admin-roles {:email email :password password}))]
+    (let [active-season (pdb/active-season {:leagueId (:leagueid credential)})]
+      (assoc credential :active-season (first active-season)))))
 
 (defn base-path [identity path]
   (let [season (:active-season identity)]
@@ -33,7 +32,7 @@
 
 (defn login-authenticate
   [email password session]
-  (if-let [identity (auth email)]
+  (if-let [identity (auth email password)]
     (-> (redirect (base-path identity "home"))
         (assoc :session (assoc session :identity identity)))
     (render-file "login.html" {:error "Incorrect authentication credentials" })))
