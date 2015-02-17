@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
         files: [{
           expand: true,
-          cwd: '../resources/sass',
+          cwd: 'sass',
           src: ['*.scss'],
           dest: '../resources/public/css',
           ext: '.css'
@@ -26,8 +26,18 @@ module.exports = function(grunt) {
         src: ['bower_components/jquery/dist/jquery.js',
           'bower_components/underscore/underscore.js',
           'bower_components/backbone/backbone.js',
-          'bower_components/marionette/lib/backbone.marionette.js'],
+          'bower_components/marionette/lib/backbone.marionette.js',
+          'js/Marionette.js',
+          'dist/templates/all.js'],
           dest: '../resources/public/js/<%= pkg.name %>.js'
+      }
+    },
+
+    jst: {
+      compile: {
+        files: {
+          "dist/templates/all.js": ["templates/**/*.html"]
+        }
       }
     },
 
@@ -40,7 +50,7 @@ module.exports = function(grunt) {
       },
 
       sass: {
-        files: '../resources/sass/**/*.scss',
+        files: 'sass/**/*.scss',
         tasks: ['sass']
       }
     }
@@ -49,6 +59,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jst');
 
   grunt.registerTask('default', ['sass','watch']);
 }

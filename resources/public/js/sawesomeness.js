@@ -15748,3 +15748,70 @@ return jQuery;
 
   return Marionette;
 }));
+
+Marionette.Renderer = {
+  render: function(template, data){
+    if(typeof template === 'function') {
+        return template(data);
+    }
+    else {
+        if(!JST[template]) throw "Template '" + template + "' not found!";
+        return JST[template](data);
+    }
+  }
+};
+
+
+this["JST"] = this["JST"] || {};
+
+this["JST"]["templates/game/person-display.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row">\n  <div class="small-12 medium-2 columns">\n    <span>' +
+((__t = ( name )) == null ? '' : __t) +
+'</span>\n  </div>\n  <div class="small-2 medium-2 columns">\n    <span>' +
+((__t = ( goals )) == null ? '' : __t) +
+' Goals</span>\n  </div>\n  <div class="small-2 medium-2 columns">\n    <span>' +
+((__t = ( assists )) == null ? '' : __t) +
+' Assists</span>\n  </div>\n  <div class="small-3 medium-2 columns">\n    ' +
+((__t = ( getCardLabel() )) == null ? '' : __t) +
+' Card\n  </div>\n  ';
+ if (editable) { ;
+__p += '\n  <div class="small-5 medium-4 columns">\n    <a id="edit">Edit</a>\n    <a id="remove" class="">Remove</a>\n  </div>\n  ';
+ } ;
+__p += '\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["templates/game/person-input.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row">\n  <form id="player_stats">\n    <div class="small-12 medium-7 columns">\n      <label>Player\n        <select class="name">\n          ';
+ _.each(players, function(player){ ;
+__p += '\n          <option value="' +
+((__t = (player.id)) == null ? '' : __t) +
+'">' +
+((__t = (player.team + '-' + player.name)) == null ? '' : __t) +
+'</option>\n          ';
+ }); ;
+__p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Goals\n        <input type="text" class="goals" value="' +
+((__t = ( goals )) == null ? '' : __t) +
+'"/>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Assists\n        <input type="text" class="assists" value="' +
+((__t = ( assists )) == null ? '' : __t) +
+'"/>\n      </label>\n    </div>\n    <div class="small-3 medium-3 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
+((__t = ( isCardChecked('N') )) == null ? '' : __t) +
+'>None</option>\n          <option value="Y" ' +
+((__t = ( isCardChecked('Y') )) == null ? '' : __t) +
+'>Yellow</option>\n          <option value="R" ' +
+((__t = ( isCardChecked('R') )) == null ? '' : __t) +
+'>Red</option>\n        </select>\n      </label>\n    </div>\n    <div class="row">\n      <div class="small-12 medium-4 columns small-centered">\n        <ul class="button-group">\n          <li><a id="cancel" class="tiny button">Cancel</a></li>\n          <li><a id="saved" class="tiny button">Save</a></li>\n        </ul>\n      </div>\n    </div>\n  </form>\n</div>\n';
+
+}
+return __p
+};
