@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+League
+{% endblock %}
+
+{% block content %}
+<h1>League</h1>
+<hr/>
+
+<div class="medium-centered medium-6 columns">
+  {% for division,teamList in teams %}
+    <h2>{{division}}</h2>
+    {% for teams2 in teamList %}
+      {{teams2.name}}
+      {{teams2.points}}
+      <br/>
+    {% endfor %}
+  {% endfor %}
+</div>
+
+{% endblock %}
+

@@ -8,6 +8,7 @@
             [cljawesome.schedule.routes.import-routes :refer [schedule-routes]]
             [cljawesome.login.routes.login-routes :refer [login-routes]]
             [cljawesome.teams.routes.teams-routes :refer [teams-routes]]
+            [cljawesome.admin.routes.admin-routes :refer [admin-routes]]
             [compojure.response :refer [render]]
             [ring.util.response :refer [resource-response response]]
             [selmer.filters :refer [add-filter!]]
@@ -36,7 +37,7 @@
   (session-backend {:unauthorized-handler unauthorized-handler}))
 
 (def app
-  (-> (routes schedule-routes league-routes login-routes person-routes teams-routes app-routes)
+  (-> (routes schedule-routes league-routes login-routes admin-routes person-routes teams-routes app-routes)
       (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)
       (wrap-authorization auth-backend)

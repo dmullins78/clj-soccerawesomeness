@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content %}
+<h1>Admin</h1>
+<hr/>
+
+<div class="medium-centered medium-6 columns">
+  <form method="POST" action="/{{base}}admin">
+    <div class="row">
+      <div class="medium-6 columns">
+        <label>E-Mail
+          <input type="text" value="{{admin.email}}"/>
+        </label>
+      </div>
+      <div class="row">
+        <div class="medium-6 columns">
+          <h3>Teams</h3>
+            {% for team in teams %}
+            <input type="checkbox" name="teams[]" value="{{team.id}}">{{team.name}}</input><br/>
+            {% endfor %}
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-3 small-centered columns">
+          <input type="submit" class="button" name="Save"/>
+        </div>
+      </form>
+    </form>
+</div>
+
+{% endblock %}
+

@@ -121,6 +121,12 @@ inner join teams home on home_team_id = home.id
 inner join teams away on away_team_id = away.id
 WHERE g.id = :gameId
 
+-- name: select-teams-by-season
+SELECT t.* from teams t
+inner join teams_seasons ts on ts.team_id = t.id and
+ts.season_id = :seasonId
+order by t.name
+
 -- name: select-games
 SELECT
 g.id,
