@@ -27,9 +27,13 @@ module.exports = function(grunt) {
           'bower_components/underscore/underscore.js',
           'bower_components/backbone/backbone.js',
           'bower_components/marionette/lib/backbone.marionette.js',
-          'js/Marionette.js',
-          'dist/templates/all.js'],
+          'js/Marionette.js'],
           dest: '../resources/public/js/<%= pkg.name %>.js'
+      },
+
+      playerStats: {
+        src: ['dist/templates/all.js', 'js/modules/players/models/*.js', 'js/modules/players/views/*.js', 'js/modules/players/Init.js'],
+        dest: '../resources/public/js/player-stats.js'
       }
     },
 

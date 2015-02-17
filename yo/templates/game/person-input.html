@@ -1,0 +1,40 @@
+<div class="row">
+  <form id="player_stats">
+    <div class="small-12 medium-7 columns">
+      <label>Player
+        <select class="name">
+          <% _.each(players, function(player){ %>
+          <option value="<%=player.id%>"><%=player.team + '-' + player.name%></option>
+          <% }); %>
+        </select>
+      </label>
+    </div>
+    <div class="small-2 medium-1 columns">
+      <label>Goals
+        <input type="text" class="goals" value="<%= goals %>"/>
+      </label>
+    </div>
+    <div class="small-2 medium-1 columns">
+      <label>Assists
+        <input type="text" class="assists" value="<%= assists %>"/>
+      </label>
+    </div>
+    <div class="small-3 medium-3 columns">
+      <label>Card
+        <select class="card">
+          <option value="N" <%= isCardChecked('N') %>>None</option>
+          <option value="Y" <%= isCardChecked('Y') %>>Yellow</option>
+          <option value="R" <%= isCardChecked('R') %>>Red</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <div class="small-12 medium-4 columns small-centered">
+        <ul class="button-group">
+          <li><a id="cancel" class="tiny button">Cancel</a></li>
+          <li><a id="saved" class="tiny button">Save</a></li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
