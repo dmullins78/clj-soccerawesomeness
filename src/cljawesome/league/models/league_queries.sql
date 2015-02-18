@@ -35,7 +35,7 @@ INSERT INTO teams_seasons (team_id, season_id, division)
 VALUES (:teamId, :seasonId, :division);
 
 -- name: update-game<!
-update games set home_team_score = :home_score, away_team_score = :away_score, comments = :comments where id = :id
+update games set update_count = update_count + 1, home_team_score = :home_score, away_team_score = :away_score, comments = :comments where id = :id
 
 -- name: insert-game<!
 INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
@@ -113,6 +113,7 @@ SELECT
 g.id,
 to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
 g.field,
+g.update_count,
 comments,
 home_team_id,
 home_team_score as ht_score,
@@ -135,6 +136,7 @@ order by t.name
 SELECT
 g.id,
 g.field,
+g.update_count,
 to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
 comments,
 home_team_id,

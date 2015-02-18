@@ -38,7 +38,8 @@ CREATE TABLE Games (
     field varchar(60),
     comments varchar(1000),
     season_id BIGSERIAL REFERENCES Seasons,
-    start_time timestamp NOT NULL
+    start_time timestamp NOT NULL,
+    update_count smallint NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Persons (
