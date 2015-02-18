@@ -4,7 +4,7 @@
       <label>Player
         <select class="name">
           <% _.each(players, function(player){ %>
-          <option value="<%=player.id%>"><%=player.name%></option>
+          <option value="<%=player.id%>"><%=player.team %> - <%=player.name%></option>
           <% }); %>
         </select>
       </label>

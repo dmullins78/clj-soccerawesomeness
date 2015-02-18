@@ -47,6 +47,8 @@ __p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 
 __p += '\n          <option value="' +
 ((__t = (player.id)) == null ? '' : __t) +
 '">' +
+((__t = (player.team )) == null ? '' : __t) +
+' - ' +
 ((__t = (player.name)) == null ? '' : __t) +
 '</option>\n          ';
  }); ;

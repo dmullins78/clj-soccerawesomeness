@@ -50,13 +50,14 @@
     </div>
     <div class="row">
       <div class="small-12 columns">
-        <label>Comments
-          <textarea name="comments" rows="6" cols="50" {{permissions.score}}>{{game.comments}}</textarea>
-        </label>
+        <div id="app"></div>
       </div>
     </div>
     <div class="row">
       <div class="small-12 columns">
+        <label>Comments
+          <textarea name="comments" rows="6" cols="50" {{permissions.score}}>{{game.comments}}</textarea>
+        </label>
       </div>
     </div>
     {% if permissions.update %}
@@ -67,11 +68,6 @@
       </form>
     {% endif %}
     <hr/>
-    <div class="row">
-      <div class="small-12 columns">
-        <div id="app"></div>
-      </div>
-    </div>
   </div>
 </div>
 
