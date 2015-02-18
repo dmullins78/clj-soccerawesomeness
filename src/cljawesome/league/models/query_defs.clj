@@ -20,5 +20,6 @@
 (defn get-team-standings [league year season]
   (let [seasonMap (get-season league year season)
         teams (select-season-teams {:seasonId (:seasonid seasonMap)})]
+    (println (map calculate-team-points teams))
     (map calculate-team-points teams)))
 
