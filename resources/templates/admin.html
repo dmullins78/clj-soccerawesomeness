@@ -11,12 +11,12 @@ Admin
 <div class="medium-centered medium-6 columns">
   <form method="POST" action="/{{base}}admins{% if admin.id %}/{{admin.id}}{% endif %}">
     <div class="row">
-      <div class="medium-6 columns">
+      <div class="medium-7 columns small-centered">
         <label>E-Mail
           <input type="text" name="email" value="{{admin.email}}"/>
         </label>
       </div>
-      <div class="medium-6 columns">
+      <div class="medium-7 columns small-centered">
         <label>Password
           <input type="password" name="password" value="{{admin.password}}"/>
         </label>
@@ -26,16 +26,33 @@ Admin
           <input type="submit" class="button" name="Save"/>
         </div>
       </div>
-      <div class="row">
-        <div class="medium-6 columns">
-          <h4>Existing Admins</h4>
-          {% for admin in admins %}
-            <a href="/{{base}}admins/{{admin.id}}">{{admin.email}}</a><br/>
-          {% endfor %}
-        </label>
+      {% if admins|not-empty %}
+      <div class="row ">
+        <div class="medium-7 columns small-centered">
+          <table class="admins">
+            <thead>
+              <tr>
+                <th>Admin</th>
+                <th>Actions</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for admin in admins %}
+              <tr>
+                <td>{{admin.email}}</td>
+                <td><a href="/{{base}}admins/{{admin.id}}">Edit</a></td>
+                <td><a href="/{{base}}admins/{{admin.id}}" class="deleteAdmin">Delete</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </form>
-</div>
+      {% endif %}
+    </form>
+  </div>
+
+  <script src="/js/admin.js"></script>
 {% endblock %}
 

@@ -26,6 +26,11 @@
         admins (adb/get-league-admins {:leagueId (:id lg)})]
     (render-file "admin.html" {:admins admins :base (lp/basepath league year season)})))
 
+(defn delete-admin [league year season id request]
+  ;(when (not (authenticated? request))
+  ;(throw-unauthorized {:message "Not authorized"}))
+  (adb/delete-league-admin<! {:adminId (Integer. id)}) "")
+
 (defn update-admin [league year season id email password request]
   ;(when (not (authenticated? request))
   ;(throw-unauthorized {:message "Not authorized"}))
@@ -45,5 +50,6 @@
 (defroutes admin-routes
   (GET "/:league/:year/:season/admins" [league year season] (show-admins league year season))
   (GET "/:league/:year/:season/admins/:adminId" [league year season adminId :as request] (show-admin league year season adminId))
+  (DELETE "/:league/:year/:season/admins/:adminId" [league year season adminId :as request] (delete-admin league year season adminId request))
   (POST "/:league/:year/:season/admins" [league year season email password :as request] (add-admin league year season email password request))
   (POST "/:league/:year/:season/admins/:adminId" [league year season adminId email password :as request] (update-admin league year season adminId email password request)))

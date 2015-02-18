@@ -31,6 +31,11 @@ module.exports = function(grunt) {
           dest: '../resources/public/js/<%= pkg.name %>.js'
       },
 
+      admin: {
+        src: ['bower_components/jquery/dist/jquery.js', 'js/modules/admins/Init.js'],
+        dest: '../resources/public/js/admin.js'
+      },
+
       playerStats: {
         src: ['dist/templates/all.js', 'js/modules/players/models/*.js', 'js/modules/players/views/*.js', 'js/modules/players/Init.js'],
         dest: '../resources/public/js/player-stats.js'
