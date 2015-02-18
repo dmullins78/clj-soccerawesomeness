@@ -14,7 +14,6 @@
 
 (defn calculate-team-points [team]
   (let [games (select-games {:team_id (:id team) :seasonId (:seasonid team)})]
-    (println "GAMES " + games)
     (let [[points goal_diff scored allowed wins losses ties] (calc-game-points (:id team) games)]
       (merge team {:points points
                    :goal_differential goal_diff

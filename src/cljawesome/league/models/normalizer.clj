@@ -4,14 +4,12 @@
   (= (:home_team_id game) id))
 
 (defn- home_normalization [g]
-  (println "EE " + g)
   (hash-map
     :us (:ht_score g)
     :them (:at_score g)
     :played (> (:update_count g) 0)))
 
 (defn- away_normalization [g]
-  (println "EE3 " + g)
   (hash-map
     :us (:at_score g)
     :them (:ht_score g)

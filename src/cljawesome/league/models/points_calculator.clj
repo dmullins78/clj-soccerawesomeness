@@ -13,7 +13,6 @@
    :tie tie})
 
 (defn- calculate_game [g]
-  (println "GGE " + g)
   (let [diff (goaldiff g)]
     (cond
       (> diff 0) (summary 3 diff g 1 0 0)
