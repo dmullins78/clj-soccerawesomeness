@@ -14,9 +14,10 @@
 
 (defn soccer-scorer
   [t1 t2]
-  (if (> (:points t1) (:points t2))
-    true
-    false))
+  (cond
+    (> (:points t1) (:points t2)) true
+    (< (:points t1) (:points t2)) false
+    :else (> (:goal_differential t1) (:goal_differential t2))))
 
 (defn get-teams [league year season]
   (let [teams (query/get-team-standings league (Integer. year) season)
