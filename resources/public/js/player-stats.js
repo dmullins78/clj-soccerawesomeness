@@ -1,23 +1,37 @@
 this["JST"] = this["JST"] || {};
 
+this["JST"]["templates/game/people-display.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '  <table class="playerstats">\n    <thead>\n      <tr>\n        <th>Player</th>\n        <th>Goals</th>\n        <th>Assists</th>\n        <th>Cards</th>\n        <th>&nbsp;</th>\n        <th>&nbsp;</th>\n      </tr>\n    </thead>\n    <tbody></tbody>\n    <tfoot>\n      <tr>\n        <td colspan="6"><div id="stats"></div></td>\n      </tr>\n    </tfoot>\n  </table>\n\n';
+
+}
+return __p
+};
+
 this["JST"]["templates/game/person-display.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row">\n  <div class="small-12 medium-2 columns">\n    <span>' +
+__p += '  <td>' +
 ((__t = ( name )) == null ? '' : __t) +
-'</span>\n  </div>\n  <div class="small-2 medium-2 columns">\n    <span>' +
+'</td>\n  <td>' +
 ((__t = ( goals )) == null ? '' : __t) +
-' Goals</span>\n  </div>\n  <div class="small-2 medium-2 columns">\n    <span>' +
+'</td>\n  <td>' +
 ((__t = ( assists )) == null ? '' : __t) +
-' Assists</span>\n  </div>\n  <div class="small-3 medium-2 columns">\n    ' +
+'</td>\n  <td>' +
 ((__t = ( getCardLabel() )) == null ? '' : __t) +
-' Card\n  </div>\n  ';
+'</td>\n  <td>\n    ';
  if (editable) { ;
-__p += '\n  <div class="small-5 medium-4 columns">\n    <a id="edit">Edit</a>\n    <a id="remove" class="">Remove</a>\n  </div>\n  ';
+__p += '\n      <a id="edit">Edit</a>\n    ';
  } ;
-__p += '\n</div>\n';
+__p += '\n  </td>\n  <td>\n    ';
+ if (editable) { ;
+__p += '\n      <a id="remove" class="">Remove</a>\n    ';
+ } ;
+__p += '\n  </td>\n';
 
 }
 return __p
@@ -28,12 +42,12 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row">\n  <form id="player_stats">\n    <div class="small-12 medium-7 columns">\n      <label>Player\n        <select class="name">\n          ';
+__p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 medium-7 columns">\n      <label>Player\n        <select class="name">\n          ';
  _.each(players, function(player){ ;
 __p += '\n          <option value="' +
 ((__t = (player.id)) == null ? '' : __t) +
 '">' +
-((__t = (player.team + '-' + player.name)) == null ? '' : __t) +
+((__t = (player.name)) == null ? '' : __t) +
 '</option>\n          ';
  }); ;
 __p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Goals\n        <input type="text" class="goals" value="' +
@@ -46,7 +60,7 @@ __p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-2
 ((__t = ( isCardChecked('Y') )) == null ? '' : __t) +
 '>Yellow</option>\n          <option value="R" ' +
 ((__t = ( isCardChecked('R') )) == null ? '' : __t) +
-'>Red</option>\n        </select>\n      </label>\n    </div>\n    <div class="row">\n      <div class="small-12 medium-4 columns small-centered">\n        <ul class="button-group">\n          <li><a id="cancel" class="tiny button">Cancel</a></li>\n          <li><a id="saved" class="tiny button">Save</a></li>\n        </ul>\n      </div>\n    </div>\n  </form>\n</div>\n';
+'>Red</option>\n        </select>\n      </label>\n    </div>\n  </div>\n  <div class="row">\n    <div class="small-12 medium-4 columns small-centered">\n      <ul class="button-group">\n        <li><a id="cancel" class="tiny button secondary">Cancel</a></li>\n        <li><a id="saved" class="tiny button">Save</a></li>\n      </ul>\n    </div>\n  </div>\n</form>\n';
 
 }
 return __p
@@ -128,6 +142,7 @@ var AddPlayerStatView = Marionette.ItemView.extend({
 
 var PlayerItemView = Marionette.ItemView.extend({
   template: "templates/game/person-display.html",
+  tagName: "tr",
 
   events: {
     "click #remove" : "remove2",
@@ -169,8 +184,10 @@ var PlayerItemView = Marionette.ItemView.extend({
   }
 });
 
-var PlayerListView = Marionette.CollectionView.extend({
-  childView: PlayerItemView
+var PlayerListView = Marionette.CompositeView.extend({
+  template: "templates/game/people-display.html",
+  childView: PlayerItemView,
+  childViewContainer: "tbody"
 });
 
 

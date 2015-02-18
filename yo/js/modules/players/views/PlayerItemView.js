@@ -1,5 +1,6 @@
 var PlayerItemView = Marionette.ItemView.extend({
   template: "templates/game/person-display.html",
+  tagName: "tr",
 
   events: {
     "click #remove" : "remove2",
@@ -41,7 +42,9 @@ var PlayerItemView = Marionette.ItemView.extend({
   }
 });
 
-var PlayerListView = Marionette.CollectionView.extend({
-  childView: PlayerItemView
+var PlayerListView = Marionette.CompositeView.extend({
+  template: "templates/game/people-display.html",
+  childView: PlayerItemView,
+  childViewContainer: "tbody"
 });
 

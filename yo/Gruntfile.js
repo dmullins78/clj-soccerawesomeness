@@ -53,6 +53,16 @@ module.exports = function(grunt) {
         }
       },
 
+      templates: {
+        files: 'templates/**/*.html',
+        tasks: ['jst','concat']
+      },
+
+      js: {
+        files: 'js/**/*.js',
+        tasks: ['concat']
+      },
+
       sass: {
         files: 'sass/**/*.scss',
         tasks: ['sass']

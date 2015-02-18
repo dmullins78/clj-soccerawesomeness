@@ -1,10 +1,10 @@
-<div class="row">
-  <form id="player_stats">
+<form id="player_stats">
+  <div class="row">
     <div class="small-12 medium-7 columns">
       <label>Player
         <select class="name">
           <% _.each(players, function(player){ %>
-          <option value="<%=player.id%>"><%=player.team + '-' + player.name%></option>
+          <option value="<%=player.id%>"><%=player.name%></option>
           <% }); %>
         </select>
       </label>
@@ -28,13 +28,13 @@
         </select>
       </label>
     </div>
-    <div class="row">
-      <div class="small-12 medium-4 columns small-centered">
-        <ul class="button-group">
-          <li><a id="cancel" class="tiny button">Cancel</a></li>
-          <li><a id="saved" class="tiny button">Save</a></li>
-        </ul>
-      </div>
+  </div>
+  <div class="row">
+    <div class="small-12 medium-4 columns small-centered">
+      <ul class="button-group">
+        <li><a id="cancel" class="tiny button secondary">Cancel</a></li>
+        <li><a id="saved" class="tiny button">Save</a></li>
+      </ul>
     </div>
-  </form>
-</div>
+  </div>
+</form>
