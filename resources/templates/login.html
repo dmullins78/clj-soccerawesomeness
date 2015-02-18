@@ -10,28 +10,26 @@ Login
 
 <div class="medium-centered medium-8 columns text-left">
   {% if error%}
-    <div data-alert class="alert-box alert">
-      {{error}}
-    </div>
+  <div data-alert class="alert-box alert">
+    {{error}}
+  </div>
   {% endif %}
   <form method="POST" action="/login">
-    <div class="row">
-      <div class="medium-6 columns">
-        <label>E-Mail
-          <input type="text" name="email"/>
-        </label>
-      </div>
-      <div class="medium-6 columns">
-        <label>E-Mail
-          <input type="text" name="password"/>
-        </label>
-      </div>
+    <div class="medium-7 medium-centered columns">
+      <label>E-Mail
+        <input type="text" name="email" autofocus/>
+      </label>
+    </div>
+    <div class="medium-7 medium-centered columns">
+      <label>Password
+        <input type="text" name="password"/>
+      </label>
     </div>
     <div class="row">
       <div class="small-3 small-centered columns">
         <input type="submit" class="button" value="Login"/>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
 {% endblock %}
