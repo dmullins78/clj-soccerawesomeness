@@ -20,9 +20,10 @@
 
 (defn get-teams [league year season]
   (let [teams (query/get-team-standings league (Integer. year) season)
+        lg (query/select-league-by-name {:name league})
         sorted-teams (sort (comp soccer-scorer) teams)
         sorted-divisions (group-by :division sorted-teams)]
-    (render-file "league.html" {:teams sorted-divisions :base (lp/basepath league year season)})))
+    (render-file "league.html" {:league (first lg) :teams sorted-divisions :base (lp/basepath league year season)})))
 
 (defroutes league-routes
   (GET  "/:league/:year/:season" [league year season] (get-teams league year season)))

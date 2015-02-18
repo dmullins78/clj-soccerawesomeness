@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-League
+{{league.name}}
 {% endblock %}
 
 {% block content %}
-<h1>League</h1>
+<h1>{{league.name}}</h1>
 <hr/>
 
-<div class="medium-centered medium-6 columns">
+<div class="medium-centered medium-8 columns standings">
   {% for division,teamList in teams %}
     <h2>{{division}}</h2>
     <table class="standings">
@@ -17,6 +17,11 @@ League
           <th>Team</th>
           <th>Points</th>
           <th>Goal Diff</th>
+          <th>Scored</th>
+          <th>Allowed</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Ties</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +30,11 @@ League
             <td>{{team.name}}</td>
             <td>{{team.points}}</td>
             <td>{{team.goal_differential}}</td>
+            <td>{{team.scored}}</td>
+            <td>{{team.allowed}}</td>
+            <td>{{team.wins}}</td>
+            <td>{{team.losses}}</td>
+            <td>{{team.ties}}</td>
           </tr>
         {% endfor %}
       </tbody>

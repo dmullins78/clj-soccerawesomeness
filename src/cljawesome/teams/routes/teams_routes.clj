@@ -57,7 +57,6 @@
         players (league/get-players { :teamId (Integer. teamId) :seasonId (:seasonid league)})
         teams (league/get-team {:teamId (Integer. teamId)})
         new-players (map with-game-stats players)]
-     (println new-players)
     (render-file "players.html" {:players new-players :team (first teams) :base (base-path league)})))
 
 (defn show-team [league year season teamId]

@@ -1,3 +1,6 @@
+-- name: select-league-by-name
+SELECT * from leagues where name = upper(:name)
+
 -- name: select-league-season
 SELECT
 l.id,

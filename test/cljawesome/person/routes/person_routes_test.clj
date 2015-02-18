@@ -24,8 +24,6 @@
                  (query/insert-season-team<! {:seasonId seasonId :teamId teamOneId :division "Upper"} )
                  (p/insert-person-season<! {:seasonId seasonId :teamId teamOneId :personId personId} )
 
-                 (println (format "/games/cics/2014/spring/%s/players/%s" (:id game) personId))
-
                  (let [uri (format "/games/cics/2014/spring/%s/players/%s" (:id game) personId)
                        response ( app (mock/request :post uri {:goals 2 :card "Y" :assists 4 }))
                        stats (dbtools/player-game-stats personId)]

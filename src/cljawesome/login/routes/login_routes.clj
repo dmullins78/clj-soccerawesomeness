@@ -18,7 +18,6 @@
 
 (defn home [league year season session]
   (let [person (:identity session)]
-    (println person)
     (render-file "home.html" {:base (lp/basepath league year season) :admin (= "leagueadmin" (:role person))})))
 
 (defn auth [email password]
