@@ -8,9 +8,11 @@ Teams
 <h1>Teams</h1>
 <hr/>
 
-<div class="medium-centered medium-6 columns">
+<div class="row">
   {% for team in teams %}
-    <a href="/{{base}}/teams/{{team.id}}" class="button expand">{{team.name}}</a><br/>
+    <div class="small-centered medium-uncentered small-7 medium-4 columns">
+      <a href="/{{base}}/teams/{{team.id}}" class="button expand">{{team.name}}</a><br/>
+    </div>
   {% endfor %}
 </div>
 

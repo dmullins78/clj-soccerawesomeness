@@ -6413,3 +6413,8 @@ th.hide-for-touch {
 
 .playerstats {
   width: 100%; }
+
+.rostersButton {
+  padding: 50px; }
+  .rostersButton span {
+    color: white; }
