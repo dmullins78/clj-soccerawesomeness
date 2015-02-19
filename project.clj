@@ -21,6 +21,7 @@
   :plugins [[lein-ring "0.8.13"]
             [lein-midje "3.1.3"]
             [lein-environ "1.0.0"]]
+  :uberjar-name "soccerawesomeness.jar"
   :ring {:handler cljawesome.core.handler/app
          :init cljawesome.core.handler/init }
   :aliases {"migrate" ["run" "-m" "cljawesome.migrations.migration/migrate"]}
@@ -36,6 +37,7 @@
 
              :test [:test-local :test-env-vars]
              :dev  {:test-paths ^:replace []}
+             :uberjar {:aot :all}
              :production {:ring {:open-browser? false
                                  :stacktraces?  false
                                  :auto-reload?  false}}})
