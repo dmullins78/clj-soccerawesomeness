@@ -120,7 +120,7 @@ home_team_score as ht_score,
 away_team_id,
 away_team_score as at_score,
 away.name as away_team,
-home.name as home_team,
+home.name as home_team
 FROM games g
 inner join teams home on home_team_id = home.id
 inner join teams away on away_team_id = away.id
