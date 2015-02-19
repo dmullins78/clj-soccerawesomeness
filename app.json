@@ -1,0 +1,8 @@
+{
+  "name": "Soccer Awesomeness",
+  "description": "Lets you track scores and stats for a soccer league",
+  "repository": "https://github.com/dmullins78/clj-soccerawesomeness",
+  "logo": "https://raw.githubusercontent.com/docker-library/docs/master/clojure/logo.png",
+  "keywords": ["clojure", "soccer"]
+}
+
