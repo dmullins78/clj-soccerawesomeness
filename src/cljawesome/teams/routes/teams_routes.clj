@@ -49,7 +49,7 @@
 
 (defn with-game-stats [player]
   (if-let [stats (league/get-player-stats {:seasonId (:seasonid player) :personId (:id player)})]
-    (merge player (first stats))
+    (merge player {:cards stats})
   player))
 
 (defn show-team-players [league season teamId]

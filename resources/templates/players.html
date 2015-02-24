@@ -11,9 +11,9 @@
 <div class="medium-centered small-12 medium-4 columns">
   {% for player in players %}
     <h3>{{player.name}}</h3>
-    {% if player.card %}
-        * Last {{card|cardlabel}} Card on {{card_date|date:shortDate}}
-    {% endif %}
+    {% for card in player.cards %}
+      <span class="card">{{card.card|cardlabel}} Card on {{card.card_date|date:shortDate}}</span>
+    {% endfor %}
   {% endfor %}
 </div>
 {% endblock %}

@@ -90,11 +90,11 @@ AND sp.season_id = :seasonId
 order by p.name
 
 -- name: get-player-stats
-select g.start_time, card from persons_games_stats ps
+select g.start_time as card_date, card from persons_games_stats ps
 inner join games g on g.id = ps.game_id
 where ps.person_id = :personId
 and ps.season_id = :seasonId
-order by g.start_time desc limit 1
+order by g.start_time
 
 -- name: get-team
 SELECT t.*
