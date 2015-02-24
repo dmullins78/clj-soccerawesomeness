@@ -4,7 +4,7 @@
             [clojure.java.jdbc :as jdbc]))
 (def pgdb
   { :subprotocol "postgresql"
-    :subname "//localhost:5432/cljawesome-test" })
+    :subname "//localhost:5432/cljawesome" })
 
 (defn players-by-season [seasonId]
   (first (jdbc/query pgdb ["select count(*) from seasons_players where season_id = ?" seasonId] :row-fn :count)))
