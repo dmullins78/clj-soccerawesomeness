@@ -19,7 +19,7 @@
   (when (not (authenticated? request))
     (throw-unauthorized {:message "Not authorized"}))
   (let [league (league/get-season league season)
-        games (roster/import-people (:id league) (:seasonid league) (file :tempfile))]
+        games (roster/import-players (:id league) (:seasonid league) (file :tempfile))]
     (render-file "roster-import.html" { :base (lp/base-path league) :rosters true})))
 
 (defn show-load-schedule [league season request]

@@ -30,10 +30,10 @@
 (defn get-players-for-game [gameId]
   (league/get-players-for-game {:gameId (Integer. gameId)}))
 
-(defn delete-player-game [gameId personId request]
+(defn delete-player-game [gameId playerId request]
   (when (not (authenticated? request))
     (throw-unauthorized {:message "Not authorized"}))
-  (league/delete-player-game-stats<! {:gameId (Integer. gameId) :personId (Integer. personId)}))
+  (league/delete-player-game-stats<! {:gameId (Integer. gameId) :playerId (Integer. playerId)}))
 
 (defn game-permissions [user]
   (cond
@@ -48,7 +48,7 @@
     (render-file "game.html" {:game game :players players :teamId teamId :base (base-path league) :permissions permissions})))
 
 (defn with-game-stats [player]
-  (if-let [stats (league/get-player-stats {:seasonId (:seasonid player) :personId (:id player)})]
+  (if-let [stats (league/get-player-stats {:seasonId (:seasonid player) :playerId (:id player)})]
     (merge player {:cards stats})
   player))
 
@@ -66,14 +66,13 @@
     (render-file "team.html" {:games games :team (first team) :base (base-path league)})))
 
 (defn show-teams [league]
-  (println "LL " + league)
   (let [teams (teams/teams-by-season {:seasonId (:seasonid league)})]
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 
 (defroutes teams-routes
   (GET "/:name/:season/games/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:teamId params) (:identity session)))
   (GET "/:name/:season/games/:gameId/players" [gameId] (get-players-for-game gameId ))
-  (DELETE "/:name/:season/games/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
+  (DELETE "/:name/:season/games/:gameId/players/:playerId" [gameId playerId :as request] (delete-player-game gameId playerId request))
   (POST "/:league/:season/games/:gameId" [league season gameId teamId :as request] (update-game league season teamId gameId request))
   (GET "/:league/:season/teams/:teamId" [league season teamId] (show-team league season teamId))
   (GET "/:league/:season/teams/:teamId/players" [league season teamId] (show-team-players league season teamId))

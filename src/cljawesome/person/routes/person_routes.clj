@@ -3,14 +3,13 @@
             [cljawesome.util.league-params :as lp]
             [cljawesome.person.models.query-defs :as pq]
             [cljawesome.league.models.query-defs :as league]
-            [cljawesome.person.views.login-view :refer :all]
             [ring.util.response :refer [resource-response response]]))
 
 
-(defn update-player-stats [league personId gameId body]
-  (pq/insert-person-game-stats<!
+(defn update-player-stats [league playerId gameId body]
+  (pq/insert-player-game-stats<!
     { :seasonId (:seasonid league)
-     :personId (Integer. personId)
+     :playerId (Integer. playerId)
      :gameId (Integer. gameId)
      :card (:card body)
      :assists (Integer. (:assists body))
@@ -18,6 +17,6 @@
   "")
 
 (defroutes person-routes
-  (PUT "/:name/:season/games/:gameId/players/:personId" {params :params body :body}
-       (league/delete-player-game-stats<! {:gameId (Integer. (:gameId params)) :personId (Integer. (:personId params))})
-       (update-player-stats (lp/parse-params params) (:personId params) (:gameId params) body)))
+  (PUT "/:name/:season/games/:gameId/players/:playerId" {params :params body :body}
+       (league/delete-player-game-stats<! {:gameId (Integer. (:gameId params)) :playerId (Integer. (:playerId params))})
+       (update-player-stats (lp/parse-params params) (:playerId params) (:gameId params) body)))

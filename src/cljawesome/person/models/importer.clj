@@ -8,45 +8,45 @@
            [cljawesome.schedule.models.query-defs :as teams]
            [clojure.java.io :as io]))
 
-(defn existing-person? [person existing-people]
-  (util/find-first (:email person) existing-people :email))
+(defn existing-player? [player existing-players]
+  (util/find-first (:email player) existing-players :email))
 
-(defn emails [people]
-  (map #(:email %) people))
+(defn emails [players]
+  (map #(:email %) players))
 
-(defn find-existing [incoming-people]
-  (query/select-people-by-email { :emails (emails incoming-people) }))
+(defn find-existing [incoming-players]
+  (query/select-players-by-email { :emails (emails incoming-players) }))
 
-(defn add-person [person seasonId teamId]
-  (let [person (query/insert-person<! { :email (:email person) :name (:name person)})]
-    (query/insert-person-season<! { :personId (:id person) :seasonId seasonId :teamId teamId})))
+(defn add-player [player seasonId teamId]
+  (let [player (query/insert-player<! { :email (:email player) :name (:name player)})]
+    (query/insert-player-season<! { :playerId (:id player) :seasonId seasonId :teamId teamId})))
 
 (defn read-file [in-file]
   (with-open [in-file (io/reader in-file)]
     (doall (csv/read-csv in-file))))
 
-(defn to-person [records]
+(defn to-player [records]
   (map #(hash-map
           :email (nth % 0)
           :name (nth % 1)
           :team (nth % 2)) records))
 
-(defn parse-people [file]
-  (-> file read-file to-person))
+(defn parse-players [file]
+  (-> file read-file to-player))
 
 (defn reset-season-rosters [seasonId]
   (query/reset-season-roster<! {:seasonId seasonId}))
 
-(defn import-people [league-id seasonId file]
-  (let [incoming-people (parse-people file)
-        existing-people (find-existing incoming-people)
+(defn import-players [league-id seasonId file]
+  (let [incoming-players (parse-players file)
+        existing-players (find-existing incoming-players)
         teams (teams/teams-by-season {:seasonId seasonId} )]
     (reset-season-rosters seasonId)
-    (doseq [person incoming-people]
-      (let [team (util/find-first (:team person) teams :name)]
-        (if-let [existing-person (existing-person? person existing-people)]
-          (query/insert-person-season<! { :teamId (:id team) :personId (:id existing-person) :seasonId seasonId})
-          (add-person person seasonId (:id team)))))))
+    (doseq [player incoming-players]
+      (let [team (util/find-first (:team player) teams :name)]
+        (if-let [existing-player (existing-player? player existing-players)]
+          (query/insert-player-season<! { :teamId (:id team) :playerId (:id existing-player) :seasonId seasonId})
+          (add-player player seasonId (:id team)))))))
 
 
 

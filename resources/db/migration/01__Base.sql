@@ -44,17 +44,17 @@ CREATE TABLE Games (
   update_count smallint NOT NULL DEFAULT 0
 );
 
-CREATE TABLE Persons (
+CREATE TABLE Players (
   id        BIGSERIAL PRIMARY KEY,
   name    varchar(100) NOT NULL,
   email    varchar(40) NOT NULL
 );
 
-CREATE TABLE Seasons_Persons (
+CREATE TABLE Seasons_Players (
   season_id BIGSERIAL REFERENCES Seasons,
-  person_id BIGSERIAL REFERENCES Persons,
+  player_id BIGSERIAL REFERENCES Players,
   team_id BIGSERIAL REFERENCES Teams,
-  PRIMARY KEY(season_id, person_id, team_id)
+  PRIMARY KEY(season_id, player_id, team_id)
 );
 
 CREATE TABLE Admins (
@@ -65,12 +65,12 @@ CREATE TABLE Admins (
   role varchar(20)
 );
 
-CREATE TABLE Persons_Games_Stats (
+CREATE TABLE Players_Games_Stats (
   season_id BIGSERIAL REFERENCES Seasons,
-  person_id BIGSERIAL REFERENCES Persons,
+  player_id BIGSERIAL REFERENCES Players,
   game_id BIGSERIAL REFERENCES Games,
   card CHAR(1),
   goals smallint,
   assists smallint,
-  PRIMARY KEY(season_id, person_id, game_id)
+  PRIMARY KEY(season_id, player_id, game_id)
 );

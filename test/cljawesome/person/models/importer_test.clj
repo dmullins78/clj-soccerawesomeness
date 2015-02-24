@@ -15,7 +15,7 @@
                (let [leagueId (dummy/league)
                      seasonId (dummy/season "fall" leagueId)]
                  (dummy/team "Recipe" leagueId seasonId)
-                 (import-people leagueId seasonId "players.csv")
+                 (import-players leagueId seasonId "players.csv")
                  (let [actual (query/select-season-players {:seasonId seasonId } )]
                    (count actual) => 2
                    (:team (first actual)) => "Recipe")))
@@ -25,7 +25,7 @@
                      seasonId (dummy/season "fall" leagueId)
                      teamId (dummy/team "Recipe" leagueId seasonId)
                      player (dummy/player "one@foo.com")]
-                 (import-people leagueId seasonId "players.csv")
+                 (import-players leagueId seasonId "players.csv")
                  (let [actual (dbtools/players-with-name "one@foo.com" )
                        season-player-count (dbtools/players-by-season seasonId )]
                    actual => 1

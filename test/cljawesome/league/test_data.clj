@@ -25,9 +25,9 @@
   (:id (query/insert-game<! {:home_team_id home :away_team_id away :home_team_score home_score :away_team_score away_score :start_time (c/to-sql-date (t/now)) :field "Altoona", :seasonId seasonId} )))
 
 (defn player [email]
-  (:id (p/insert-person<! { :email email :name "Test One" })))
+  (:id (p/insert-player<! { :email email :name "Test One" })))
 
 (defn player-for-team [email seasonId teamId]
-  (let [playerId ((p/insert-person<! { :email email :name "Test One" }) :id)]
-    (p/insert-person-season<! {:seasonId seasonId :teamId teamId :personId playerId} )
+  (let [playerId ((p/insert-player<! { :email email :name "Test One" }) :id)]
+    (p/insert-player-season<! {:seasonId seasonId :teamId teamId :playerId playerId} )
   playerId))

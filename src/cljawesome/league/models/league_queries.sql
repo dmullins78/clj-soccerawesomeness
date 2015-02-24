@@ -40,7 +40,7 @@ INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score,
 VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start_time, :field, :seasonId);
 
 -- name: delete-player-game-stats<!
-delete from persons_games_stats where person_id = :personId and game_id = :gameId
+delete from players_games_stats where player_id = :playerId and game_id = :gameId
 
 -- name: get-players-for-game
 select
@@ -49,8 +49,8 @@ p.name as playerName,
 ps.goals,
 ps.assists,
 ps.card
-from persons p
-inner join persons_games_stats ps on ps.person_id = p.id
+from players p
+inner join players_games_stats ps on ps.player_id = p.id
 where ps.game_id = :gameId
 
 -- name: select-season-teams
@@ -68,31 +68,31 @@ where ts.season_id = :seasonId
 
 -- name: players-by-teams
 SELECT p.id, p.name, t.name as team
-FROM persons p
-inner join seasons_persons sp on p.id = sp.person_id
+FROM players p
+inner join seasons_players sp on p.id = sp.player_id
 inner join teams t on t.id = sp.team_id
 WHERE t.id in (:teamIds)
 order by t.name, p.name
 
 -- name: select-season-players
 SELECT p.*, t.name as team
-FROM persons p
-inner join seasons_persons sp on p.id = sp.person_id
+FROM players p
+inner join seasons_players sp on p.id = sp.player_id
 inner join teams t on t.id = sp.team_id
 WHERE sp.season_id = :seasonId
 
 -- name: get-players
 SELECT p.*, sp.season_id as seasonid
-FROM persons p
-inner join seasons_persons sp on sp.person_id = p.id
+FROM players p
+inner join seasons_players sp on sp.player_id = p.id
 WHERE sp.team_id = :teamId
 AND sp.season_id = :seasonId
 order by p.name
 
 -- name: get-player-stats
-select g.start_time as card_date, card from persons_games_stats ps
+select g.start_time as card_date, card from players_games_stats ps
 inner join games g on g.id = ps.game_id
-where ps.person_id = :personId
+where ps.player_id = :playerId
 and ps.season_id = :seasonId
 order by g.start_time
 
