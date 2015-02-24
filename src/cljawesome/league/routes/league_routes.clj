@@ -21,7 +21,7 @@
 
 (defn get-teams [league season]
   (let [teams (query/get-team-standings league season)
-        lg (query/select-league-by-name {:name league})
+        lg (query/select-league-by-name {:path league})
         sorted-teams (sort (comp soccer-scorer) teams)
         sorted-divisions (group-by :division sorted-teams)]
     (render-file "league.html" {:league (first lg) :teams sorted-divisions :base (lp/basepath league season)})))

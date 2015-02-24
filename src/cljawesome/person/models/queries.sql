@@ -21,7 +21,7 @@ delete from seasons_persons where season_id = :seasonId
 
 -- name: active-season
 select
-   lower(l.name) as league,
+   lower(l.path) as league,
    lower(s.season) as season
 FROM
    seasons s

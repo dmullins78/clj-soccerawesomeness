@@ -29,8 +29,7 @@
   (let [season (:active-season identity)]
     (clojure.string/join "/" [(:league season) (:season season) path])))
 
-(defn login-authenticate
-  [email password session]
+(defn login-authenticate [email password session]
   (if-let [identity (auth email password)]
     (-> (redirect (base-path identity "home"))
         (assoc :session (assoc session :identity identity)))

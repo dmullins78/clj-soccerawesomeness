@@ -66,6 +66,7 @@
     (render-file "team.html" {:games games :team (first team) :base (base-path league)})))
 
 (defn show-teams [league]
+  (println "LL " + league)
   (let [teams (teams/teams-by-season {:seasonId (:seasonid league)})]
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 

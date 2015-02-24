@@ -1,5 +1,5 @@
 -- name: select-league-by-name
-SELECT * from leagues where name = upper(:name)
+SELECT * from leagues where path = :path
 
 -- name: select-league-season
 SELECT

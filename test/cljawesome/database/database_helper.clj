@@ -2,17 +2,9 @@
   (:require [environ.core :refer [env]]
             [clojure.string :as str]
             [clojure.java.jdbc :as jdbc]))
-
-;(defn pgdb []
-  ;(let [url (java.net.URI. (env :database-url))
-        ;params (str/split (.getUserInfo url ) #":")]
-     ;(println "FEE " + (str/join "//" (.getHost url) (str/replace (.getPath url) #"/" "")))
-    ;{ :subprotocol "postgresql"
-     ;:subname (str/join "//" (.getHost url) (str/replace (.getPath url) #"/" ""))}))
-
 (def pgdb
   { :subprotocol "postgresql"
-    :subname "//localhost:5432/cljawesome" })
+    :subname "//localhost:5432/cljawesome-test" })
 
 (defn players-by-season [seasonId]
   (first (jdbc/query pgdb ["select count(*) from seasons_persons where season_id = ?" seasonId] :row-fn :count)))
