@@ -1,5 +1,9 @@
 -- name: select-league-by-name
-SELECT * from leagues where path = :path
+SELECT l.*, s.season, s.id as seasonId
+from leagues l
+inner join seasons s on s.league_id = l.id
+where l.path = :path
+and s.season = :season
 
 -- name: select-league-season
 SELECT

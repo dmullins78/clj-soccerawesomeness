@@ -3,6 +3,7 @@
             [ring.util.response :refer [resource-response response]]
             [selmer.parser :refer [render-file]]
             [cljawesome.util.league-params :as lp]
+            [cljawesome.players.models.query-defs :as player]
             [cljawesome.league.models.query-defs :as query]))
 
 (defn get-league [league year season]
@@ -26,10 +27,11 @@
 
 (defn get-teams [league season]
   (let [teams (query/get-team-standings league season)
-        lg (query/select-league-by-name {:path league})
+        lg (first (query/select-league-by-name {:path league :season season}))
+        top-scorers (player/top-scorers {:seasonId (:seasonid lg)})
         sorted-teams (sort (comp soccer-scorer) teams)
         sorted-divisions (group-by :division sorted-teams)]
-    (render-file "league.html" {:league (first lg) :teams sorted-divisions :base (lp/basepath league season)})))
+    (render-file "league.html" {:league lg :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defroutes league-routes
   (GET  "/:league/:season" [league season] (get-teams league season)))
