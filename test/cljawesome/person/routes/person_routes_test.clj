@@ -4,6 +4,7 @@
             [ring.mock.request :as mock]
             [clj-time.local :as l]
             [clj-time.core :as t]
+            [cljawesome.league.test-data :as dummy]
             [clj-time.coerce :as c]
             [cljawesome.database.database-helper :as dbtools]
             [cljawesome.league.models.query-defs :as query]
@@ -15,19 +16,19 @@
        (with-state-changes [(before :facts (dbtools/resetdb! ))]
 
          (fact "Add player game stats"
-               (let [leagueId ((query/insert-league<! {:name "CICS"}) :id)
-                     seasonId ((query/insert-season<! {:year 2014 :season "spring" :league_id leagueId}) :id)
-                     teamOneId ((query/insert-team<! {:name "Recipe"}) :id)
-                     teamTwoId ((query/insert-team<! {:name "Other"}) :id)
-                     game (query/insert-game<! {:home_team_id teamOneId :away_team_id teamTwoId :home_team_score 2 :away_team_score 1 :start_time (c/to-sql-date (t/now)) :field "Altoona", :seasonId seasonId} )
-                     personId ((p/insert-person<! {:name "Test" :email "foo@foo.com"}) :id)]
-                 (query/insert-season-team<! {:seasonId seasonId :teamId teamOneId :division "Upper"} )
-                 (p/insert-person-season<! {:seasonId seasonId :teamId teamOneId :personId personId} )
-
-                 (let [uri (format "/games/cics/2014/spring/%s/players/%s" (:id game) personId)
-                       response ( app (mock/request :post uri {:goals 2 :card "Y" :assists 4 }))
-                       stats (dbtools/player-game-stats personId)]
+               (let [leagueId (dummy/league)
+                     seasonId (dummy/season "spring" leagueId)
+                     teamOneId (dummy/team "Recipe" leagueId seasonId)
+                     teamTwoId (dummy/team "Other" leagueId seasonId)
+                     playerId (dummy/player-for-team "foo@foo.com" seasonId teamOneId)
+                     gameId (dummy/game teamOneId 2 teamTwoId 3 seasonId)]
+                 (let [uri (format "/cics/spring/games/%s/players/%s" gameId playerId)
+                       response ( app (mock/content-type (mock/request :put uri
+                                                                       (clojure.data.json/write-str {:goals 2 :assists 4 :card "Y"}))
+                                                         "application/json"))
+                       stats (dbtools/player-game-stats playerId)]
                    (:status response) => 200
                    (:goals stats) => 2
+                   (:assists stats) => 4
                    (:card stats) => "Y")))))
 

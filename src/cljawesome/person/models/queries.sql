@@ -22,8 +22,7 @@ delete from seasons_persons where season_id = :seasonId
 -- name: active-season
 select
    lower(l.name) as league,
-   lower(s.season) as season,
-   s.year
+   lower(s.season) as season
 FROM
    seasons s
 INNER Join

@@ -15,41 +15,41 @@
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
 
-(defn show-admin [league year season adminId]
-  (let [lg (league/get-season league year season)
+(defn show-admin [league season adminId]
+  (let [lg (league/get-season league season)
         admin (adb/get-league-admin {:adminId (Integer. adminId) :leagueId (:id lg)})
         admins (adb/get-league-admins {:leagueId (:id lg)})]
-    (render-file "admin.html" {:admin (first admin) :admins admins :base (lp/basepath league year season)})))
+    (render-file "admin.html" {:admin (first admin) :admins admins :base (lp/basepath league season)})))
 
-(defn show-admins [league year season]
-  (let [lg (league/get-season league year season)
+(defn show-admins [league season]
+  (let [lg (league/get-season league season)
         admins (adb/get-league-admins {:leagueId (:id lg)})]
-    (render-file "admin.html" {:admins admins :base (lp/basepath league year season)})))
+    (render-file "admin.html" {:admins admins :base (lp/basepath league season)})))
 
-(defn delete-admin [league year season id request]
-  ;(when (not (authenticated? request))
-  ;(throw-unauthorized {:message "Not authorized"}))
+(defn delete-admin [league season id request]
+  (when (not (authenticated? request))
+    (throw-unauthorized {:message "Not authorized"}))
   (adb/delete-league-admin<! {:adminId (Integer. id)}) "")
 
-(defn update-admin [league year season id email password request]
-  ;(when (not (authenticated? request))
-  ;(throw-unauthorized {:message "Not authorized"}))
+(defn update-admin [league season id email password request]
+  (when (not (authenticated? request))
+    (throw-unauthorized {:message "Not authorized"}))
   (adb/update-league-admin<! {:adminId (Integer. id) :email email :password password})
-  (let [lg (league/get-season league year season)
+  (let [lg (league/get-season league season)
         admins (adb/get-league-admins {:leagueId (:id lg)})]
     (render-file "admin.html" {:admins admins})))
 
-(defn add-admin [league year season email password request]
-  ;(when (not (authenticated? request))
-  ;(throw-unauthorized {:message "Not authorized"}))
-  (let [lg (league/get-season league year season)
+(defn add-admin [league season email password request]
+  (when (not (authenticated? request))
+    (throw-unauthorized {:message "Not authorized"}))
+  (let [lg (league/get-season league season)
         admin (adb/insert-admin<! {:email email :password password :leagueId (:id lg) })
         admins (adb/get-league-admins {:leagueId (:id lg)})]
     (render-file "admin.html" {:admins admins})))
 
 (defroutes admin-routes
-  (GET "/:league/:year/:season/admins" [league year season] (show-admins league year season))
-  (GET "/:league/:year/:season/admins/:adminId" [league year season adminId :as request] (show-admin league year season adminId))
-  (DELETE "/:league/:year/:season/admins/:adminId" [league year season adminId :as request] (delete-admin league year season adminId request))
-  (POST "/:league/:year/:season/admins" [league year season email password :as request] (add-admin league year season email password request))
-  (POST "/:league/:year/:season/admins/:adminId" [league year season adminId email password :as request] (update-admin league year season adminId email password request)))
+  (GET "/:league/:season/admins" [league season] (show-admins league season))
+  (GET "/:league/:season/admins/:adminId" [league season adminId :as request] (show-admin league season adminId))
+  (DELETE "/:league/:season/admins/:adminId" [league season adminId :as request] (delete-admin league adminId request))
+  (POST "/:league/:season/admins" [league season email password :as request] (add-admin league email password request))
+  (POST "/:league/:season/admins/:adminId" [league season adminId email password :as request] (update-admin league season adminId email password request)))

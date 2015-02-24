@@ -1,5 +1,14 @@
 (ns cljawesome.database.database-helper
-  (:require [clojure.java.jdbc :as jdbc]))
+  (:require [environ.core :refer [env]]
+            [clojure.string :as str]
+            [clojure.java.jdbc :as jdbc]))
+
+;(defn pgdb []
+  ;(let [url (java.net.URI. (env :database-url))
+        ;params (str/split (.getUserInfo url ) #":")]
+     ;(println "FEE " + (str/join "//" (.getHost url) (str/replace (.getPath url) #"/" "")))
+    ;{ :subprotocol "postgresql"
+     ;:subname (str/join "//" (.getHost url) (str/replace (.getPath url) #"/" ""))}))
 
 (def pgdb
   { :subprotocol "postgresql"
@@ -17,15 +26,14 @@
 (defn entries-in-teams-table [name]
   (first (jdbc/query pgdb ["select count(*) from teams where name = ?" name] :row-fn :count)))
 
-(defn resetdb! [])
-  ;(jdbc/execute! pgdb ["delete from admin_teams;"] )
-  ;(jdbc/execute! pgdb ["delete from admins;"] )
-  ;(jdbc/execute! pgdb ["delete from persons_games_stats;"] )
-  ;(jdbc/execute! pgdb ["delete from seasons_persons;"] )
-  ;(jdbc/execute! pgdb ["delete from persons;"] )
-  ;(jdbc/execute! pgdb ["delete from teams_leagues;"] )
-  ;(jdbc/execute! pgdb ["delete from teams_seasons;"] )
-  ;(jdbc/execute! pgdb ["delete from games;"] )
-  ;(jdbc/execute! pgdb ["delete from teams;"] )
-  ;(jdbc/execute! pgdb ["delete from seasons;"] )
-  ;(jdbc/execute! pgdb ["delete from leagues;"] ))
+(defn resetdb! []
+(jdbc/execute! pgdb ["delete from admins;"] )
+(jdbc/execute! pgdb ["delete from persons_games_stats;"] )
+(jdbc/execute! pgdb ["delete from seasons_persons;"] )
+(jdbc/execute! pgdb ["delete from persons;"] )
+(jdbc/execute! pgdb ["delete from teams_leagues;"] )
+(jdbc/execute! pgdb ["delete from teams_seasons;"] )
+(jdbc/execute! pgdb ["delete from games;"] )
+(jdbc/execute! pgdb ["delete from teams;"] )
+(jdbc/execute! pgdb ["delete from seasons;"] )
+(jdbc/execute! pgdb ["delete from leagues;"] ))

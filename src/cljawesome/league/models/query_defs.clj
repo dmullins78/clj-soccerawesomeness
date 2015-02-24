@@ -7,8 +7,8 @@
 
 (defqueries "cljawesome/league/models/league_queries.sql" {:connection (env :database-url)})
 
-(defn get-season [league year season]
-  (first (select-league-season {:name league :year (Integer. year) :season season})))
+(defn get-season [league season]
+  (first (select-league-season {:name league :season season})))
 
 (def calc-game-points (comp calculate normalize))
 
@@ -23,8 +23,8 @@
                    :ties ties
                    :allowed allowed}))))
 
-(defn get-team-standings [league year season]
-  (let [seasonMap (get-season league year season)
+(defn get-team-standings [league season]
+  (let [seasonMap (get-season league season)
         teams (select-season-teams {:seasonId (:seasonid seasonMap)})]
     (map calculate-team-points teams)))
 

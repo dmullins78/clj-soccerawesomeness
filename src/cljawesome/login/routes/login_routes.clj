@@ -16,9 +16,9 @@
 (defn login [request]
   (render-file "login.html" {}))
 
-(defn home [league year season session]
+(defn home [league season session]
   (let [person (:identity session)]
-    (render-file "home.html" {:base (lp/basepath league year season) :admin (= "leagueadmin" (:role person))})))
+    (render-file "home.html" {:base (lp/basepath league season) :admin (= "leagueadmin" (:role person))})))
 
 (defn auth [email password]
   (when-let [credential (first (pdb/admin-roles {:email email :password password}))]
@@ -27,7 +27,7 @@
 
 (defn base-path [identity path]
   (let [season (:active-season identity)]
-    (clojure.string/join "/" [(:league season) (:year season) (:season season) path])))
+    (clojure.string/join "/" [(:league season) (:season season) path])))
 
 (defn login-authenticate
   [email password session]
@@ -38,5 +38,5 @@
 
 (defroutes login-routes
   (GET "/login" [] login)
-  (GET "/:league/:year/:season/home" [league year season :as {session :session}] (home league year season session))
+  (GET "/:league/:season/home" [league season :as {session :session}] (home league season session))
   (POST "/login" [email password :as {session :session}] (login-authenticate email password session)))

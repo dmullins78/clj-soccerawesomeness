@@ -4,23 +4,21 @@ SELECT * from leagues where name = upper(:name)
 -- name: select-league-season
 SELECT
 l.id,
-l.name as league,
-s.year,
+l.path as league,
 s.season,
 s.id as seasonId
 FROM leagues l
 inner join seasons s on s.league_id = l.id
-WHERE lower(l.name) = :name
-AND s.year = :year
+WHERE lower(l.path) = :name
 AND s.season = :season;
 
 -- name: insert-league<!
-INSERT INTO leagues (name)
-VALUES (:name);
+INSERT INTO leagues (path, name, description, location)
+VALUES (:path, :name, :description, :location);
 
 -- name: insert-season<!
-INSERT INTO seasons (year, season, league_id)
-VALUES (:year, :season, :league_id);
+INSERT INTO seasons (season, league_id)
+VALUES (:season, :leagueId);
 
 -- name: insert-team<!
 INSERT INTO teams (name)

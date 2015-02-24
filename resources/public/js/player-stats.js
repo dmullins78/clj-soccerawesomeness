@@ -52,11 +52,11 @@ __p += '\n          <option value="' +
 ((__t = (player.name)) == null ? '' : __t) +
 '</option>\n          ';
  }); ;
-__p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Goals\n        <input type="text" class="goals" value="' +
+__p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
 ((__t = ( goals )) == null ? '' : __t) +
-'"/>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Assists\n        <input type="text" class="assists" value="' +
+'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-2 medium-1 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
 ((__t = ( assists )) == null ? '' : __t) +
-'"/>\n      </label>\n    </div>\n    <div class="small-3 medium-3 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
+'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-3 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
 ((__t = ( isCardChecked('N') )) == null ? '' : __t) +
 '>None</option>\n          <option value="Y" ' +
 ((__t = ( isCardChecked('Y') )) == null ? '' : __t) +

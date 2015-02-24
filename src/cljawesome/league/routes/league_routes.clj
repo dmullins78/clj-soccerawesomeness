@@ -19,12 +19,12 @@
     (< (:points t1) (:points t2)) false
     :else (> (:goal_differential t1) (:goal_differential t2))))
 
-(defn get-teams [league year season]
-  (let [teams (query/get-team-standings league (Integer. year) season)
+(defn get-teams [league season]
+  (let [teams (query/get-team-standings league season)
         lg (query/select-league-by-name {:name league})
         sorted-teams (sort (comp soccer-scorer) teams)
         sorted-divisions (group-by :division sorted-teams)]
-    (render-file "league.html" {:league (first lg) :teams sorted-divisions :base (lp/basepath league year season)})))
+    (render-file "league.html" {:league (first lg) :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defroutes league-routes
-  (GET  "/:league/:year/:season" [league year season] (get-teams league year season)))
+  (GET  "/:league/:season" [league season] (get-teams league season)))

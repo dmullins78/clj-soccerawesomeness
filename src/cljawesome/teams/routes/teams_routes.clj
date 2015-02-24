@@ -13,7 +13,7 @@
             [ring.util.response :refer [resource-response response]]))
 
 (defn base-path [league]
-  (lower-case (format "%s/%s/%s" (:league league)(:year league)(:season league))))
+  (lower-case (format "%s/%s" (:league league)(:season league))))
 
 (defn update-game-params [gameId params]
   {:home_score (Integer. (:home_score params))
@@ -21,11 +21,11 @@
    :id (Integer. gameId)
    :comments (:comments params)})
 
-(defn update-game [league year season teamId gameId request]
+(defn update-game [league season teamId gameId request]
   (when (not (authenticated? request))
     (throw-unauthorized {:message "Not authorized"}))
   (league/update-game<! (update-game-params gameId (:params request)))
-  (redirect (lp/basepath-lead-slash league year season "games/" gameId (str "?teamId=" teamId))))
+  (redirect (lp/basepath-lead-slash league season "games/" gameId (str "?teamId=" teamId))))
 
 (defn get-players-for-game [gameId]
   (league/get-players-for-game {:gameId (Integer. gameId)}))
@@ -52,15 +52,15 @@
     (merge player (first stats))
   player))
 
-(defn show-team-players [league year season teamId]
-  (let [league (league/get-season league year season)
+(defn show-team-players [league season teamId]
+  (let [league (league/get-season league season)
         players (league/get-players { :teamId (Integer. teamId) :seasonId (:seasonid league)})
         teams (league/get-team {:teamId (Integer. teamId)})
         new-players (map with-game-stats players)]
     (render-file "players.html" {:players new-players :team (first teams) :base (base-path league)})))
 
-(defn show-team [league year season teamId]
-  (let [league (league/get-season league year season)
+(defn show-team [league season teamId]
+  (let [league (league/get-season league season)
         team (league/get-team {:teamId (Integer. teamId)})
         games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
     (render-file "team.html" {:games games :team (first team) :base (base-path league)})))
@@ -70,10 +70,10 @@
     (render-file "teams-list.html" {:teams teams :base (base-path league)})))
 
 (defroutes teams-routes
-  (GET "/:name/:year/:season/games/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:teamId params) (:identity session)))
-  (GET "/:name/:year/:season/games/:gameId/players" [gameId] (get-players-for-game gameId ))
-  (DELETE "/:name/:year/:season/games/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
-  (POST "/:league/:year/:season/games/:gameId" [league year season gameId teamId :as request] (update-game league year season teamId gameId request))
-  (GET "/:league/:year/:season/teams/:teamId" [league year season teamId] (show-team league year season teamId))
-  (GET "/:league/:year/:season/teams/:teamId/players" [league year season teamId] (show-team-players league year season teamId))
-  (GET "/:name/:year/:season/teams" {params :params} (show-teams (lp/parse-params params) )))
+  (GET "/:name/:season/games/:id" {session :session params :params} (show-game (lp/parse-params params) (:id params) (:teamId params) (:identity session)))
+  (GET "/:name/:season/games/:gameId/players" [gameId] (get-players-for-game gameId ))
+  (DELETE "/:name/:season/games/:gameId/players/:personId" [gameId personId :as request] (delete-player-game gameId personId request))
+  (POST "/:league/:season/games/:gameId" [league season gameId teamId :as request] (update-game league season teamId gameId request))
+  (GET "/:league/:season/teams/:teamId" [league season teamId] (show-team league season teamId))
+  (GET "/:league/:season/teams/:teamId/players" [league season teamId] (show-team-players league season teamId))
+  (GET "/:name/:season/teams" {params :params} (show-teams (lp/parse-params params) )))
