@@ -17,7 +17,12 @@
   (cond
     (> (:points t1) (:points t2)) true
     (< (:points t1) (:points t2)) false
-    :else (> (:goal_differential t1) (:goal_differential t2))))
+    :else
+      (cond
+        (> (:goal_differential t1) (:goal_differential t2)) true
+        (< (:goal_differential t1) (:goal_differential t2)) false
+        :else
+           (> (:scored t1) (:scored t2)))))
 
 (defn get-teams [league season]
   (let [teams (query/get-team-standings league season)
