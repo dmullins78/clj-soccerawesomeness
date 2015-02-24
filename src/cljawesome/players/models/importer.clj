@@ -1,9 +1,9 @@
-(ns cljawesome.person.models.importer
+(ns cljawesome.players.models.importer
   (require [clojure.data.csv :as csv]
            [clojure.set :refer :all]
            [clj-time.coerce :as c]
            [clj-time.core :as t]
-           [cljawesome.person.models.query-defs :as query]
+           [cljawesome.players.models.query-defs :as query]
            [cljawesome.util.filter :as util]
            [cljawesome.schedule.models.query-defs :as teams]
            [clojure.java.io :as io]))

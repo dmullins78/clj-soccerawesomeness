@@ -4,7 +4,7 @@
             [compojure.core :refer :all]
             [ring.middleware.session :refer [wrap-session]]
             [cljawesome.league.routes.league-routes :refer [league-routes]]
-            [cljawesome.person.routes.person-routes :refer [person-routes]]
+            [cljawesome.players.routes.players-routes :refer [players-routes]]
             [cljawesome.schedule.routes.import-routes :refer [schedule-routes]]
             [cljawesome.login.routes.login-routes :refer [login-routes]]
             [cljawesome.teams.routes.teams-routes :refer [teams-routes]]
@@ -37,7 +37,7 @@
   (session-backend {:unauthorized-handler unauthorized-handler}))
 
 (def app
-  (-> (routes schedule-routes league-routes login-routes admin-routes person-routes teams-routes app-routes)
+  (-> (routes schedule-routes league-routes login-routes admin-routes players-routes teams-routes app-routes)
       (middleware/wrap-json-body {:keywords? true})
       (middleware/wrap-json-response)
       (wrap-authorization auth-backend)

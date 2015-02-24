@@ -7,7 +7,7 @@
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [cljawesome.league.models.query-defs :as league]
             [cljawesome.schedule.models.importer :as importer]
-            [cljawesome.person.models.importer :as roster]
+            [cljawesome.players.models.importer :as roster]
             [ring.util.response :refer [resource-response response]]))
 
 (defn show-load-rosters [league season request]

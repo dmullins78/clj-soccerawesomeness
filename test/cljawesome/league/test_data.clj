@@ -5,7 +5,7 @@
             [clj-time.core :as t]
             [clj-time.coerce :as c]
             [cljawesome.database.database-helper :as dbtools]
-            [cljawesome.person.models.query-defs :as p]
+            [cljawesome.players.models.query-defs :as p]
             [cljawesome.league.models.query-defs :as query]
             [cljawesome.core.handler :refer :all]))
 

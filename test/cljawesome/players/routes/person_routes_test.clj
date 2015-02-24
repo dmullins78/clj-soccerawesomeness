@@ -1,4 +1,4 @@
-(ns cljawesome.person.routes.person-routes-test
+(ns cljawesome.players.routes.players-routes-test
   (:use midje.sweet)
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
@@ -8,7 +8,7 @@
             [clj-time.coerce :as c]
             [cljawesome.database.database-helper :as dbtools]
             [cljawesome.league.models.query-defs :as query]
-            [cljawesome.person.models.query-defs :as p]
+            [cljawesome.players.models.query-defs :as p]
             [cljawesome.core.handler :refer :all]))
 
 (facts "Get the active season for a league"

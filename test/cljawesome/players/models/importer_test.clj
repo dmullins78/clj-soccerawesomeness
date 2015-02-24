@@ -1,11 +1,11 @@
-(ns cljawesome.person.models.importer-test
+(ns cljawesome.players.models.importer-test
   (:use midje.sweet)
   (:require [clojure.test :refer :all]
             [cljawesome.database.database-helper :as dbtools]
             [cljawesome.league.test-data :as dummy]
             [cljawesome.league.models.query-defs :as query]
-            [cljawesome.person.models.query-defs :as p]
-            [cljawesome.person.models.importer :refer :all]))
+            [cljawesome.players.models.query-defs :as p]
+            [cljawesome.players.models.importer :refer :all]))
 
 (facts "Load players"
 

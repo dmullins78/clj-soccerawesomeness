@@ -9,7 +9,7 @@
             [ring.middleware.session :refer [wrap-session]]
             [ring.middleware.params :refer [wrap-params]]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
-            [cljawesome.person.models.query-defs :as pdb]
+            [cljawesome.players.models.query-defs :as pdb]
             [cljawesome.admin.models.query-defs :as adb]
             [cljawesome.util.league-params :as lp]
             [buddy.auth.backends.session :refer [session-backend]]
