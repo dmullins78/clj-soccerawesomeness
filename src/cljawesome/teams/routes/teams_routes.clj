@@ -18,6 +18,9 @@
 (defn update-game-params [gameId params]
   {:home_score (Integer. (:home_score params))
    :away_score (Integer. (:away_score params))
+   :home_team_id (Integer. (:home_team params))
+   :away_team_id (Integer. (:away_team params))
+   :field (:field params)
    :id (Integer. gameId)
    :comments (:comments params)})
 
@@ -44,8 +47,9 @@
 (defn show-game [league gameId teamId user]
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))
         players (league/players-by-teams {:teamIds [(:home_team_id game) (:away_team_id game)] })
+        teams (teams/teams-by-season {:seasonId (:seasonid league)})
         permissions (game-permissions user)]
-    (render-file "game.html" {:game game :players players :teamId teamId :base (base-path league) :permissions permissions})))
+    (render-file "game.html" {:game game :players players :teamId teamId :teams teams :base (base-path league) :permissions permissions})))
 
 (defn with-game-stats [player]
   (if-let [stats (league/get-player-stats {:seasonId (:seasonid player) :playerId (:id player)})]

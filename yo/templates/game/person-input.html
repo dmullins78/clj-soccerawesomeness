@@ -1,6 +1,6 @@
 <form id="player_stats">
   <div class="row">
-    <div class="small-12 medium-7 columns">
+    <div class="small-12 medium-6 columns">
       <label>Player
         <select class="name">
           <% _.each(players, function(player){ %>
@@ -9,17 +9,17 @@
         </select>
       </label>
     </div>
-    <div class="small-2 medium-1 columns">
+    <div class="small-2 columns">
       <label>Goals
         <input type="number" class="goals" value="<%= goals %>" pattern="[0-9]*"/>
       </label>
     </div>
-    <div class="small-2 medium-1 columns">
+    <div class="small-2 columns">
       <label>Assists
         <input type="number" class="assists" value="<%= assists %>" pattern="[0-9]*"/>
       </label>
     </div>
-    <div class="small-3 medium-3 columns">
+    <div class="small-2 columns">
       <label>Card
         <select class="card">
           <option value="N" <%= isCardChecked('N') %>>None</option>

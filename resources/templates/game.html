@@ -15,19 +15,23 @@
     <div class="row">
       <div class="medium-6 columns">
         <label>Starts
-          <input type="text" value="{{game.starts_at}}" {{permissions.details}}/>
+          <input type="text" name="start_time" value="{{game.starts_at}}" {{permissions.details}}/>
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Field
-          <input type="text" value="{{game.field}}" {{permissions.details}}/>
+          <input type="text" name="field" value="{{game.field}}" {{permissions.details}}/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="small-10 columns">
         <label>Home Team
-          <input type="text" value="{{game.home_team}}" {{permissions.details}}/>
+          <select name="home_team" {{permissions.details}}>
+            {% for team in teams %}
+              <option value="{{team.id}}" {% ifequal game.home_team_id team.id %} selected {% endifequal %} >{{team.name}}</option>
+            {% endfor %}
+          </select>
         </label>
       </div>
       <div class="small-2 columns">
@@ -39,7 +43,11 @@
     <div class="row">
       <div class="small-10 columns">
         <label>Away Team
-          <input type="text" value="{{game.away_team}}" {{permissions.details}}/>
+          <select name="away_team" {{permissions.details}}>
+            {% for team in teams %}
+              <option value="{{team.id}}" {% ifequal game.away_team_id team.id %} selected {% endifequal %} >{{team.name}}</option>
+            {% endfor %}
+          </select>
         </label>
       </div>
       <div class="small-2 columns">

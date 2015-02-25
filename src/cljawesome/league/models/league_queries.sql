@@ -37,7 +37,15 @@ INSERT INTO teams_seasons (team_id, season_id, division)
 VALUES (:teamId, :seasonId, :division);
 
 -- name: update-game<!
-update games set update_count = update_count + 1, home_team_score = :home_score, away_team_score = :away_score, comments = :comments where id = :id
+update games set
+update_count = update_count + 1,
+home_team_score = :home_score,
+away_team_score = :away_score,
+comments = :comments,
+home_team_id = :home_team_id,
+away_team_id = :away_team_id,
+field = :field
+where id = :id
 
 -- name: insert-game<!
 INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
@@ -152,3 +160,4 @@ inner join teams home on home_team_id = home.id
 inner join teams away on away_team_id = away.id
 WHERE home_team_id = :team_id or away_team_id = :team_id
 AND season_id = :seasonId
+order by g.start_time
