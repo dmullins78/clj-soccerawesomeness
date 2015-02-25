@@ -17,8 +17,10 @@
   (render-file "login.html" {}))
 
 (defn home [league season session]
-  (let [player (:identity session)]
-    (render-file "home.html" {:base (lp/basepath league season) :admin (= "leagueadmin" (:role player))})))
+  (let [player (:identity session)
+        basepath (lp/basepath league season)
+        leaguepath (clojure.string/replace basepath #"/$" "")]
+    (render-file "home.html" {:base basepath :leaguepath leaguepath :admin (= "leagueadmin" (:role player))})))
 
 (defn auth [email password]
   (when-let [credential (first (pdb/admin-roles {:email email :password password}))]
