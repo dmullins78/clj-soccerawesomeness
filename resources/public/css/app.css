@@ -6418,3 +6418,13 @@ th.hide-for-touch {
   padding: 50px; }
   .rostersButton span {
     color: white; }
+
+.rosters .header {
+  padding: 25px 0 25px 0; }
+.rosters .rosterHeader {
+  font-size: 1.4em; }
+.rosters .player {
+  padding: 5px 0 5px 0;
+  border-top: 1px solid #dddddd; }
+.rosters .card {
+  display: block; }

@@ -5,15 +5,33 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{team.name}}</h1>
-<hr/>
-
-<div class="medium-centered small-12 medium-4 columns">
+<div class="rosters small-8 small-centered columns">
+  <div class="row header">
+    <h1>{{team.name}}</h1>
+  </div>
+  <div class="row">
+    <div class="small-1 columns">
+      <span class="rosterHeader">Jersey</span>
+    </div>
+    <div class="small-6 columns">
+      <span class="rosterHeader">Player</span>
+    </div>
+    <div class="small-5 columns text-left">
+      <span class="rosterHeader">Infractions</span>
+    </div>
+  </div>
   {% for player in players %}
-    <h3>{{player.name}}</h3>
-    {% for card in player.cards %}
-      <span class="card">{{card.card|cardlabel}} Card on {{card.card_date|date:shortDate}}</span>
-    {% endfor %}
+  <div class="row player">
+    <div class="small-1 columns">&nbsp;</div>
+    <div class="small-6 columns playerName">
+      {{player.name}}
+    </div>
+    <div class="small-5 columns text-left">
+      {% for card in player.cards %}
+        <span class="card">{{card.card|cardlabel}} Card on {{card.card_date|date:shortDate}}</span>
+      {% endfor %}
+    </div>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}

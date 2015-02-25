@@ -22,4 +22,21 @@
   }
 }
 
+.rosters {
+  .header {
+    padding: 25px 0 25px 0;
+  }
 
+  .rosterHeader {
+    font-size: 1.4em;
+  }
+
+  .player {
+    padding: 5px 0 5px 0;
+    border-top: 1px solid #dddddd;
+  }
+
+  .card {
+    display: block;
+  }
+}
