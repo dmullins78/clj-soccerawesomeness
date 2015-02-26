@@ -74,3 +74,11 @@ CREATE TABLE Players_Games_Stats (
   assists smallint,
   PRIMARY KEY(season_id, player_id, game_id)
 );
+
+CREATE TABLE Team_Import_Alias (
+  league_id BIGSERIAL REFERENCES Leagues,
+  team_id BIGSERIAL REFERENCES Teams,
+  alias varchar(100) NOT NULL,
+  PRIMARY KEY(league_id, team_id)
+);
+

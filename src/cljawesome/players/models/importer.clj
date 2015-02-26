@@ -40,7 +40,7 @@
 (defn import-players [league-id seasonId file]
   (let [incoming-players (parse-players file)
         existing-players (find-existing incoming-players)
-        teams (teams/teams-by-season {:seasonId seasonId} )]
+        teams (teams/import-teams-by-season {:seasonId seasonId :leagueId league-id} )]
     (reset-season-rosters seasonId)
     (doseq [player incoming-players]
       (let [team (util/find-first (:team player) teams :name)]

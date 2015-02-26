@@ -39,6 +39,11 @@ module.exports = function(grunt) {
       playerStats: {
         src: ['dist/templates/all.js', 'js/modules/players/models/*.js', 'js/modules/players/views/*.js', 'js/modules/players/Init.js'],
         dest: '../resources/public/js/player-stats.js'
+      },
+
+      rosters: {
+        src: ['dist/templates/all.js', 'js/modules/aliases/models/*.js', 'js/modules/aliases/views/*.js', 'js/modules/aliases/Init.js'],
+        dest: '../resources/public/js/rosters.js'
       }
     },
 

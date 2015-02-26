@@ -14,6 +14,7 @@ Roster Import
       Success - roster imported
     </div>
   {% endif %}
+  <div id="app"></div>
   <form method="POST" action="/{{base}}roster/load" enctype="multipart/form-data">
     <div class="row">
       <div class="medium-6 columns">
@@ -29,4 +30,11 @@ Roster Import
     </form>
   </div>
 </div>
+
+<script type="text/javascript">
+var teams = {{teams|json|safe}};
+</script>
+
+<script src="/js/sawesomeness.js"></script>
+<script src="/js/rosters.js"></script>
 {% endblock %}

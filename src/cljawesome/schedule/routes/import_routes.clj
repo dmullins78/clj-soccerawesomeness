@@ -6,14 +6,29 @@
             [cljawesome.util.league-params :as lp]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [cljawesome.league.models.query-defs :as league]
+            [cljawesome.schedule.models.query-defs :as sdb]
             [cljawesome.schedule.models.importer :as importer]
             [cljawesome.players.models.importer :as roster]
             [ring.util.response :refer [resource-response response]]))
 
+(defn get-league-team-aliases [league season]
+  (let [league (league/get-season league season)]
+    (sdb/team-import-aliases { :leagueId (:id league) })))
+
+(defn add-league-team-alias [league body]
+  (println league)
+  (sdb/insert-league-alias<!
+    { :leagueId (:id league)
+     :teamId (Integer. (:teamid body))
+     :teamAlias (:alias body)})
+  "")
+
 (defn show-load-rosters [league season request]
-  (when (not (authenticated? request))
-    (throw-unauthorized {:message "Not authorized"}))
-  (render-file "roster-import.html" { :base (lp/basepath league season)}))
+  ;(when (not (authenticated? request))
+  ;(throw-unauthorized {:message "Not authorized"}))
+  (let [league (league/get-season league season)
+        teams (sdb/teams-by-season { :seasonId (:seasonid league) })]
+    (render-file "roster-import.html" { :teams teams :base (lp/basepath league season)})))
 
 (defn load-rosters [league season file request]
   (when (not (authenticated? request))
@@ -36,10 +51,16 @@
 
 (defroutes schedule-routes
   (GET "/:league/:season/roster/load" [league season :as request] (show-load-rosters league season request))
+  (GET "/:league/:season/roster/load/aliases" [league season] (get-league-team-aliases league season))
+
+
+  (POST "/:name/:season/roster/load/aliases" {params :params body :body}
+        (add-league-team-alias (lp/parse-params params) body))
+
   (mp/wrap-multipart-params
     (POST "/:league/:season/roster/load" [league season file :as request]
-         (load-rosters league season file request )))
+          (load-rosters league season file request )))
   (GET "/:league/:season/schedule/load" [league season :as request] (show-load-schedule league season request))
   (mp/wrap-multipart-params
     (POST "/:league/:season/schedule/load" [league season file :as request]
-         (load-schedule league season file request ))))
+          (load-schedule league season file request ))))

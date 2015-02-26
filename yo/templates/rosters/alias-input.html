@@ -1,0 +1,26 @@
+<form id="team_alias">
+  <div class="row">
+    <div class="small-12 medium-6 columns">
+      <label>Teams
+        <select class="team">
+          <% _.each(teams, function(team){ %>
+          <option value="<%=team.id%>"><%=team.name%></option>
+          <% }); %>
+        </select>
+      </label>
+    </div>
+    <div class="small-2 medium-6 columns">
+      <label>Alias
+        <input type="text" class="alias" value="<%= alias %>"/>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 medium-6 columns small-centered">
+      <ul class="button-group">
+        <li><a id="cancel" class="tiny button secondary">Cancel</a></li>
+        <li><a id="saved" class="tiny button">Save</a></li>
+      </ul>
+    </div>
+  </div>
+</form>

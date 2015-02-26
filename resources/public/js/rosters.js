@@ -112,7 +112,7 @@ __p += '  <table class="aliases">\n    <thead>\n      <tr>\n        <th>Team</th
 }
 return __p
 };
-var PlayerModel = Backbone.Model.extend({
+var AliasModel = Backbone.Model.extend({
   initialize: function(){
     this.listenTo(this, "remove", this.delete);
   },
@@ -122,29 +122,29 @@ var PlayerModel = Backbone.Model.extend({
   }
 });
 
-var PlayerModels = Backbone.Collection.extend({
-  model: PlayerModel,
+var AliasModels = Backbone.Collection.extend({
+  model: AliasModel,
 
   url: function() {
-    return window.location.pathname + "/players";
+    return window.location.pathname + "/aliases";
   }
 });
 
-var AddPlayerLinkView = Marionette.ItemView.extend({
-  template: _.template("<a id='addStat'>Add Player Details</a>"),
+var AddAliasLinkView = Marionette.ItemView.extend({
+  template: _.template("<a id='addAlias'>Add Alias</a>"),
 
   events: {
-    "click #addStat" : "showEntryScreen"
+    "click #addAlias" : "showEntryScreen"
   },
 
   showEntryScreen: function(ev) {
-    app.otherRegion.show(new AddPlayerStatView({model: new PlayerModel() }));
+    app.otherRegion.show(new AddAliasView({model: new AliasModel() }));
   }
 
 });
 
-var AddPlayerStatView = Marionette.ItemView.extend({
-  template: "templates/game/person-input.html",
+var AddAliasView = Marionette.ItemView.extend({
+  template: "templates/rosters/alias-input.html",
 
   events: {
     "click #cancel" : "cancel",
@@ -153,51 +153,38 @@ var AddPlayerStatView = Marionette.ItemView.extend({
 
   save: function(ev) {
     app.collection.create({
-      "id" : $('.name', this.$el).val(),
-      "playername": $(".name option:selected", this.$el).text(),
-      "goals": $('.goals', this.$el).val(),
-      "assists": $('.assists', this.$el).val(),
-      "card": $('.card', this.$el).val()
+      "teamid" : $('.team', this.$el).val(),
+      "teamname": $(".team option:selected", this.$el).text(),
+      "alias": $('.alias', this.$el).val()
     });
 
-    app.otherRegion.show(new AddPlayerLinkView());
-  },
-
-  templateHelpers: function () {
-    return {
-      isCardChecked: function(value){
-        return this.card === value ? 'selected' : "";
-      }
-    };
+    app.otherRegion.show(new AddAliasLinkView());
   },
 
   serializeData: function() {
     return {
-      name: this.model.get('playername'),
-      goals: this.model.get('goals'),
-      assists: this.model.get('assists'),
-      card: this.model.get('card'),
-      players: players
+      teamId: this.model.get('teamid'),
+      teamName: this.model.get('teamname'),
+      alias: this.model.get('alias')
     };
   },
 
   cancel: function(ev) {
-    app.otherRegion.show(new AddPlayerLinkView());
+    app.otherRegion.show(new AddAliasLinkView());
   }
 });
 
 
-var PlayerItemView = Marionette.ItemView.extend({
-  template: "templates/game/person-display.html",
+var AliasItemView = Marionette.ItemView.extend({
+  template: "templates/rosters/alias-display.html",
   tagName: "tr",
 
   events: {
-    "click #remove" : "remove2",
-    "click #edit" : "edit"
+    "click #remove" : "remove2"
   },
 
   edit: function() {
-    var entryView = new AddPlayerStatView({model: this.model});
+    var entryView = new AddAliasView({model: this.model});
 
     app.otherRegion.show(entryView);
   },
@@ -206,34 +193,18 @@ var PlayerItemView = Marionette.ItemView.extend({
     app.collection.remove(this.model);
   },
 
-  templateHelpers: function () {
-    return {
-      getCardLabel: function() {
-        switch(this.card) {
-            case 'R':
-                return "Red"
-            case 'Y':
-                return "Yellow"
-            default:
-              return "No"
-        }
-      }
-    }
-  },
-
   serializeData: function() {
     return {
-      name: this.model.get('playername'),
-      goals: this.model.get('goals'),
-      assists: this.model.get('assists'),
-      card: this.model.get('card')
+      teamId: this.model.get('teamid'),
+      teamName: this.model.get('teamname'),
+      alias: this.model.get('alias')
     };
   }
 });
 
-var PlayerListView = Marionette.CompositeView.extend({
-  template: "templates/game/people-display.html",
-  childView: PlayerItemView,
+var AliasListView = Marionette.CompositeView.extend({
+  template: "templates/rosters/aliases-display.html",
+  childView: AliasItemView,
   childViewContainer: "tbody"
 });
 
@@ -242,20 +213,18 @@ var app = new Marionette.Application();
 
 var AppRouter = Backbone.Router.extend({
   routes: {
-    "" : "showUserList"
+    "" : "showAliases"
   },
 
-  showUserList : function() {
-    app.AppController.showUserList();
-    if(editable) {
-      app.otherRegion.show(new AddPlayerLinkView());
-    }
+  showAliases : function() {
+    app.AppController.showAliases();
+    app.otherRegion.show(new AddAliasLinkView());
   }
 });
 
 var AppController = Marionette.Controller.extend({
-  showUserList: function() {
-      var userListView = new PlayerListView({ collection: app.collection});
+  showAliases: function() {
+      var userListView = new AliasListView({ collection: app.collection});
       app.mainRegion.show(userListView);
     }
 });
@@ -268,7 +237,7 @@ app.addInitializer(function() {
 
   app.AppController = new AppController();
   app.Router = new AppRouter();
-  app.collection = new PlayerModels();
+  app.collection = new AliasModels();
 
   app.collection.fetch();
 
