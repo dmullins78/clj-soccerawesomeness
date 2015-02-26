@@ -22,7 +22,9 @@
         basepath (lp/basepath league season)
         lg (first (query/select-league-by-name {:path league :season season}))
         leaguepath (clojure.string/replace basepath #"/$" "")]
-    (render-file "home.html" {:base basepath :league lg :leaguepath leaguepath :admin (= "leagueadmin" (:role player))})))
+    (if (= "leagueadmin" (:role player))
+      (render-file "home.html" {:base basepath :league lg :leaguepath leaguepath :admin true})
+      (redirect (lp/basepath-lead-slash league season "teams")))))
 
 (defn auth [email password]
   (when-let [credential (first (pdb/admin-roles {:email email :password password}))]

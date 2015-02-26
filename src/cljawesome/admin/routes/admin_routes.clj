@@ -51,5 +51,5 @@
   (GET "/:league/:season/admins" [league season] (show-admins league season))
   (GET "/:league/:season/admins/:adminId" [league season adminId :as request] (show-admin league season adminId))
   (DELETE "/:league/:season/admins/:adminId" [league season adminId :as request] (delete-admin league adminId request))
-  (POST "/:league/:season/admins" [league season email password :as request] (add-admin league email password request))
+  (POST "/:league/:season/admins" [league season email password :as request] (add-admin league season email password request))
   (POST "/:league/:season/admins/:adminId" [league season adminId email password :as request] (update-admin league season adminId email password request)))
