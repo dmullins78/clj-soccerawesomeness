@@ -8,64 +8,17 @@
 <h1>{{league.name}}</h1>
 <hr/>
 
-<div class="medium-centered medium-8 columns standings">
-    <h2>Top Individual Performers</h2>
-    <table class="standings">
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th>Team</th>
-          <th>Division</th>
-          <th>Goals</th>
-          <th>Assists</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for player in scorers %}
-          <tr>
-            <td>{{player.name}}</td>
-            <td>{{player.team}}</td>
-            <td>{{player.division}}</td>
-            <td>{{player.goals}}</td>
-            <td>{{player.assists}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-</div>
+{% include "fragments/top-performers.html" %}
+
+{% include "fragments/top-offenders.html" %}
+
 <div class="medium-centered medium-8 columns standings">
   {% for division,teamList in teams %}
-    <h2>{{division}}</h2>
-    <table class="standings">
-      <thead>
-        <tr>
-          <th>Team</th>
-          <th>Points</th>
-          <th>Goal Diff</th>
-          <th>Scored</th>
-          <th>Allowed</th>
-          <th>Wins</th>
-          <th>Losses</th>
-          <th>Ties</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for team in teamList %}
-          <tr>
-            <td>{{team.name}}</td>
-            <td>{{team.points}}</td>
-            <td>{{team.goal_differential}}</td>
-            <td>{{team.scored}}</td>
-            <td>{{team.allowed}}</td>
-            <td>{{team.wins}}</td>
-            <td>{{team.losses}}</td>
-            <td>{{team.ties}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <h2>{{division}} Division</h2>
+    <p><a href="/{{base}}performance?division={{division}}">See top performers</a></p>
+    {% include "fragments/division-standings.html" %}
   {% endfor %}
-
+</div>
 
 {% endblock %}
 

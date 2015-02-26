@@ -1,0 +1,28 @@
+<table class="standings">
+  <thead>
+    <tr>
+      <th>Team</th>
+      <th>Points</th>
+      <th>Goal Diff</th>
+      <th>Scored</th>
+      <th>Allowed</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th>Ties</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for team in teamList %}
+      <tr>
+        <td>{{team.name}}</td>
+        <td>{{team.points}}</td>
+        <td>{{team.goal_differential}}</td>
+        <td>{{team.scored}}</td>
+        <td>{{team.allowed}}</td>
+        <td>{{team.wins}}</td>
+        <td>{{team.losses}}</td>
+        <td>{{team.ties}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

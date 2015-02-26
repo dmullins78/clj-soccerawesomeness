@@ -1,0 +1,25 @@
+<div class="medium-centered medium-8 columns standings">
+    <h2>Top Performers</h2>
+    <table class="standings">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Team</th>
+          <th>Division</th>
+          <th>Goals</th>
+          <th>Assists</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in scorers %}
+          <tr>
+            <td>{{player.name}}</td>
+            <td>{{player.team}}</td>
+            <td>{{player.division}}</td>
+            <td>{{player.goals}}</td>
+            <td>{{player.assists}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

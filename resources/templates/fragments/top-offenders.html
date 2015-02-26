@@ -1,0 +1,27 @@
+<div class="medium-centered medium-8 columns standings">
+    <h2>Top Offenders</h2>
+    <table class="standings">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Team</th>
+          <th>Division</th>
+          <th>Cards</th>
+          <th>Red Cards</th>
+          <th>Yellow Cards</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in offenders %}
+          <tr>
+            <td>{{player.name}}</td>
+            <td>{{player.team}}</td>
+            <td>{{player.division}}</td>
+            <td>{{player.cards}}</td>
+            <td>{{player.reds}}</td>
+            <td>{{player.yellows}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

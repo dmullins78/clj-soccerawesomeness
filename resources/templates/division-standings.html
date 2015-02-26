@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{league.name}}
+{% endblock %}
+
+{% block content %}
+<h1>{{league.name}}</h1>
+<h2>{{division}}</h1>
+<hr/>
+
+<div class="medium-centered medium-8 columns standings">
+  {% include "fragments/top-performers.html" %}
+  {% include "fragments/top-offenders.html" %}
+</div>
+
+{% endblock %}
+

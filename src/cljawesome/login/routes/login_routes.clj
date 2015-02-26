@@ -10,6 +10,7 @@
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [cljawesome.players.models.query-defs :as pdb]
             [cljawesome.util.league-params :as lp]
+            [cljawesome.league.models.query-defs :as query]
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
 
@@ -19,8 +20,9 @@
 (defn home [league season session]
   (let [player (:identity session)
         basepath (lp/basepath league season)
+        lg (first (query/select-league-by-name {:path league :season season}))
         leaguepath (clojure.string/replace basepath #"/$" "")]
-    (render-file "home.html" {:base basepath :leaguepath leaguepath :admin (= "leagueadmin" (:role player))})))
+    (render-file "home.html" {:base basepath :league lg :leaguepath leaguepath :admin (= "leagueadmin" (:role player))})))
 
 (defn auth [email password]
   (when-let [credential (first (pdb/admin-roles {:email email :password password}))]

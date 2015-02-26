@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Home
+{{league.name}}
 {% endblock %}
 
 {% block content %}
-<h1>Home</h1>
+<h1>{{league.name}}</h1>
+<h2>{{league.season|capitalize}}</h2>
 <hr/>
 
 <div class="medium-centered small-12 medium-4 columns">

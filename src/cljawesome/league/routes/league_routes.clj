@@ -25,13 +25,21 @@
         :else
            (> (:scored t1) (:scored t2)))))
 
+(defn get-division [league season division]
+  (let [lg (first (query/select-league-by-name {:path league :season season}))
+        top-scorers (player/top-scorers-by-division {:division division :seasonId (:seasonid lg)})
+        top-offenders (player/top-offenders-by-division {:division division :seasonId (:seasonid lg)})]
+    (render-file "division-standings.html" {:division division :league lg :offenders top-offenders :scorers top-scorers :base (lp/basepath league season)})))
+
 (defn get-teams [league season]
   (let [teams (query/get-team-standings league season)
         lg (first (query/select-league-by-name {:path league :season season}))
         top-scorers (player/top-scorers {:seasonId (:seasonid lg)})
+        top-offenders (player/top-offenders {:seasonId (:seasonid lg)})
         sorted-teams (sort (comp soccer-scorer) teams)
         sorted-divisions (group-by :division sorted-teams)]
-    (render-file "league.html" {:league lg :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
+    (render-file "league.html" {:league lg :offenders top-offenders :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defroutes league-routes
-  (GET  "/:league/:season" [league season] (get-teams league season)))
+  (GET  "/:league/:season" [league season] (get-teams league season))
+  (GET  "/:league/:season/performance" [league season division] (get-division league season division)))
