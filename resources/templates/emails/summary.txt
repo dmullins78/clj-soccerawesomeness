@@ -1,3 +1,6 @@
+{{league.name}}
+{{date-range|first}}-{{date-range|last}}
+
 {% for game,players in games %}
 *******************************************
 {{game.home_team}} vs. {{game.away_team}} 
