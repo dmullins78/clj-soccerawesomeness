@@ -11,6 +11,7 @@ and s.season = :season
 -- name: select-league-season
 SELECT
 l.id,
+l.name,
 l.path as league,
 s.season,
 s.id as seasonId
