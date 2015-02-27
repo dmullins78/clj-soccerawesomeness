@@ -15,13 +15,14 @@
   (let [league (league/get-season league season)]
     (sdb/team-import-aliases { :leagueId (:id league) })))
 
+(defn delete-alias [teamId]
+  (sdb/delete-alias<! { :teamId (Integer. teamId)}))
+
 (defn add-league-team-alias [league body]
-  (println league)
   (sdb/insert-league-alias<!
     { :leagueId (:id league)
-     :teamId (Integer. (:teamid body))
-     :teamAlias (:alias body)})
-  "")
+     :teamId (Integer. (:id body))
+     :teamAlias (:alias body)}))
 
 (defn show-load-rosters [league season request]
   ;(when (not (authenticated? request))
@@ -52,9 +53,8 @@
 (defroutes schedule-routes
   (GET "/:league/:season/roster/load" [league season :as request] (show-load-rosters league season request))
   (GET "/:league/:season/roster/load/aliases" [league season] (get-league-team-aliases league season))
-
-
-  (POST "/:name/:season/roster/load/aliases" {params :params body :body}
+  (DELETE "/:name/:season/roster/load/aliases/:aliasId" [aliasId] (delete-alias aliasId))
+  (PUT "/:name/:season/roster/load/aliases/:id" {params :params body :body}
         (add-league-team-alias (lp/parse-params params) body))
 
   (mp/wrap-multipart-params

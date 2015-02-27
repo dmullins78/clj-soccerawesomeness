@@ -153,7 +153,7 @@ var AddAliasView = Marionette.ItemView.extend({
 
   save: function(ev) {
     app.collection.create({
-      "teamid" : $('.team', this.$el).val(),
+      "id" : $('.team', this.$el).val(),
       "teamname": $(".team option:selected", this.$el).text(),
       "alias": $('.alias', this.$el).val()
     });
@@ -163,7 +163,7 @@ var AddAliasView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
-      teamId: this.model.get('teamid'),
+      teamId: this.model.get('id'),
       teamName: this.model.get('teamname'),
       alias: this.model.get('alias')
     };
@@ -195,7 +195,7 @@ var AliasItemView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
-      teamId: this.model.get('teamid'),
+      id: this.model.get('id'),
       teamName: this.model.get('teamname'),
       alias: this.model.get('alias')
     };

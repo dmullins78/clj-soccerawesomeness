@@ -17,7 +17,7 @@ SELECT a.team_id, a.alias from Team_Import_Alias a
 where a.league_id = :leagueId
 
 -- name: team-import-aliases
-SELECT a.team_id as teamId, t.name as teamname, a.alias
+SELECT a.team_id as id, t.name as teamname, a.alias
 from Team_Import_Alias a
 inner join teams t on a.team_id = t.id
 where a.league_id = :leagueId
@@ -31,6 +31,9 @@ select
   inner join seasons s on ts.season_id = s.id
   where s.id = :seasonId
   order by t.name
+
+-- name: delete-alias<!
+delete from team_import_alias where team_id = :teamId
 
 -- name: delete-season-teams<!
 delete from games where season_id = :seasonId

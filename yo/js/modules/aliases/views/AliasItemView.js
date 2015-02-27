@@ -18,7 +18,7 @@ var AliasItemView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
-      teamId: this.model.get('teamid'),
+      id: this.model.get('id'),
       teamName: this.model.get('teamname'),
       alias: this.model.get('alias')
     };
