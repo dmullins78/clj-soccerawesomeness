@@ -69,6 +69,18 @@ from players p
 inner join players_games_stats ps on ps.player_id = p.id
 where ps.game_id = :gameId
 
+-- name: get-offenders-for-game
+select
+p.id,
+p.name as playerName,
+ps.goals,
+ps.assists,
+ps.card
+from players p
+inner join players_games_stats ps on ps.player_id = p.id
+where ps.game_id = :gameId
+and ps.card in ('Y', 'R')
+
 -- name: select-season-teams
 select
 t.id,
@@ -164,4 +176,25 @@ inner join teams home on home_team_id = home.id
 inner join teams away on away_team_id = away.id
 WHERE home_team_id = :team_id or away_team_id = :team_id
 AND season_id = :seasonId
+order by g.start_time
+
+-- name: select-recently-updated-games
+SELECT
+g.id,
+g.field,
+g.update_count,
+to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
+comments,
+home_team_id,
+home_team_score as ht_score,
+away_team_id,
+away_team_score as at_score,
+away.name as away_team,
+home.name as home_team
+FROM games g
+inner join teams home on home_team_id = home.id
+inner join teams away on away_team_id = away.id
+WHERE season_id = :seasonId
+and g.last_updated >= current_date - interval '7 days'
+and g.update_count > 0
 order by g.start_time

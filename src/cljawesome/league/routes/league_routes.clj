@@ -42,6 +42,6 @@
     (render-file "league.html" {:league lg :offenders top-offenders :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defroutes league-routes
-  (GET  "/poing/:text" [text] (email/summary text))
+  (GET  "/:league/:season/summary" [league season] (email/summary league season))
   (GET  "/:league/:season" [league season] (get-teams league season))
   (GET  "/:league/:season/performance" [league season division] (get-division league season division)))

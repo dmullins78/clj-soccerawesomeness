@@ -1,0 +1,11 @@
+{% for game,players in games %}
+
+*******************************************
+{{game.home_team}} {{game.ht_score}} vs. {{game.away_team}} {{game.at_score}}
+{{game.field}} at {{game.starts_at}}
+{% for player in players %}
+  {{player.playername}} {{player.card}}
+{% endfor %}
+*******************************************
+
+{% endfor %}
