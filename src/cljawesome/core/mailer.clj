@@ -12,12 +12,12 @@
 (defn summary-date-interval []
   (let [end (t/now)
         start (t/minus end (t/weeks 1))]
-  [(f/unparse custom-formatter start) (f/unparse custom-formatter end)]))
+    [(f/unparse custom-formatter start) (f/unparse custom-formatter end)]))
 
 (defn player-stats [game]
   (if-let [players (league/get-offenders-for-game {:gameId (:id game)})]
-   [game players]
-  [game []]))
+    [game players]
+    [game []]))
 
 (defn summary [lg season]
   (println "PP " + (summary-date-interval))
@@ -26,12 +26,11 @@
         game-players (map player-stats games)
         date-range (summary-date-interval)
         text (render-file "emails/summary.txt" {:range date-range :league league :games game-players})]
-    (println "EF " + date-range)
-    ;(send-message {:host "smtp.sendgrid.net"
-                   ;:user (env :mail-user)
-                   ;:pass (env :mail-password)}
-                  ;{:from "dmullins78@gmail.com"
-                   ;:to "dmullins78@gmail.com"
-                   ;:subject (str "Weekly Summary")
-                   ;:body text})
-  text ))
+    (send-message {:host "smtp.sendgrid.net"
+                   :user (env :mail-user)
+                   :pass (env :mail-password)}
+                  {:from "dmullins78@gmail.com"
+                   :to "dmullins78@gmail.com"
+                   :subject (str "Weekly Summary")
+                   :body text})
+    text ))
