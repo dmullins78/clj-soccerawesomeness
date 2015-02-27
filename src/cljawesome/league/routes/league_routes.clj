@@ -2,6 +2,7 @@
   (:require [compojure.core :refer :all]
             [ring.util.response :refer [resource-response response]]
             [selmer.parser :refer [render-file]]
+            [cljawesome.core.mailer :as email]
             [cljawesome.util.league-params :as lp]
             [cljawesome.players.models.query-defs :as player]
             [cljawesome.league.models.query-defs :as query]))
@@ -41,5 +42,6 @@
     (render-file "league.html" {:league lg :offenders top-offenders :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defroutes league-routes
+  (GET  "/poing/:text" [text] (email/summary text))
   (GET  "/:league/:season" [league season] (get-teams league season))
   (GET  "/:league/:season/performance" [league season division] (get-division league season division)))

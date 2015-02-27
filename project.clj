@@ -10,6 +10,7 @@
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [org.clojure/java.jdbc "0.3.3"]
                  [yesql "0.5.0-rc1"]
+                 [com.draines/postal "1.11.3"]
                  [environ "1.0.0"]
                  [selmer "0.8.0"]
                  [clj-time "0.9.0"]
@@ -24,7 +25,10 @@
   :uberjar-name "soccerawesomeness.jar"
   :ring {:handler cljawesome.core.handler/app
          :init cljawesome.core.handler/init }
-  :aliases {"migrate" ["run" "-m" "cljawesome.migrations.migration/migrate"]}
+  :aliases {
+            "migrate" ["run" "-m" "cljawesome.migrations.migration/migrate"]
+            "email" ["run" "-m" "cljawesome.core.mailer/summary"]
+            }
   :profiles {:test-local {:dependencies [[midje "1.6.3"]
                                          [javax.servlet/servlet-api "2.5"]
                                          [ring-mock "0.1.5"]]
