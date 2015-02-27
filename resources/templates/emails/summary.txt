@@ -1,5 +1,5 @@
 {{league.name}}
-{{range|first}}-{{range|last}}
+{{range|first}} - {{range|last}}
 {% for game,players in games %}
 {{game.home_team}} vs. {{game.away_team}} ({{game.ht_score}} - {{game.at_score}})
 {{game.field}} at {{game.starts_at}}
