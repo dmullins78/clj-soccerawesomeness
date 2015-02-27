@@ -1,3 +1,6 @@
+-- name: game-was-modified<!
+update games set last_updated = now() where id = :gameId
+
 -- name: select-league-by-name
 SELECT l.*, s.season, s.id as seasonId
 from leagues l
@@ -44,7 +47,8 @@ away_team_score = :away_score,
 comments = :comments,
 home_team_id = :home_team_id,
 away_team_id = :away_team_id,
-field = :field
+field = :field,
+last_updated = now()
 where id = :id
 
 -- name: insert-game<!

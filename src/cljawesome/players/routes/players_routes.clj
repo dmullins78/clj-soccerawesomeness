@@ -19,4 +19,5 @@
 (defroutes players-routes
   (PUT "/:name/:season/games/:gameId/players/:playerId" {params :params body :body}
        (league/delete-player-game-stats<! {:gameId (Integer. (:gameId params)) :playerId (Integer. (:playerId params))})
+       (league/game-was-modified<! { :gameId (Integer. (:gameId params)) })
        (update-player-stats (lp/parse-params params) (:playerId params) (:gameId params) body)))
