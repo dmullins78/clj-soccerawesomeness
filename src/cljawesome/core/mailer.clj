@@ -6,13 +6,13 @@
             [clj-time.core :as t]
             [clj-time.format :as f]
             [postal.core :refer :all]))
-          
+
 (def custom-formatter (f/formatter "MM/dd/yyyy"))
 
-(defn summary-date-inteval []
+(defn summary-date-interval []
   (let [end (t/now)
-        start (t/minus (t/now) (t/weeks 1))
-  (f/unparse custom-formatter start) (f/unparse custom-formatter end)))
+        start (t/minus end (t/weeks 1))]
+  [(f/unparse custom-formatter start) (f/unparse custom-formatter end)]))
 
 (defn player-stats [game]
   (if-let [players (league/get-offenders-for-game {:gameId (:id game)})]
@@ -20,16 +20,18 @@
   [game []]))
 
 (defn summary [lg season]
+  (println "PP " + (summary-date-interval))
   (let [league (league/get-season lg season)
         games (league/select-recently-updated-games { :seasonId (:seasonid league)})
         game-players (map player-stats games)
-        date-range (summary-date-inteval)
+        date-range (summary-date-interval)
         text (render-file "emails/summary.txt" {:range date-range :league league :games game-players})]
-    (send-message {:host "smtp.sendgrid.net"
-                   :user (env :mail-user)
-                   :pass (env :mail-password)}
-                  {:from "dmullins78@gmail.com"
-                   :to "dmullins78@gmail.com"
-                   :subject (str "Weekly Summary")
-                   :body text})
+    (println "EF " + date-range)
+    ;(send-message {:host "smtp.sendgrid.net"
+                   ;:user (env :mail-user)
+                   ;:pass (env :mail-password)}
+                  ;{:from "dmullins78@gmail.com"
+                   ;:to "dmullins78@gmail.com"
+                   ;:subject (str "Weekly Summary")
+                   ;:body text})
   text ))

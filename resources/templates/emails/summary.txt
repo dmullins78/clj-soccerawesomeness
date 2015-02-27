@@ -1,14 +1,9 @@
 {{league.name}}
-{{date-range|first}}-{{date-range|last}}
-
+{{range|first}}-{{range|last}}
 {% for game,players in games %}
-*******************************************
-{{game.home_team}} vs. {{game.away_team}} 
-{{game.ht_score}} - {{game.at_score}}
+{{game.home_team}} vs. {{game.away_team}} ({{game.ht_score}} - {{game.at_score}})
 {{game.field}} at {{game.starts_at}}
 {% if players|not-empty %}Infractions{% endif %}
-{% for player in players %}
-{{player.playername}} {{player.card|cardlabel}} Card 
-{% endfor %}
-*******************************************
-{% endfor %}
+{% for player in players %}    {{player.playername}} - {{player.card|cardlabel}} Card 
+{% endfor %}{% endfor %}
+
