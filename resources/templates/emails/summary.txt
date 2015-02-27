@@ -3,7 +3,8 @@
 {% for game,players in games %}
 {{game.home_team}} vs. {{game.away_team}} ({{game.ht_score}} - {{game.at_score}})
 {{game.field}} at {{game.starts_at}}
-{% if players|not-empty %}Infractions{% endif %}
+Infractions: {% if players|empty?%}None {%endif%}
 {% for player in players %}    {{player.playername}} - {{player.card|cardlabel}} Card 
-{% endfor %}{% endfor %}
+{% endfor %}Comments: {{game.comments|default-if-empty:"None"}}
+{% endfor %}
 

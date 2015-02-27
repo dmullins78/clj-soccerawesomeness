@@ -20,7 +20,6 @@
     [game []]))
 
 (defn summary [lg season]
-  (println "PP " + (summary-date-interval))
   (let [league (league/get-season lg season)
         games (league/select-recently-updated-games { :seasonId (:seasonid league)})
         game-players (map player-stats games)
