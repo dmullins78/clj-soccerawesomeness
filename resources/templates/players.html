@@ -5,14 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="rosters small-8 small-centered columns">
+<div class="rosters small-12 medium-8 small-centered columns">
   <div class="row header">
     <h1>{{team.name}}</h1>
   </div>
   <div class="row">
-    <div class="small-1 columns">
-      <span class="rosterHeader">Jersey</span>
-    </div>
     <div class="small-6 columns">
       <span class="rosterHeader">Player</span>
     </div>
@@ -22,7 +19,6 @@
   </div>
   {% for player in players %}
   <div class="row player">
-    <div class="small-1 columns">&nbsp;</div>
     <div class="small-6 columns playerName">
       {{player.name}}
     </div>
