@@ -8,7 +8,7 @@ Admin
 <h1>Admin</h1>
 <hr/>
 
-<div class="medium-centered medium-6 columns">
+<div class="small-centered medium-6 columns">
   <form method="POST" action="/{{base}}admins{% if admin.id %}/{{admin.id}}{% endif %}">
     <div class="row">
       <div class="medium-7 columns small-centered">
@@ -22,13 +22,13 @@ Admin
         </label>
       </div>
       <div class="row">
-        <div class="small-3 small-centered columns">
+        <div class="small-4 small-centered columns">
           <input type="submit" class="button" name="Save"/>
         </div>
       </div>
       {% if admins|not-empty %}
       <div class="row ">
-        <div class="medium-7 columns small-centered">
+        <div class="small-6 medium-5 columns small-centered">
           <table class="admins">
             <thead>
               <tr>
