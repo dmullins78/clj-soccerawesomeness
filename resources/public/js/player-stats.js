@@ -54,9 +54,9 @@ __p += '\n          <option value="' +
  }); ;
 __p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
 ((__t = ( goals )) == null ? '' : __t) +
-'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
+'" value="0" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
 ((__t = ( assists )) == null ? '' : __t) +
-'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-6 medium-2 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
+'" value="0" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-6 medium-2 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
 ((__t = ( isCardChecked('N') )) == null ? '' : __t) +
 '>None</option>\n          <option value="Y" ' +
 ((__t = ( isCardChecked('Y') )) == null ? '' : __t) +
@@ -113,6 +113,11 @@ __p += '  <table class="aliases">\n    <thead>\n      <tr>\n        <th>Team</th
 return __p
 };
 var PlayerModel = Backbone.Model.extend({
+  defaults: {
+    "goals": 0,
+    "assists": 0
+  },
+
   initialize: function(){
     this.listenTo(this, "remove", this.delete);
   },

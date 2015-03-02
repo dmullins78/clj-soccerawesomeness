@@ -1,4 +1,9 @@
 var PlayerModel = Backbone.Model.extend({
+  defaults: {
+    "goals": 0,
+    "assists": 0
+  },
+
   initialize: function(){
     this.listenTo(this, "remove", this.delete);
   },
