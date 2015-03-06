@@ -16,7 +16,6 @@
                  [clj-time "0.9.0"]
                  [buddy/buddy-core "0.3.0"]
                  [buddy/buddy-auth "0.3.0"]
-                 [clj-http "0.7.6"]
                  [org.clojure/data.json "0.2.5"]
                  [org.clojure/data.csv "0.1.2"]
                  [org.flywaydb/flyway-core "3.0"]]
@@ -28,7 +27,6 @@
          :init cljawesome.core.handler/init }
   :aliases {
             "migrate" ["run" "-m" "cljawesome.migrations.migration/migrate"]
-            "ping" ["run" "-m" "cljawesome.util.stayalive/ping"]
             "email" ["run" "-m" "cljawesome.core.mailer/summary"]
             }
   :profiles {:test-local {:dependencies [[midje "1.6.3"]
