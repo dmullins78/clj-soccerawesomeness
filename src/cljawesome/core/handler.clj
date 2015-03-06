@@ -21,6 +21,7 @@
 
 
 (defroutes app-routes
+  (GET "/" [] (io/resource "public/index.html"))
   (route/not-found "Not Found"))
 
 (defn unauthorized-handler [request metadata]

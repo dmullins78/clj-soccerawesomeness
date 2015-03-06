@@ -1,11 +1,14 @@
-To Do First:
-Games API
-Assign captains to teams
-print rosters
+To Do:
+Soccerawesomeness home page text
+Request a league input form
+player import columns
+powered by soccerawesomeness.com in footer
+add team links to cics.com
 Add player number to player info
-referee comments
 add game
 
+referee comments
+print rosters
 Set-Up League from Spreadsheet
 Basic authentication security
 track cards per player
@@ -13,22 +16,14 @@ Captain edit scores
 Import players from spreadsheet
 Captain login
 Track player statistics (goals, assists, saves)
+Show top performing players
+Point calculations
 
 Later:
 Admin can create a new season
 Associate players with multiple leagues
-Show top performing players
 Social media?
 
 Way Later:
 Include pictures for the players
 Native player-card app
-
-Way Way Later
-Wordpress plugin
-
-Done:
-Point calculations
-
-Commish:
-possible to put two text boxes on the score reporting page of soccerawesomeness. One that people could write in yellow and red cards and have it displayed on the teams schedule on cicsdm.org. The other would be the referee feedback section that sends the comments to an email address
