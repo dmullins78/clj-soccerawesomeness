@@ -19,17 +19,25 @@
     [game players]
     [game []]))
 
+(defn send-email [subject body]
+    (send-message {:host "smtp.sendgrid.net"
+                   :user (env :mail-user)
+                   :pass (env :mail-password)}
+                  {:from "dmullins78@gmail.com"
+                   :to "dmullins78@gmail.com"
+                   :subject subject
+                   :body body}))
+
+(defn interest [email]
+  (send-email (str "League Interest") (str email " wants to know about soccerawesomeness")))
+
 (defn summary [lg season]
   (let [league (league/get-season lg season)
         games (league/select-recently-updated-games { :seasonId (:seasonid league)})
         game-players (map player-stats games)
         date-range (summary-date-interval)
         text (render-file "emails/summary.txt" {:range date-range :league league :games game-players})]
-    (send-message {:host "smtp.sendgrid.net"
-                   :user (env :mail-user)
-                   :pass (env :mail-password)}
-                  {:from "dmullins78@gmail.com"
-                   :to "dmullins78@gmail.com"
-                   :subject (str "Weekly Summary")
-                   :body text})
+    (send-email (str "Weekly Summary") text)
     text ))
+
+
