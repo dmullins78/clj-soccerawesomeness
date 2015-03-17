@@ -41,6 +41,9 @@ delete from games where season_id = :seasonId
 -- name: delete-season-games<!
 delete from teams_seasons where season_id = :seasonId
 
+-- name: delete-season-player-stats<!
+delete from Players_Games_Stats where season_id = :seasonId
+
 -- name: insert-league-alias<!
 insert into team_import_alias (team_id, alias, league_id)
 values (:teamId, :teamAlias, :leagueId);

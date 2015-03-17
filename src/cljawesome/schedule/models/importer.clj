@@ -17,13 +17,16 @@
           :time (nth % 0)
           :field (nth % 1)
           :division (nth % 2)
-          :home (nth % 4)
-          :away (nth % 5)) records))
+          :home (nth % 3)
+          :away (nth % 4)
+          :home_score (Integer. (nth % 5))
+          :away_score (Integer. (nth % 6))) records))
 
 (defn parse-schedule [file]
   (-> file read-file to-games))
 
 (defn reset-season [seasonId]
+  (query/delete-season-player-stats<! {:seasonId seasonId})
   (query/delete-season-teams<! {:seasonId seasonId})
   (query/delete-season-games<! {:seasonId seasonId}))
 
@@ -37,9 +40,9 @@
             start-time (.parse (java.text.SimpleDateFormat. "MM/dd/yyyy hh:mm a") (:time game))]
         (league/insert-game<! {
                                :home_team_id home_team_id
+                               :home_team_score (:home_score game)
                                :away_team_id away_team_id
-                               :home_team_score 0
-                               :away_team_score 0
+                               :away_team_score (:away_score game)
                                :field (:field game)
                                :seasonId seasonId
                                :start_time (c/to-sql-date start-time)} )))
