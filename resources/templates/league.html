@@ -8,9 +8,13 @@
 <h1>{{league.name}}</h1>
 <hr/>
 
-{% include "fragments/top-performers.html" %}
+{% if scorers|not-empty %}
+  {% include "fragments/top-performers.html" %}
+{% endif %}
 
-{% include "fragments/top-offenders.html" %}
+{% if offenders|not-empty %}
+  {% include "fragments/top-offenders.html" %}
+{% endif %}
 
 <div class="medium-centered medium-8 columns standings">
   {% for division,teamList in teams %}
