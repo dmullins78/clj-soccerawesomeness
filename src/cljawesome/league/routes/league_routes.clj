@@ -7,9 +7,9 @@
             [cljawesome.players.models.query-defs :as player]
             [cljawesome.league.models.query-defs :as query]))
 
-(defn get-league [league year season]
-  (let [league (query/select-league-season {:name league :year year :season season})]
-    (response (first league) )))
+(defn get-league [league season]
+  (let [league (query/select-league-season {:name league :season season})]
+    (first league) ))
 
 (defn get-divisions [team]
   (:division team))
@@ -41,7 +41,12 @@
         sorted-divisions (group-by :division sorted-teams)]
     (render-file "league.html" {:league lg :offenders top-offenders :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
+(defn get-teams-json [league season]
+  (let [lg (get-league league season)]
+    (query/select-season-teams { :seasonId (:seasonid lg)})))
+
 (defroutes league-routes
   (GET  "/:league/:season/summary" [league season] (email/summary league season))
+  (GET  "/:league/:season/api/teams" [league season] (get-teams-json league season))
   (GET  "/:league/:season" [league season] (get-teams league season))
   (GET  "/:league/:season/performance" [league season division] (get-division league season division)))
