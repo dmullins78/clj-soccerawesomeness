@@ -138,7 +138,7 @@ WHERE g.season_id = :seasonId
 -- name: select-game
 SELECT
 g.id,
-to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MI AM') as starts_at,
 g.field,
 g.update_count,
 comments,
@@ -164,7 +164,7 @@ SELECT
 g.id,
 g.field,
 g.update_count,
-to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MI AM') as starts_at,
 comments,
 home_team_id,
 home_team_score as ht_score,
@@ -184,7 +184,7 @@ SELECT
 g.id,
 g.field,
 g.update_count,
-to_char(start_time, 'mm/DD/yyyy HH:MM') as starts_at,
+to_char(start_time, 'mm/DD/yyyy HH:MI AM') as starts_at,
 comments,
 home_team_id,
 home_team_score as ht_score,

@@ -45,6 +45,6 @@
                                :away_team_score (:away_score game)
                                :field (:field game)
                                :seasonId seasonId
-                               :start_time (c/to-sql-date start-time)} )))
+                               :start_time (c/to-sql-time start-time)} )))
     (league/select-season-games {:seasonId seasonId } )))
 
