@@ -175,8 +175,8 @@ home.name as home_team
 FROM games g
 inner join teams home on home_team_id = home.id
 inner join teams away on away_team_id = away.id
-WHERE home_team_id = :team_id or away_team_id = :team_id
-AND season_id = :seasonId
+WHERE season_id = :seasonId
+AND (home_team_id = :team_id or away_team_id = :team_id)
 order by g.start_time
 
 -- name: select-recently-updated-games
