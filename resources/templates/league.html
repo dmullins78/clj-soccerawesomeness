@@ -18,7 +18,7 @@
 
 <div class="medium-centered medium-8 columns standings">
   {% for division,teamList in teams %}
-    <h2>{{division}} Division</h2>
+    <h2>Division {{division}}</h2>
     <p><a href="/{{base}}performance?division={{division}}">See top performers</a></p>
     {% include "fragments/division-standings.html" %}
   {% endfor %}
