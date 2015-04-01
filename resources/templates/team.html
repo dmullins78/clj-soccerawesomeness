@@ -9,14 +9,22 @@
 <hr/>
 
 <div class="row">
-  <div class="small-centered medium-uncentered small-10 medium-4 columns">
+  <div class="small-centered medium-uncentered small-10 medium-4 large-3 columns">
     <a href="/{{base}}/teams/{{team.id}}/players" class="button expand info rostersButton">
       <span>View Players</span>
     </a>
   </div>
   {% for game in games %}
-    <div class="small-centered medium-uncentered small-10 medium-4 columns">
-      <a href="/{{base}}/games/{{game.id}}?teamId={{team.id}}" class="button expand">{{game.starts_at}} <br/><br/> {{game.home_team}}<br> vs <br> {{game.away_team}}</a>
+    <div class="small-centered medium-uncentered small-10 medium-4 large-3 columns">
+      <a href="/{{base}}/games/{{game.id}}?teamId={{team.id}}" class="button expand">
+        {{game.starts_at}} <br/><br/> 
+        {{game.home_team}}<br> vs <br> {{game.away_team}}</a>
+        {% if game.update_count = 0 %}
+          Score: Not Reported<br/><br/>
+        {% endif %}
+        {% if game.update_count > 0 %}
+          Score: {{game.ht_score}} - {{game.at_score}}<br/><br/>
+        {% endif %}
   </div>
   {% endfor %}
 </div>
