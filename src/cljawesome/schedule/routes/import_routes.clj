@@ -25,10 +25,10 @@
      :teamAlias (:alias body)}))
 
 (defn show-load-rosters [league season request]
-  ;(when (not (authenticated? request))
-  ;(throw-unauthorized {:message "Not authorized"}))
-  (let [league (league/get-season league season)
-        teams (sdb/teams-by-season { :seasonId (:seasonid league) })]
+  (when (not (authenticated? request))
+    (throw-unauthorized {:message "Not authorized"}))
+  (let [lg (league/get-season league season)
+        teams (sdb/teams-by-season { :seasonId (:seasonid lg) })]
     (render-file "roster-import.html" { :teams teams :base (lp/basepath league season)})))
 
 (defn load-rosters [league season file request]
@@ -55,7 +55,7 @@
   (GET "/:league/:season/roster/load/aliases" [league season] (get-league-team-aliases league season))
   (DELETE "/:name/:season/roster/load/aliases/:aliasId" [aliasId] (delete-alias aliasId))
   (PUT "/:name/:season/roster/load/aliases/:id" {params :params body :body}
-        (add-league-team-alias (lp/parse-params params) body))
+       (add-league-team-alias (lp/parse-params params) body))
 
   (mp/wrap-multipart-params
     (POST "/:league/:season/roster/load" [league season file :as request]
