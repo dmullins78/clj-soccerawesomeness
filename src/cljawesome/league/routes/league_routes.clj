@@ -14,17 +14,20 @@
 (defn get-divisions [team]
   (:division team))
 
+(defn division-hierarchy [d1 d2]
+  (compare (first d1) (first d2)))
+
 (defn soccer-scorer
   [t1 t2]
   (cond
     (> (:points t1) (:points t2)) true
     (< (:points t1) (:points t2)) false
     :else
-      (cond
-        (> (:goal_differential t1) (:goal_differential t2)) true
-        (< (:goal_differential t1) (:goal_differential t2)) false
-        :else
-           (> (:scored t1) (:scored t2)))))
+    (cond
+      (> (:goal_differential t1) (:goal_differential t2)) true
+      (< (:goal_differential t1) (:goal_differential t2)) false
+      :else
+      (> (:scored t1) (:scored t2)))))
 
 (defn get-division [league season division]
   (let [lg (first (query/select-league-by-name {:path league :season season}))
@@ -38,7 +41,8 @@
         top-scorers (player/top-scorers {:seasonId (:seasonid lg)})
         top-offenders (player/top-offenders {:seasonId (:seasonid lg)})
         sorted-teams (sort (comp soccer-scorer) teams)
-        sorted-divisions (group-by :division sorted-teams)]
+        sorted-divisions (group-by :division sorted-teams)
+        sorted-divisions (sort division-hierarchy sorted-divisions)]
     (render-file "league.html" {:league lg :offenders top-offenders :scorers top-scorers :teams sorted-divisions :base (lp/basepath league season)})))
 
 (defn get-teams-json [league season]
