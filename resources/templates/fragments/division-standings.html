@@ -14,7 +14,7 @@
   <tbody>
     {% for team in teamList %}
       <tr>
-        <td>{{team.name}}</td>
+        <td><a href="/{{base}}teams/{{team.id}}">{{team.name}}</a></td>
         <td>{{team.points}}</td>
         <td>{{team.goal_differential}}</td>
         <td>{{team.scored}}</td>
