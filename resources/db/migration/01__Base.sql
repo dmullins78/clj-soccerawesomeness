@@ -62,7 +62,7 @@ CREATE TABLE Admins (
   id        BIGSERIAL PRIMARY KEY,
   league_id BIGSERIAL REFERENCES Leagues,
   email varchar(100) NOT NULL,
-  password varchar(20) NOT NULL,
+  password varchar(100) NOT NULL,
   role varchar(20)
 );
 
