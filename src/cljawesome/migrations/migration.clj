@@ -6,6 +6,7 @@
 
 
 (defn get-db-datasource []
+  (println "ENV " + (env :database-url))
   (let [url (java.net.URI. (env :database-url))
         params (str/split (.getUserInfo url ) #":")]
   (doto (org.postgresql.ds.PGSimpleDataSource.)

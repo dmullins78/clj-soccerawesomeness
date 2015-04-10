@@ -3,6 +3,8 @@
   (:require [compojure.core :refer :all]
             [selmer.parser :refer [render-file]]
             [selmer.filters :refer :all]
+            [clj-time.coerce :as c]
+            [cljawesome.admin.models.soccer-authentication :refer [notadmin? teamadmin? leagueadmin?]]
             [cljawesome.util.league-params :as lp]
             [cljawesome.league.models.query-defs :as league]
             [cljawesome.schedule.models.query-defs :as teams]
@@ -15,20 +17,40 @@
 (defn base-path [league]
   (lower-case (format "%s/%s" (:league league)(:season league))))
 
-(defn update-game-params [gameId params]
+(defn captain-game-params [gameId params]
+  {:home_score (Integer. (:home_score params))
+   :away_score (Integer. (:away_score params))
+   :id (Integer. gameId)
+   :comments (:comments params)})
+
+(defn leagueadmin-game-params [gameId params]
   {:home_score (Integer. (:home_score params))
    :away_score (Integer. (:away_score params))
    :home_team_id (Integer. (:home_team params))
    :away_team_id (Integer. (:away_team params))
+   :start_time (c/to-sql-time (.parse (java.text.SimpleDateFormat. "MM/dd/yyyy hh:mm a") (:start_time params)))
    :field (:field params)
    :id (Integer. gameId)
    :comments (:comments params)})
 
+(defn update-leagueadmin [gameId params redirect-path]
+  (league/update-game-leagueadmin<! (leagueadmin-game-params gameId params))
+  (redirect redirect-path))
+
+(defn update-captain [gameId params redirect-path]
+  (league/update-game-captain<! (captain-game-params gameId params))
+  (redirect redirect-path))
+
 (defn update-game [league season teamId gameId request]
-  (when (not (authenticated? request))
-    (throw-unauthorized {:message "Not authorized"}))
-  (league/update-game<! (update-game-params gameId (:params request)))
-  (redirect (lp/basepath-lead-slash league season "games/" gameId (str "?teamId=" teamId))))
+  (let [user (:identity request)
+        redirect-path (lp/basepath-lead-slash league season "teams/" teamId)] 
+    (cond
+      (notadmin? user) 
+        (throw-unauthorized {:message "Not authorized"})
+      (teamadmin? user)
+        (update-captain gameId (:params request) redirect-path)
+      (leagueadmin? user)
+        (update-leagueadmin gameId (:params request) redirect-path))))
 
 (defn get-players-for-game [gameId]
   (league/get-players-for-game {:gameId (Integer. gameId)}))
@@ -40,9 +62,9 @@
 
 (defn game-permissions [user]
   (cond
-    (nil? user) {:details "readonly class='disabled'" :score "readonly class='disabled'"}
-    (= "teamadmin" (:role user)) {:details "readonly class='disabled'" :update true}
-    (= "leagueadmin" (:role user)) {:update true}))
+    (notadmin? user) {:details "disabled" :score "disabled"}
+    (teamadmin? user) {:details "disabled" :update true}
+    (leagueadmin? user) {:update true}))
 
 (defn show-game [league gameId teamId user]
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))

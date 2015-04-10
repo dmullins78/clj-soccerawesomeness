@@ -15,10 +15,15 @@
 (defn- calculate_game [g]
   (let [diff (goaldiff g)]
     (cond
-      (> diff 0) (summary 3 diff g 1 0 0)
-      (and (:played g) (= diff 0)) (summary 1 diff g 0 0 1)
-      (< diff 0) (summary 0 diff g 0 1 0)
-      :else (summary 0 diff g 0 0 0))))
+      (> diff 0) 
+        (summary 3 diff g 1 0 0)
+      (and 
+        (:played g) (= diff 0)) 
+          (summary 1 diff g 0 0 1)
+      (< diff 0) 
+        (summary 0 diff g 0 1 0)
+      :else 
+        (summary 0 diff g 0 0 0))))
 
 (defn- sum_value [results value]
   (->> results (map #(value %)) (reduce +)))

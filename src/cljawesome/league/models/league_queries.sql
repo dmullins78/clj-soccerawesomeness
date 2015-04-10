@@ -40,7 +40,16 @@ VALUES (:teamId, :leagueId );
 INSERT INTO teams_seasons (team_id, season_id, division)
 VALUES (:teamId, :seasonId, :division);
 
--- name: update-game<!
+-- name: update-game-captain<!
+update games set
+update_count = update_count + 1,
+home_team_score = :home_score,
+away_team_score = :away_score,
+comments = :comments,
+last_updated = now()
+where id = :id
+
+-- name: update-game-leagueadmin<!
 update games set
 update_count = update_count + 1,
 home_team_score = :home_score,
@@ -49,6 +58,7 @@ comments = :comments,
 home_team_id = :home_team_id,
 away_team_id = :away_team_id,
 field = :field,
+start_time = :start_time,
 last_updated = now()
 where id = :id
 
