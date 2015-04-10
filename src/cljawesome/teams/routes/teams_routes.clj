@@ -40,8 +40,8 @@
 
 (defn game-permissions [user]
   (cond
-    (nil? user) {:details "disabled" :score "disabled"}
-    (= "teamadmin" (:role user)) {:details "disabled" :update true}
+    (nil? user) {:details "readonly class='disabled'" :score "readonly class='disabled'"}
+    (= "teamadmin" (:role user)) {:details "readonly class='disabled'" :update true}
     (= "leagueadmin" (:role user)) {:update true}))
 
 (defn show-game [league gameId teamId user]
