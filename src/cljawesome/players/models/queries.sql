@@ -31,16 +31,6 @@ group by p.name, t.name, ts.division
 order by cards
 desc limit 10;
 
-select p.name, t.name as team, ts.division, sum(ps.goals + ps.assists) as value, sum(ps.goals) as goals, sum(ps.assists) as assists
-from players p
-inner join players_games_stats ps on ps.player_id = p.id
-inner join seasons_players sp on sp.player_id = p.id
-inner join teams t on t.id = sp.team_id
-inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
-where sp.season_id = 1
-group by p.name, t.name, ts.division
-order by value desc limit 10
-
 -- name: top-scorers
 select p.name, t.name as team, ts.division, sum(ps.goals + ps.assists) as value, sum(ps.goals) as goals, sum(ps.assists) as assists
 from players p
