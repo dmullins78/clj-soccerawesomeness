@@ -9,6 +9,7 @@ inner join seasons_players sp on sp.player_id = p.id
 inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id
 where sp.season_id = :seasonId
+and ps.card != 'N'
 group by p.name, t.name, ts.division
 order by cards
 desc limit 10;
@@ -25,6 +26,7 @@ inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id
 where sp.season_id = :seasonId
 and ts.division = :division
+and ps.card != 'N'
 group by p.name, t.name, ts.division
 order by cards
 desc limit 10;
