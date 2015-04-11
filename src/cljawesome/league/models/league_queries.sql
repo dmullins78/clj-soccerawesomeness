@@ -133,6 +133,7 @@ select g.start_time as card_date, card from players_games_stats ps
 inner join games g on g.id = ps.game_id
 where ps.player_id = :playerId
 and ps.season_id = :seasonId
+and card in ('R', 'Y')
 order by g.start_time
 
 -- name: get-team
