@@ -39,20 +39,9 @@ return __p
 
 this["JST"]["templates/game/person-input.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 medium-6 columns">\n      <label>Player\n        <select class="name">\n          ';
- _.each(players, function(player){ ;
-__p += '\n          <option value="' +
-((__t = (player.id)) == null ? '' : __t) +
-'">' +
-((__t = (player.team )) == null ? '' : __t) +
-' - ' +
-((__t = (player.name)) == null ? '' : __t) +
-'</option>\n          ';
- }); ;
-__p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
+__p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 medium-6 columns">\n      <label>Player\n        <input type="hidden" id="playerId"/>\n        <input type="text" id="playerSearch"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
 ((__t = ( goals )) == null ? '' : __t) +
 '" value="0" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
 ((__t = ( assists )) == null ? '' : __t) +
@@ -62,7 +51,7 @@ __p += '\n        </select>\n      </label>\n    </div>\n    <div class="small-3
 ((__t = ( isCardChecked('Y') )) == null ? '' : __t) +
 '>Yellow</option>\n          <option value="R" ' +
 ((__t = ( isCardChecked('R') )) == null ? '' : __t) +
-'>Red</option>\n        </select>\n      </label>\n    </div>\n  </div>\n  <div class="row">\n    <div class="small-12 medium-4 columns small-centered">\n      <ul class="button-group">\n        <li><a id="cancel" class="tiny button secondary">Cancel</a></li>\n        <li><a id="saved" class="tiny button">Save</a></li>\n      </ul>\n    </div>\n  </div>\n</form>\n';
+'>Red</option>\n        </select>\n      </label>\n    </div>\n  </div>\n  <div class="row">\n    <div class="small-12 medium-4 columns small-centered">\n      <ul class="button-group">\n        <li><a id="cancel" class="tiny button secondary">Cancel</a></li>\n        <li><a id="saved" class="tiny button">Save</a></li>\n      </ul>\n    </div>\n  </div>\n</form>\n<script>\nalert(\'ui shown\');\n</script>\n';
 
 }
 return __p
@@ -113,6 +102,7 @@ __p += '  <table class="aliases">\n    <thead>\n      <tr>\n        <th>Team</th
 return __p
 };
 var PlayerModel = Backbone.Model.extend({
+
   defaults: {
     "goals": 0,
     "assists": 0
@@ -125,6 +115,7 @@ var PlayerModel = Backbone.Model.extend({
   delete: function() {
     this.destroy();
   }
+
 });
 
 var PlayerModels = Backbone.Collection.extend({
@@ -133,6 +124,25 @@ var PlayerModels = Backbone.Collection.extend({
   url: function() {
     return window.location.pathname + "/players";
   }
+});
+
+
+var RosterModel = Backbone.Model.extend({
+  value: function() {
+    return this.get("id");
+  },
+
+  label: function() {
+    return this.get("name");
+  }
+});
+
+var RosterModels = Backbone.Collection.extend({
+  model: RosterModel,
+
+  //url: function() {
+    //return null;
+  //}
 });
 
 var AddPlayerLinkView = Marionette.ItemView.extend({
@@ -154,6 +164,14 @@ var AddPlayerStatView = Marionette.ItemView.extend({
   events: {
     "click #cancel" : "cancel",
     "click #saved" : "save"
+  },
+
+  onShow: function() {
+    new AutoCompleteView({
+        value: $("#playerId"),
+        input: $("#playerSearch"),
+        model: app.allPlayers
+    }).render();
   },
 
   save: function(ev) {
@@ -274,6 +292,15 @@ app.addInitializer(function() {
   app.AppController = new AppController();
   app.Router = new AppRouter();
   app.collection = new PlayerModels();
+
+  app.allPlayers = new RosterModels();
+  app.allPlayers.add([
+    {id: 1, name: "John Smith"},
+    {id: 2, name: "John Rolfe"},
+    {id: 3, name: "Govenor Ratcliffe"},
+    {id: 4, name: "Pocahontas"},
+    {id: 5, name: "Kocoum"}
+  ]);
 
   app.collection.fetch();
 

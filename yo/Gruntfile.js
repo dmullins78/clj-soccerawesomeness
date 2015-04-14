@@ -26,6 +26,7 @@ module.exports = function(grunt) {
         src: ['bower_components/jquery/dist/jquery.js',
           'bower_components/underscore/underscore.js',
           'bower_components/backbone/backbone.js',
+          'js/libs/backbone.autocomplete-min.js',
           'bower_components/marionette/lib/backbone.marionette.js',
           'js/Marionette.js'],
           dest: '../resources/public/js/<%= pkg.name %>.js'

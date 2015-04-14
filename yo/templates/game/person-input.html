@@ -2,11 +2,8 @@
   <div class="row">
     <div class="small-12 medium-6 columns">
       <label>Player
-        <select class="name">
-          <% _.each(players, function(player){ %>
-          <option value="<%=player.id%>"><%=player.team %> - <%=player.name%></option>
-          <% }); %>
-        </select>
+        <input type="hidden" id="playerId"/>
+        <input type="text" id="playerSearch"/>
       </label>
     </div>
     <div class="small-3 medium-2 columns">
@@ -38,3 +35,6 @@
     </div>
   </div>
 </form>
+<script>
+alert('ui shown');
+</script>

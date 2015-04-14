@@ -6,6 +6,14 @@ var AddPlayerStatView = Marionette.ItemView.extend({
     "click #saved" : "save"
   },
 
+  onShow: function() {
+    new AutoCompleteView({
+        value: $("#playerId"),
+        input: $("#playerSearch"),
+        model: app.allPlayers
+    }).render();
+  },
+
   save: function(ev) {
     app.collection.create({
       "id" : $('.name', this.$el).val(),

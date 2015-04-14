@@ -30,6 +30,15 @@ app.addInitializer(function() {
   app.Router = new AppRouter();
   app.collection = new PlayerModels();
 
+  app.allPlayers = new RosterModels();
+  app.allPlayers.add([
+    {id: 1, name: "John Smith"},
+    {id: 2, name: "John Rolfe"},
+    {id: 3, name: "Govenor Ratcliffe"},
+    {id: 4, name: "Pocahontas"},
+    {id: 5, name: "Kocoum"}
+  ]);
+
   app.collection.fetch();
 
   Backbone.history.start();

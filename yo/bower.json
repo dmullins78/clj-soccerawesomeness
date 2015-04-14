@@ -5,5 +5,8 @@
     "jquery": "latest",
     "underscore": "latest",
     "marionette": "latest"
+  },
+  "resolutions": {
+    "underscore": "1.8.3"
   }
 }
