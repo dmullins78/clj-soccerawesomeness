@@ -70,7 +70,7 @@
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))
         teams (teams/teams-by-season {:seasonId (:seasonid league)})
         permissions (game-permissions user)]
-    (render-file "game.html" {:game game :players players :teamId teamId :teams teams :base (base-path league) :permissions permissions})))
+    (render-file "game.html" {:game game :teamId teamId :teams teams :base (base-path league) :permissions permissions})))
 
 (defn with-game-stats [player]
   (if-let [stats (league/get-player-stats {:seasonId (:seasonid player) :playerId (:id player)})]
