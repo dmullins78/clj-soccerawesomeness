@@ -6,7 +6,6 @@
   (nil? user))
 
 (defn teamadmin? [user]
-    (println "TA " + (= "teamadmin" (:role user)))
     (= "teamadmin" (:role user)))
 
 (defn leagueadmin? [user]

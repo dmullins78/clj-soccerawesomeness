@@ -16,8 +16,8 @@ var AddPlayerStatView = Marionette.ItemView.extend({
 
   save: function(ev) {
     app.collection.create({
-      "id" : $('.name', this.$el).val(),
-      "playername": $(".name option:selected", this.$el).text(),
+      "id" : $('#playerId').val(),
+      "playername": $('#playerSearch').val(),
       "goals": $('.goals', this.$el).val(),
       "assists": $('.assists', this.$el).val(),
       "card": $('.card', this.$el).val()
@@ -36,11 +36,11 @@ var AddPlayerStatView = Marionette.ItemView.extend({
 
   serializeData: function() {
     return {
+      id: this.model.get('id'),
       name: this.model.get('playername'),
       goals: this.model.get('goals'),
       assists: this.model.get('assists'),
       card: this.model.get('card'),
-      players: players
     };
   },
 

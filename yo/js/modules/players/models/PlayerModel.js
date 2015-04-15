@@ -37,7 +37,7 @@ var RosterModel = Backbone.Model.extend({
 var RosterModels = Backbone.Collection.extend({
   model: RosterModel,
 
-  //url: function() {
-    //return null;
-  //}
+  url: function() {
+    return base + '/players/all';
+  }
 });

@@ -2,18 +2,18 @@
   <div class="row">
     <div class="small-12 medium-6 columns">
       <label>Player
-        <input type="hidden" id="playerId"/>
-        <input type="text" id="playerSearch"/>
+        <input type="hidden" id="playerId" value="<%= id %>" />
+        <input class="playerSearchField" type="text" value="<%= name %>" id="playerSearch"/>
       </label>
     </div>
     <div class="small-3 medium-2 columns">
       <label>Goals
-        <input type="number" class="goals" value="<%= goals %>" value="0" pattern="[0-9]*"/>
+        <input type="number" class="goals" value="<%= goals %>" pattern="[0-9]*"/>
       </label>
     </div>
     <div class="small-3 medium-2 columns">
       <label>Assists
-        <input type="number" class="assists" value="<%= assists %>" value="0" pattern="[0-9]*"/>
+        <input type="number" class="assists" value="<%= assists %>" pattern="[0-9]*"/>
       </label>
     </div>
     <div class="small-6 medium-2 columns">

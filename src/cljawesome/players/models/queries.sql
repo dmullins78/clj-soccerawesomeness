@@ -1,3 +1,11 @@
+-- name: find-players-by-name
+select p.id, p.name
+from players p
+inner join seasons_players sp on sp.player_id = p.id
+where sp.season_id = :seasonId
+and lower(p.name) like :query
+order by name;
+
 -- name: top-offenders
 select p.name, t.name as team, ts.division,
 sum(CASE WHEN (ps.card = 'Y' or ps.card = 'R') then 1 else 0 end) as cards,
@@ -12,7 +20,7 @@ where sp.season_id = :seasonId
 and ps.card != 'N'
 group by p.name, t.name, ts.division
 order by cards
-desc limit 10;
+desc limit 5;
 
 -- name: top-offenders-by-division
 select p.name, t.name as team, ts.division,
@@ -40,7 +48,7 @@ inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
 where sp.season_id = :seasonId
 group by p.name, t.name, ts.division
-order by value desc limit 10
+order by value desc limit 5
 
 -- name: top-scorers-by-division
 select p.name, t.name as team, ts.division, sum(ps.goals + ps.assists) as value, sum(ps.goals) as goals, sum(ps.assists) as assists

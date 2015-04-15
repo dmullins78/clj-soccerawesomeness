@@ -41,11 +41,15 @@ this["JST"]["templates/game/person-input.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 medium-6 columns">\n      <label>Player\n        <input type="hidden" id="playerId"/>\n        <input type="text" id="playerSearch"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
+__p += '<form id="player_stats">\n  <div class="row">\n    <div class="small-12 medium-6 columns">\n      <label>Player\n        <input type="hidden" id="playerId" value="' +
+((__t = ( id )) == null ? '' : __t) +
+'" />\n        <input class="playerSearchField" type="text" value="' +
+((__t = ( name )) == null ? '' : __t) +
+'" id="playerSearch"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Goals\n        <input type="number" class="goals" value="' +
 ((__t = ( goals )) == null ? '' : __t) +
-'" value="0" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
+'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-3 medium-2 columns">\n      <label>Assists\n        <input type="number" class="assists" value="' +
 ((__t = ( assists )) == null ? '' : __t) +
-'" value="0" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-6 medium-2 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
+'" pattern="[0-9]*"/>\n      </label>\n    </div>\n    <div class="small-6 medium-2 columns">\n      <label>Card\n        <select class="card">\n          <option value="N" ' +
 ((__t = ( isCardChecked('N') )) == null ? '' : __t) +
 '>None</option>\n          <option value="Y" ' +
 ((__t = ( isCardChecked('Y') )) == null ? '' : __t) +

@@ -57,11 +57,12 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      options: {
+        livereload: true,
+      },
+
       grunt: {
         files: ['Gruntfile.js'],
-        options: {
-          livereload: true,
-        }
       },
 
       templates: {
