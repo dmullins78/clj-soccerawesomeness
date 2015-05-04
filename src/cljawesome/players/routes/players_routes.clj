@@ -22,7 +22,7 @@
 
 (defroutes players-routes
   (GET "/:league/:season/players/all" [league season query] (findplayers league season query))
-  (PUT "/:name/:season/games/:gameId/players/:playerId" {params :params body :body}
+  (PUT "/:name/:season/games/:gameId/scores/players/:playerId" {params :params body :body}
        (league/delete-player-game-stats<! {:gameId (Integer. (:gameId params)) :playerId (Integer. (:playerId params))})
        (league/game-was-modified<! { :gameId (Integer. (:gameId params)) })
        (update-player-stats (lp/parse-params params) (:playerId params) (:gameId params) body)))

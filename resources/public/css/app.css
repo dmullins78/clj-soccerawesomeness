@@ -6430,6 +6430,19 @@ th.hide-for-touch {
     display: table-cell !important; }
  }
 
+.gameList {
+  padding: 0 0 0 20px; }
+  .gameList dt {
+    padding-bottom: 20px; }
+  .gameList h5 {
+    font-size: 1.6em;
+    margin-bottom: 0; }
+  .gameList span {
+    font-weight: normal;
+    padding-right: 20px; }
+  .gameList a {
+    padding: 0 10px 0 0; }
+
 #player_stats .button-group a {
   margin-right: 5px; }
 

@@ -8,25 +8,34 @@
 <h1>{{team.name}}</h1>
 <hr/>
 
-<div class="row">
-  <div class="small-centered medium-uncentered small-10 medium-4 large-3 columns">
-    <a href="/{{base}}/teams/{{team.id}}/players" class="button expand info rostersButton">
-      <span>View Players</span>
-    </a>
-  </div>
+<div class="row text-left">
+
+  <dl class="gameList">
   {% for game in games %}
-    <div class="small-centered medium-uncentered small-10 medium-4 large-3 columns">
-      <a href="/{{base}}/games/{{game.id}}?teamId={{team.id}}" class="button expand">
-        {{game.starts_at}} <br/><br/> 
-        {{game.home_team}}<br> vs <br> {{game.away_team}}</a>
-        {% if game.update_count = 0 %}
-          Score: Not Reported<br/><br/>
-        {% endif %}
-        {% if game.update_count > 0 %}
-          Score: {{game.ht_score}} - {{game.at_score}}<br/><br/>
-        {% endif %}
-  </div>
+    <dt>
+      <h5>{{game.home_team}} vs {{game.away_team}}</h5>
+
+      <span class="starts">{{game.starts_at}}</span><br/>
+      <span>Field: {{game.field}}</span><br/>
+      {% if game.update_count = 0 %}
+        <span>Score: Not Reported</span><br/>
+      {% endif %}
+      {% if game.update_count > 0 %}
+        <span>Score: {{game.ht_score}} - {{game.at_score}}</span><br/>
+      {% endif %}
+
+      {% if permissions.scores %}
+        <a href="/{{base}}/games/{{game.id}}/scores?teamId={{team.id}}">Scores</a>
+      {% endif %}
+
+      {% if permissions.details %}
+        <a href="/{{base}}/games/{{game.id}}?teamId={{team.id}}">Edit</a>
+      {% endif %}
+
+      <a href="/{{base}}/teams/{{team.id}}/players">Rosters</a>
+    </dt>
   {% endfor %}
+  </dl>
 </div>
 {% endblock %}
 

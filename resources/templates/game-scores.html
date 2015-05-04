@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{game.home_team}} vs {{game.away_team}}
+
+{% endblock %}
+
+{% block content %}
+<h2>{{game.home_team}} vs {{game.away_team}}</h2>
+<h4>{{game.starts_at}} on {{game.field}}</h4>
+<hr/>
+
+<div class="medium-centered medium-8 columns text-left">
+  <form method="POST" action="/{{base}}/games/{{game.id}}/scores">
+    <input type="hidden" name="teamId" value="{{teamId}}"/>
+    <div class="row">
+    </div>
+    <div class="row collapse">
+      <div class="small-10 medium-8 columns">
+        <span class="prefix">{{game.home_team}}</span>
+      </div>
+      <div class="small-2 medium-2 large-1 columns end">
+        <input type="number" name="home_score" value="{{game.ht_score}}" pattern="[0-9]*"/>
+      </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-10 medium-8 columns">
+        <span class="prefix">{{game.away_team}}</span>
+      </div>
+      <div class="small-2 medium-2 large-1 columns end">
+        <input type="number" name="away_score" value="{{game.at_score}}" pattern="[0-9]*"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 columns">
+        <div id="app"></div>
+      </div>
+    </div>
+    {% if permissions.scores %}
+      <div class="row">
+        <div class="small-12 columns">
+          <label>Comments
+            <textarea name="comments" rows="6" cols="50">{{game.comments}}</textarea>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-3 small-centered columns">
+          <input type="submit" class="button" name="Save"/>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript">
+var editable = {{permissions.scores|default:false}};
+var base =  '/{{base}}';
+</script>
+
+<script src="/js/sawesomeness.js"></script>
+<script src="/js/player-stats.js"></script>
+{% endblock %}
+
