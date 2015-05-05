@@ -88,10 +88,6 @@
         games (league/select-games {:team_id (Integer. teamId) :seasonId (Integer. (:seasonid league)) })]
     (render-file "team.html" {:games games :permissions permissions :team (first team) :base (base-path league)})))
 
-(defn show-teams [league]
-  (let [teams (teams/teams-by-season {:seasonId (:seasonid league)})]
-    (render-file "teams-list.html" {:teams teams :base (base-path league)})))
-
 (defn show-game-details [lg season gameId teamId]
   (let [game (first (league/select-game {:gameId (Integer. gameId) }))
         league (league/get-season lg season)]
@@ -105,5 +101,4 @@
   (POST "/:league/:season/games/:gameId" [league season gameId teamId :as request] (update-game-details league season teamId gameId request))
   (POST "/:league/:season/games/:gameId/scores" [league season gameId teamId :as request] (update-game-scores league season teamId gameId request))
   (GET "/:league/:season/teams/:teamId" [league season teamId :as request] (show-team league season teamId (:identity request)))
-  (GET "/:league/:season/teams/:teamId/players" [league season teamId] (show-team-players league season teamId))
-  (GET "/:name/:season/teams" {params :params} (show-teams (lp/parse-params params) )))
+  (GET "/:league/:season/teams/:teamId/players" [league season teamId] (show-team-players league season teamId)))
