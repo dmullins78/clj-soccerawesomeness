@@ -20,6 +20,10 @@ inner join seasons s on s.league_id = l.id
 WHERE lower(l.path) = :name
 AND s.season = :season;
 
+-- name: insert-game<!
+INSERT INTO games (field, start_time, home_team_id, away_team_id)
+VALUES (:field, :start_time :home_team_id, :away_team_id);
+
 -- name: insert-league<!
 INSERT INTO leagues (path, name, description, location)
 VALUES (:path, :name, :description, :location);
