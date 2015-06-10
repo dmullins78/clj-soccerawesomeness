@@ -6,45 +6,23 @@
 {% endblock %}
 
 {% block content %}
-<h1>New Game</h1>
+<h1>{{game.home_team}} vs. {{game.away_team }}</h1>
 <hr/>
 
 <div class="medium-centered medium-8 columns text-left">
-  {% if added %}
-    <div data-alert class="alert-box success radius">
-      Game added
-    </div>
-  {% endif %}
-
-  <form method="POST" action="/{{base}}/games{% if game.id %}/{{game.id}} {% endif %}">
+  <form method="POST" action="/{{base}}/games/{{game.id}}">
     <input type="hidden" name="teamId" value="{{teamId}}"/>
     <div class="row">
       <div class="small-8 columns end">
         <label>Home Team
-          {% if teams %}
-            <select name="home_team">
-            {% for team in teams %}
-              <option value="{{team.id}}">{{team.name}}</option>
-            {% endfor %}
-          </select>
-          {% else %}
-              <input type="text" value="{{game.home_team}}" disabled="true"/>
-          {% endif %}
+          <input type="text" value="{{game.home_team}}" disabled="true"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="small-8 columns end">
         <label>Away Team
-          {% if teams %}
-            <select name="away_team">
-            {% for team in teams %}
-              <option value="{{team.id}}">{{team.name}}</option>
-            {% endfor %}
-          </select>
-          {% else %}
-              <input type="text" value="{{game.away_team}}" disabled="true"/>
-          {% endif %}
+          <input type="text" value="{{game.away_team}}" disabled="true"/>
         </label>
       </div>
     </div>

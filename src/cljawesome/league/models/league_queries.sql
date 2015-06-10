@@ -21,8 +21,11 @@ WHERE lower(l.path) = :name
 AND s.season = :season;
 
 -- name: insert-game<!
-INSERT INTO games (field, start_time, home_team_id, away_team_id)
-VALUES (:field, :start_time :home_team_id, :away_team_id);
+INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
+VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start_time, :field, :seasonId);
+
+-- name: mark-game-played<!
+update games set update_count = update_count + 1 where id = :id;
 
 -- name: insert-league<!
 INSERT INTO leagues (path, name, description, location)
@@ -58,10 +61,6 @@ update games set
 field = :field,
 start_time = :start_time
 where id = :id
-
--- name: insert-game<!
-INSERT INTO games (home_team_id, home_team_score, away_team_id, away_team_score, start_time, field, season_id)
-VALUES (:home_team_id, :home_team_score, :away_team_id, :away_team_score, :start_time, :field, :seasonId);
 
 -- name: delete-player-game-stats<!
 delete from players_games_stats where player_id = :playerId and game_id = :gameId
