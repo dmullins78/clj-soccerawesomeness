@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{game.home_team}} vs {{game.away_team}}
+
+{% endblock %}
+
+{% block content %}
+<h1>New Game</h1>
+<hr/>
+
+<div class="medium-centered medium-8 columns text-left">
+  {% if added %}
+    <div data-alert class="alert-box success radius">
+      Game added
+    </div>
+  {% endif %}
+
+  <form method="POST" action="/{{base}}/games">
+    <input type="hidden" name="teamId" value="{{teamId}}"/>
+    <div class="row">
+      <div class="small-12 medium-10 columns">
+        <label>Home Team
+          <select name="home_team">
+          {% for team in teams %}
+            <option value="{{team.id}}">{{team.name}}</option>
+          {% endfor %}
+          </select>
+        </label>
+      </div>
+      <div class="medium-2 columns">
+        <label>Score
+          <input type="text" name="home_team_score" value="0" />
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 medium-10 columns">
+        <label>Away Team
+          <select name="away_team">
+            {% for team in teams %}
+              <option value="{{team.id}}">{{team.name}}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+      <div class="medium-2 columns">
+        <label>Score
+          <input type="text" name="away_team_score" value="0" />
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-6 columns">
+        <label>Starts
+          <input type="text" name="start_time" value="{{game.starts_at}}"/>
+        </label>
+      </div>
+      <div class="medium-6 columns">
+        <label>Field
+          <input type="text" name="field" value="{{game.field}}"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-3 small-centered columns">
+        <input type="submit" class="button" name="Save"/>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
