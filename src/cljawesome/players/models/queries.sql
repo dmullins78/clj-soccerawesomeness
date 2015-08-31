@@ -13,7 +13,8 @@ sum(CASE WHEN (ps.card = 'Y') then 1 else 0 end) as yellows,
 sum(CASE WHEN (ps.card = 'R') then 1 else 0 end) as reds
 from players p
 inner join players_games_stats ps on ps.player_id = p.id
-inner join seasons_players sp on sp.player_id = p.id
+inner join games g on g.id = ps.game_id and g.season_id = :season_id
+inner join seasons_players sp on sp.player_id = p.id and sp.season_id = :season_id
 inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
 where sp.season_id = :seasonId
@@ -29,7 +30,8 @@ sum(CASE WHEN (ps.card = 'Y') then 1 else 0 end) as yellows,
 sum(CASE WHEN (ps.card = 'R') then 1 else 0 end) as reds
 from players p
 inner join players_games_stats ps on ps.player_id = p.id
-inner join seasons_players sp on sp.player_id = p.id
+inner join games g on g.id = ps.game_id and g.season_id = :season_id
+inner join seasons_players sp on sp.player_id = p.id and sp.season_id = :season_id
 inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
 where sp.season_id = :seasonId
@@ -43,10 +45,10 @@ desc limit 10;
 select p.name, t.name as team, ts.division, sum(ps.goals + ps.assists) as value, sum(ps.goals) as goals, sum(ps.assists) as assists
 from players p
 inner join players_games_stats ps on ps.player_id = p.id
-inner join seasons_players sp on sp.player_id = p.id
+inner join games g on g.id = ps.game_id and g.season_id = :season_id
+inner join seasons_players sp on sp.player_id = p.id and sp.season_id = :season_id
 inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
-where sp.season_id = :seasonId
 group by p.name, t.name, ts.division
 order by value desc limit 5
 
@@ -54,7 +56,8 @@ order by value desc limit 5
 select p.name, t.name as team, ts.division, sum(ps.goals + ps.assists) as value, sum(ps.goals) as goals, sum(ps.assists) as assists
 from players p
 inner join players_games_stats ps on ps.player_id = p.id
-inner join seasons_players sp on sp.player_id = p.id
+inner join games g on g.id = ps.game_id and g.season_id = :season_id
+inner join seasons_players sp on sp.player_id = p.id and sp.season_id = :season_id
 inner join teams t on t.id = sp.team_id
 inner join teams_seasons ts on ts.team_id = t.id and ts.season_id = sp.season_id
 where sp.season_id = :seasonId
