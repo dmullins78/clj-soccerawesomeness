@@ -32,7 +32,7 @@
           :email (nth % 10)
           :first_name (capitalize (nth % 5))
           :last_name (capitalize (nth % 6))
-          :team (nth % 105)) records))
+          :team (nth % 107)) records))
 
 (defn parse-players [file]
   (-> file read-file to-player))
